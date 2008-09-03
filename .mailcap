@@ -1,0 +1,18 @@
+application/ms-excel; open %s
+application/ms-powerpoint; open %s
+application/msword; open %s
+application/pdf; open %s; copiousoutput
+application/postscript; open %s
+application/vnd.ms-powerpoint; open %s
+application/x-gzip; gzcat; copiousoutput
+application/x-tar-bz2; bunzip2 -c %s | tar -tf -; copiousoutput
+application/x-tar-gz; gunzip -c %s | tar -tf -; copiousoutput
+application/x-tar; tar -tf %s; copiousoutput
+application/x-zip-compressed; unzip -l %s; copiousoutput
+application/zip; unzip -l %s; copiousoutput
+audio/*; open %s
+image/*; open %s; copiousoutput
+image/*; xv %s; test=test -n "${DISPLAY}"
+text/html; lynx -dump -force_html %s; copiousoutput
+text/html; open %s; copiousoutput
+video/*; open %s; copiousoutput

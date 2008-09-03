@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<queryset>
+    <rdbms><type></type><version></version></rdbms>
+
+    <fullquery name="">
+        <querytext>
+        </querytext>
+    </fullquery>
+
+</queryset>

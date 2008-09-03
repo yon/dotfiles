@@ -1,0 +1,25 @@
+[ -n "${DEBUG}" ] && echo "... starting .bash_login";
+
+[ -r ${HOME}/.bashrc ] && . ${HOME}/.bashrc;
+
+# use sane control characters
+/bin/stty sane
+/bin/stty erase 
+
+# ssh key management
+if [ -r ${HOME}/.ssh/id_rsa -o -r ${HOME}/.ssh/id_dsa ]; then
+    if [ -x `${TYPE_CMD} keychain` ]; then
+        `${TYPE_CMD} keychain` --quiet ${HOME}/.ssh/id_rsa ${HOME}/.ssh/id_dsa;
+
+        if [ -d ${HOME}/.keychain ]
+        then
+            . ${HOME}/.keychain/${HOSTNAME}-sh > /dev/null;
+        else
+            . ${HOME}/.ssh-agent-${HOSTNAME} > /dev/null;
+        fi
+    fi
+fi
+
+[ -n "${DEBUG}" ] && echo "... ending .bash_login";
+
+# vim:ft=sh:

@@ -1,0 +1,67 @@
+[ -n "${DEBUG}" ] && echo "... starting .functions";
+
+function d() { sdiff -w 160 $1 $2 | less; }
+
+function getHostname() { echo `hostname | cut -d. -f1`; }
+
+function getTTY() { echo `tty | sed 's@/dev/@@'`; }
+
+if [ -z "${XSESSION}" ]
+then
+    function logout() { end_session && exit; }
+else
+    function logout() { kill -HUP ${XSESSION} && exit; }
+fi
+
+function pman() { man -t "$@" | open -f -a Preview; }
+
+function renameXterm() { renameXwindow "`getHostname` `getTTY`"; }
+
+function renameXwindow() {
+    echo -ne "\033]2;$1\007";
+    echo -ne "\033]0;$1\077";
+}
+
+function setenv() { export ${1}=${2}; }
+
+function xresize() { set -f; eval "$( resize -u )"; set +f; }
+
+# restore it
+function spotlightOn() {
+    sudo chmod 775 /Library/Spotlight;
+    sudo chmod 755 /System/Library/Spotlight;
+    sudo chmod 755 /System/Library/PreferencePanes/Spotlight.prefPane;
+    sudo chmod 755 /System/Library/Services/Spotlight.service;
+    sudo chmod 755 /System/Library/CoreServices/Spotlight.app/Contents/MacOS/Spotlight;
+    sudo chmod 555 /usr/bin/mdimport;
+    sudo chmod 555 /usr/bin/mdcheckschema;
+    sudo chmod 555 /usr/bin/mdfind;
+    sudo chmod 555 /usr/bin/mdls;
+    sudo chmod 555 /usr/bin/mdutil;
+    sudo chmod 555 /usr/bin/md;
+}
+
+# kill it
+function spotlightOff() {
+    sudo chmod 0000 /Library/Spotlight;
+    sudo chmod 0000 /System/Library/Spotlight;
+    sudo chmod 0000 /System/Library/PreferencePanes/Spotlight.prefPane;
+    sudo chmod 0000 /System/Library/Services/Spotlight.service;
+    sudo chmod 0000 /System/Library/CoreServices/Spotlight.app/Contents/MacOS/Spotlight;
+    sudo chmod 0000 /usr/bin/mdimport;
+    sudo chmod 0000 /usr/bin/mdcheckschema;
+    sudo chmod 0000 /usr/bin/mdfind;
+    sudo chmod 0000 /usr/bin/mdls;
+    sudo chmod 0000 /usr/bin/mdutil;
+    sudo chmod 0000 /usr/bin/md;
+}
+
+# clear indices
+function spotlightCleanup() {
+    sudo rm -rv /.Spotlight-V100;
+    sudo rm -rv /private/var/tmp/mds;
+}
+
+[ -n "${DEBUG}" ] && echo "... ending .functions";
+
+# vim:ft=sh:

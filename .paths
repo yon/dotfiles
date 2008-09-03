@@ -1,0 +1,77 @@
+[ -n "${DEBUG}" ] && echo "... starting .paths";
+
+PATH="${HOME}/bin";
+MANPATH="${HOME}/man";
+
+if [ -d /opt/local ]; then
+    PATH="${PATH}:/opt/local/bin:/opt/local/sbin";
+    MANPATH="${MANPATH}:/opt/local/man";
+fi
+
+if [ -d /usr/libexec ]; then
+    PATH="${PATH}:/usr/libexec";
+fi
+
+case "${SYSTEM}" in
+Darwin*)
+    PATH="${PATH}:/usr/libexec";
+    PATH="${PATH}:/System/Library/CoreServices";
+    PYTHONPATH="${HOME}/Developer/Code/python";
+    ;;
+Linux*)
+    PYTHONPATH="${HOME}/code/python";
+    ;;
+SunOS*)
+    PATH="${PATH}:/usr/sfw/bin:/usr/sfw/sbin";
+    PATH="${PATH}:/usr/ucb:/usr/ccs/bin";
+    PATH="${PATH}:/usr/dt/bin";
+    MANPATH="${MANPATH}:/opt/sfw/man";
+    MANPATH="${MANPATH}:/usr/dt/man";
+    ;;
+esac
+
+if [ ! -z ${PYTHONPATH} ]; then
+    export PYTHONPATH;
+fi
+
+PATH="${PATH}:/usr/local/bin:/usr/local/sbin";
+PATH="${PATH}:/usr/bin:/usr/sbin";
+PATH="${PATH}:/bin:/sbin";
+MANPATH="${MANPATH}:/usr/local/man:/usr/local/share/man";
+MANPATH="${MANPATH}:/usr/man:/usr/share/man";
+
+if [ -d /usr/local/pgsql ]; then
+    PATH="${PATH}:/usr/local/pgsql/bin";
+    MANPATH="${MANPATH}:/usr/local/pgsql/man";
+fi
+
+if [ -d /usr/local/mysql ]; then
+    PATH="${PATH}:/usr/local/mysql/bin";
+    MANPATH="${MANPATH}:/usr/local/mysql/man";
+fi
+
+if [ -d /usr/local/aolserver ]; then
+    PATH="${PATH}:/usr/local/aolserver/bin";
+    MANPATH="${MANPATH}:/usr/local/aolserver/man";
+fi
+
+if [ -d /usr/X11 ]; then
+    X11HOME="/usr/X11";
+elif [ -d /usr/X11R6 ]; then
+    X11HOME="/usr/X11R6";
+elif [ -d /usr/openwin ]; then
+    X11HOME="/usr/openwin";
+fi
+
+if [ ! -z ${X11HOME} ]; then
+    export X11HOME;
+    PATH="${PATH}:${X11HOME}/bin";
+    MANPATH="${MANPATH}:${X11HOME}/man";
+fi
+
+export PATH;
+export MANPATH;
+
+[ -n "${DEBUG}" ] && echo "... ending .paths";
+
+# vim:ft=sh:

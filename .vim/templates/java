@@ -1,0 +1,18 @@
+/*
+ * Copyright (C) 2003 milliped. All Rights Reserved.
+ */
+
+package com.milliped;
+
+/*
+ * <p>
+ * description
+ * </p>
+ *
+ * @author <a href="mailto:__user_email__">__user_email__</a>
+ * @creation-date __creation_date__
+ * @version $Id$
+ */
+public class __file_name_root__ {
+    public final static String versionId = "$Id$ by $Author$, $DateTime$";
+}

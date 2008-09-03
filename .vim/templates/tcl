@@ -1,0 +1,31 @@
+#
+#  Copyright (C) 2003 Yonatan Feldman.
+#
+#  This is free software; you can redistribute it and/or modify it under the
+#  terms of the GNU General Public License as published by the Free Software
+#  Foundation; either version 2 of the License, or (at your option) any later
+#  version.
+#
+#  This is distributed in the hope that it will be useful, but WITHOUT ANY
+#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+#  details.
+#
+
+# __file_name__
+
+ad_page_contract {
+
+    @author <a href="mailto:__user_email__">__user_email__</a>
+    @creation-date __creation_date__
+    @version $Id$
+
+} -query {
+}
+
+set package_id [ad_conn package_id]
+set context_bar {}
+
+
+
+ad_return_template

@@ -1,0 +1,18 @@
+[ -n "${DEBUG}" ] && echo "... starting .bash_environment";
+
+GLOBIGNORE='..';
+export GLOBIGNORE;
+
+if [ ${TERM} != "screen" ]; then
+    PS1='[\h:\w] ';
+else
+    PS1='[${WINDOW}:\h:\w] ';
+fi
+
+export PS1;
+
+[ -r ${HOME}/.env ] && . ${HOME}/.env;
+
+[ -n "${DEBUG}" ] && echo "... ending .bash_environment";
+
+# vim:ft=sh:

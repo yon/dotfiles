@@ -1,0 +1,25 @@
+BEGIN:VCARD
+ADR;TYPE=HOME,PREF:;;__home_street_address__;__home_city__;__home_state__;__home_zip__;__home_country__
+ADR;TYPE=WORK:;;__work_street_address__;__work_city__;__work_state__;__work_zip__;__work_country__
+BDAY;value=date:YYYY-MM-DD
+EMAIL;TYPE=HOME,PREF:__home_email__
+EMAIL;TYPE=WORK:__work_email__
+FN:__first_names__ __last_name__
+N:__last_name__;__first_names__;;;
+NICKNAME:__nick_name__
+ORG:__organization__;
+REV:__creation_date__
+TEL;TYPE=CELL,PREF:__cellular_phone__
+TEL;TYPE=HOME:__home_phone__
+TEL;TYPE=WORK:__work_phone__
+TITLE:__title__
+URL:http://__domain__
+VERSION:3.0
+X-AIM;TYPE=HOME,PREF:__aim_name__
+X-EMAIL-FCC;TYPE=HOME:__home_fcc__
+X-EMAIL-FCC;TYPE=WORK:__work_fcc__
+X-ICQ;TYPE=HOME,PREF:__icq_name__
+X-JABBER;TYPE=HOME,PREF:__jabber_name__
+X-MSN;TYPE=HOME,PREF:__msn_name__
+X-YAHOO;TYPE=HOME,PREF:__yahoo_name__
+END:VCARD
