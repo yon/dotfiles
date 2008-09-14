@@ -19,6 +19,7 @@ alias -- \
     llr='ls -lrF' \
     lr='ls -rCF' \
     m='mutt' \
+    mg='mutt -F ~/.mutt/gilt' \
     p='lpr -P' \
     q='lpq -P' \
     pull_all='git checkout master; git pull; git checkout ui; git pull; git checkout qa; git pull; git checkout prod; git pull; git checkout master' \
