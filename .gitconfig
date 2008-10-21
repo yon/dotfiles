@@ -3,9 +3,13 @@
 	name = Yonatan Feldman
 [alias]
         a = add
+        cam = commit -a -m
 	ci = commit
         co = checkout
+        cp = cherry-pick
         d = diff
+        l = log
+        lp = log -p
         me = merge
 	pl = pull
 	ps = push
