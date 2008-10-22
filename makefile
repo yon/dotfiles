@@ -1,6 +1,6 @@
 HOME_REPO=$(HOME)/.home
 
-all:    clean link copy set_permissions
+all:    clone clean link set_permissions
 
 clean:
 	for file in `ls -A -1 $(HOME_REPO)`; do \
@@ -11,8 +11,6 @@ clone:
 	if [ ! -d $(HOME_REPO) ]; then \
 		git clone git@github.com:yon/home.git $(HOME_REPO); \
 	fi
-
-copy:
 
 link:
 	for file in `ls -A -1 $(HOME_REPO)`; do \
