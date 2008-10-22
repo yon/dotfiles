@@ -12,6 +12,12 @@ if [ -d /usr/libexec ]; then
     PATH="${PATH}:/usr/libexec";
 fi
 
+PATH="${PATH}:/usr/local/bin:/usr/local/sbin";
+PATH="${PATH}:/usr/bin:/usr/sbin";
+PATH="${PATH}:/bin:/sbin";
+MANPATH="${MANPATH}:/usr/local/man:/usr/local/share/man";
+MANPATH="${MANPATH}:/usr/man:/usr/share/man";
+
 case "${SYSTEM}" in
 Darwin*)
     PATH="${PATH}:/usr/libexec";
@@ -33,12 +39,6 @@ esac
 if [ ! -z ${PYTHONPATH} ]; then
     export PYTHONPATH;
 fi
-
-PATH="${PATH}:/usr/local/bin:/usr/local/sbin";
-PATH="${PATH}:/usr/bin:/usr/sbin";
-PATH="${PATH}:/bin:/sbin";
-MANPATH="${MANPATH}:/usr/local/man:/usr/local/share/man";
-MANPATH="${MANPATH}:/usr/man:/usr/share/man";
 
 if [ -d /usr/local/pgsql ]; then
     PATH="${PATH}:/usr/local/pgsql/bin";

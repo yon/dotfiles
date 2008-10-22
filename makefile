@@ -1,6 +1,6 @@
 HOMEDIRREPO=$(HOME)/.home
 
-all:    clean link copy
+all:    clean link copy set_permissions
 
 clean:
 	for file in `ls -A -1 $(HOMEDIRREPO) | grep -v makefile`; do \
@@ -13,3 +13,7 @@ link:
 	done
 
 copy:
+
+set_permissions:
+	chmod -R u=rwX,go= $(HOMEDIRREPO)/.ssh;
+	chmod 700 $(HOME);
