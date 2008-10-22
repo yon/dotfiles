@@ -8,7 +8,9 @@ clean:
 	done
 
 clone:
-	git clone git@github.com:yon/home.git $(HOME_REPO);
+	if [ ! -d $(HOME_REPO) ]; then \
+		git clone git@github.com:yon/home.git $(HOME_REPO); \
+	fi
 
 copy:
 
