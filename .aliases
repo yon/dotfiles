@@ -55,7 +55,7 @@ Linux*)
 SunOS*)
     alias -- \
         df='df -kl' \
-        ps='ps -aux' \
+        ps='ps -ef' \
         top='top -s 1' \
 # leave this line to swallow the \ at the end of the previous line
     ;;

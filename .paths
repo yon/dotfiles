@@ -3,6 +3,11 @@
 PATH="${HOME}/bin";
 MANPATH="${HOME}/man";
 
+if [ -d /opt/SUNWspro ]; then
+    PATH="${PATH}:/opt/SUNWspro/bin";
+    MANPATH="${MANPATH}:/opt/SUNWspro/man";
+fi
+
 if [ -d /opt/local ]; then
     PATH="${PATH}:/opt/local/bin:/opt/local/sbin";
     MANPATH="${MANPATH}:/opt/local/man";
