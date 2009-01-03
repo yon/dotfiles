@@ -5,6 +5,7 @@
         a = add
         cam = commit -a -m
 	ci = commit
+        cim = commit -m
         co = checkout
         cp = cherry-pick
         d = diff
