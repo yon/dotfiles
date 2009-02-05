@@ -22,11 +22,7 @@ alias -- \
     mg='mutt -F ~/.mutt/gilt' \
     p='lpr -P' \
     q='lpq -P' \
-    pull_all='git checkout master; git pull; git checkout ui; git pull; git checkout qa; git pull; git checkout prod; git pull; git checkout master' \
-    push_master='cd /web/gilt; git checkout master; git pull origin master; git push origin master' \
-    push_prod='cd /web/gilt; git checkout prod; git pull origin prod; git merge qa; git push origin prod; git checkout master' \
-    push_qa='cd /web/gilt; git checkout qa; git pull origin qa; git merge master; git push origin qa; git checkout master' \
-    push_ui='cd /web/gilt; git checkout ui; git pull origin ui; git merge master; git push origin ui; git checkout master' \
+    pull_all='git checkout dev; git pull; git checkout ui; git pull; git checkout qa; git pull; git checkout prod; git pull; git checkout dev' \
     re='rm -rf *~' \
     rs='resize' \
     rt="echo -ne \'\\033c\'" \
