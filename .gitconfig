@@ -1,20 +1,21 @@
 [user]
-	email = yon@gilt.com
+	email = yfeldman@gilt.com
 	name = Yonatan Feldman
 [alias]
-        a = add
-        cam = commit -a -m
+	a = add
+	cam = commit -a -m
 	ci = commit
-        cim = commit -m
-        co = checkout
-        cp = cherry-pick
-        d = diff
-        l = log
-        lp = log -p
-        me = merge
+	cim = commit -m
+	co = checkout
+	cp = cherry-pick
+	d = diff
+	l = log
+	lp = log -p
+	ls = log --stat
+	me = merge
 	pl = pull
 	ps = push
-        s = status
+	s = status
 [color]
 	branch = auto
 	diff = auto
@@ -28,7 +29,7 @@
 	meta = yellow bold
 	new = green bold
 	old = red bold
-        whitespace = blue bold
+	whitespace = blue bold
 [color "status"]
 	added = yellow
 	changed = green

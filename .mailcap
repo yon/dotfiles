@@ -5,6 +5,7 @@ application/pdf; open %s; copiousoutput
 application/postscript; open %s
 application/vnd.ms-powerpoint; open %s
 application/x-gzip; gzcat; copiousoutput
+application/x-mspowerpoint; open %s
 application/x-tar-bz2; bunzip2 -c %s | tar -tf -; copiousoutput
 application/x-tar-gz; gunzip -c %s | tar -tf -; copiousoutput
 application/x-tar; tar -tf %s; copiousoutput

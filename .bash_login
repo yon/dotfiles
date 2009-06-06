@@ -6,18 +6,11 @@
 /bin/stty sane
 /bin/stty erase 
 
-# nice prompt
-if [ ${TERM} != "screen" ]; then
-    PS1='[\h:\w] ';
-else
-    PS1='[${WINDOW}:\h:\w] ';
-fi
-export PS1;
-
 # ssh key management
 if [ -r ${HOME}/.ssh/id_rsa -o -r ${HOME}/.ssh/id_dsa ]; then
     if [ -x `${TYPE_CMD} keychain` ]; then
         `${TYPE_CMD} keychain` --quiet ${HOME}/.ssh/id_rsa ${HOME}/.ssh/id_dsa;
+
         if [ -d ${HOME}/.keychain ]
         then
             . ${HOME}/.keychain/${HOSTNAME}-sh > /dev/null;

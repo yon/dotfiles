@@ -22,7 +22,7 @@ alias -- \
     mg='mutt -F ~/.mutt/gilt' \
     p='lpr -P' \
     q='lpq -P' \
-    pull_all='git checkout dev; git pull; git checkout ui; git pull; git checkout qa; git pull; git checkout prod; git pull; git checkout dev' \
+    pull_all='git checkout dev; git pull; git checkout qa; git pull; git checkout prod; git pull; git checkout dev' \
     re='rm -rf *~' \
     rs='resize' \
     rt="echo -ne \'\\033c\'" \
@@ -51,7 +51,7 @@ Linux*)
 SunOS*)
     alias -- \
         df='df -kl' \
-        ps='ps -ef' \
+        ps='ps -aux' \
         top='top -s 1' \
 # leave this line to swallow the \ at the end of the previous line
     ;;
