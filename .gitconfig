@@ -4,16 +4,16 @@
 [alias]
 	a = add
 	cam = commit -a -m
-	ci = commit
+	ci = commit -v
 	cim = commit -m
 	co = checkout
-	cp = cherry-pick
-	d = diff
-	l = log
-	lp = log -p
-	ls = log --stat
+	cp = cherry-pick -x
+	d = diff --full-index --ignore-all-space
+	l = log -c --no-merges
+	lp = log -c -p --full-index --ignore-all-space --no-merges
+	ls = log -c --no-merges --stat
 	me = merge
-	pl = pull
+	pl = pull --rebase
 	ps = push
 	s = status
 [color]
