@@ -14,7 +14,7 @@ clone:
 
 link:
 	for file in `ls -A -1 $(HOME_REPO)`; do \
-		/usr/bin/ln -n -s $(HOME_REPO)/$${file} $(HOME)/$${file}; \
+		ln -n -s $(HOME_REPO)/$${file} $(HOME)/$${file}; \
 	done
 
 set_permissions:
