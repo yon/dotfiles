@@ -4,7 +4,7 @@ all:    setup update clean link set_permissions
 
 clean:
 	for file in `ls -A -1 $(HOME_REPO)`; do \
-		rm -f -r $(HOME)/$${file}; \
+		/user/bin/rm -f -r $(HOME)/$${file}; \
 	done
 
 setup:
