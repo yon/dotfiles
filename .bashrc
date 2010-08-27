@@ -29,7 +29,7 @@ shopt -u shift_verbose
 shopt -u sourcepath
 shopt -u xpg_echo
 
-umask 077;
+umask 0022;
 ulimit -c 0;
 
 [ -r ${HOME}/.bash_environment ] && . ${HOME}/.bash_environment;
