@@ -13,7 +13,7 @@
 	lp = log -c -p --full-index --ignore-all-space --no-merges
 	ls = log -c --no-merges --stat
 	me = merge
-	pl = pull --rebase
+	pl = pull
 	ps = push
 	s = status
 [color]
