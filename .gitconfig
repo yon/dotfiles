@@ -2,13 +2,13 @@
 	email = yfeldman@gilt.com
 	name = Yonatan Feldman
 [alias]
-	a = add
+	a = add -A
 	cam = commit -a -m
 	ci = commit -v
 	cim = commit -m
 	co = checkout
 	cp = cherry-pick -x
-	d = diff --full-index --ignore-all-space
+	d = diff --full-index --ignore-all-space --word-diff
 	l = log -c --no-merges
 	lp = log -c -p --full-index --ignore-all-space --no-merges
 	ls = log -c --no-merges --stat
@@ -17,20 +17,11 @@
 	ps = push
 	s = status
 [color]
-	branch = auto
-	diff = auto
-	status = auto
-[color "branch"]
-	current = yellow reverse
-	local = yellow
-	remote = green
-[color "diff"]
-	frag = magenta bold
-	meta = yellow bold
-	new = green bold
-	old = red bold
-	whitespace = blue bold
-[color "status"]
-	added = yellow
-	changed = green
-	untracked = cyan
+	ui = auto
+[core]
+	autocrlf = input
+[github]
+	user = yon
+	token = cab8316b802277f7e8fb1817862c1493
+[push]
+	default = tracking
