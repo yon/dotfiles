@@ -20,6 +20,10 @@ if [ -d /opt/local ]; then
     MANPATH="${MANPATH}:/opt/local/man";
 fi
 
+if [ -d /opt/local/libexec/git-core ]; then
+    PATH="${PATH}:/opt/local/libexec/git-core";
+fi
+
 if [ -d /usr/libexec ]; then
     PATH="${PATH}:/usr/libexec";
 fi
