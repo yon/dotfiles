@@ -16,7 +16,7 @@ if [ -d /opt/ruby ]; then
 fi
 
 if [ -d /opt/local ]; then
-    PATH="${PATH}:/opt/local/bin:/opt/local/sbin";
+    PATH="${PATH}:/opt/local/bin:/opt/local/sbin:/opt/local/libexec";
     MANPATH="${MANPATH}:/opt/local/man";
 fi
 
