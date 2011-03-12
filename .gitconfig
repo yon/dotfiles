@@ -15,6 +15,7 @@
 	me = merge
 	pl = pull
 	ps = push
+        rtag = !git tag r`date \"+%Y-%m-%d-%H%M%S\"`
 	s = status
 [color]
 	ui = auto
