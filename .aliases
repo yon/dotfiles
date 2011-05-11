@@ -7,6 +7,7 @@ alias -- \
     -='cd -' \
     ..='cd ..' \
     @='setxtermsize' \
+    cap='cap -s user=yon' \
     bye='exit' \
     du='du -k | sort -n' \
     e='enscript -2rG -P' \
