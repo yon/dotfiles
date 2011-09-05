@@ -7,9 +7,9 @@
 /bin/stty erase 
 
 # ssh key management
-if [ -r ${HOME}/.ssh/id_rsa -o -r ${HOME}/.ssh/id_dsa ]; then
+if [ -r ${HOME}/.ssh/id_rsa ]; then
     if [ -x `${TYPE_CMD} keychain` ]; then
-        `${TYPE_CMD} keychain` --quiet ${HOME}/.ssh/id_rsa ${HOME}/.ssh/id_dsa;
+        `${TYPE_CMD} keychain` --quiet ${HOME}/.ssh/id_rsa;
 
         if [ -d ${HOME}/.keychain ]
         then
