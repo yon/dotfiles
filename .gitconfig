@@ -1,6 +1,3 @@
-[user]
-	email = yfeldman@gilt.com
-	name = Yonatan Feldman
 [alias]
 	a = add -A
 	cam = commit -a -m
@@ -26,3 +23,6 @@
 	token = cab8316b802277f7e8fb1817862c1493
 [push]
 	default = tracking
+[user]
+	email = yfeldman@gilt.com
+	name = Yonatan Feldman
