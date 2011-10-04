@@ -1,23 +1,11 @@
 [ -n "${DEBUG}" ] && echo "... starting .paths";
 
-PATH="${HOME}/bin";
 MANPATH="${HOME}/man";
-
-if [ -d /opt/java ]; then
-    PATH="${PATH}:/opt/java/bin";
-fi
-
-if [ -d /opt/jruby ]; then
-    PATH="${PATH}:/opt/jruby/bin";
-fi
-
-if [ -d /opt/ruby ]; then
-    PATH="${PATH}:/opt/ruby/bin";
-fi
+PATH="${HOME}/bin";
 
 if [ -d /opt/local ]; then
-    PATH="${PATH}:/opt/local/bin:/opt/local/sbin:/opt/local/libexec";
     MANPATH="${MANPATH}:/opt/local/man";
+    PATH="${PATH}:/opt/local/bin:/opt/local/sbin:/opt/local/libexec";
 fi
 
 if [ -d /opt/local/libexec/git-core ]; then
@@ -32,61 +20,29 @@ case "${SYSTEM}" in
 Darwin*)
     PATH="${PATH}:/usr/libexec";
     PATH="${PATH}:/System/Library/CoreServices";
-    PYTHONPATH="${HOME}/Developer/Code/python";
     ;;
 Linux*)
-    PYTHONPATH="${HOME}/code/python";
-    ;;
-SunOS*)
-    PATH="${PATH}:/usr/sfw/bin:/usr/sfw/sbin";
-    PATH="${PATH}:/usr/ucb:/usr/ccs/bin";
-    PATH="${PATH}:/usr/dt/bin";
-    MANPATH="${MANPATH}:/opt/sfw/man";
-    MANPATH="${MANPATH}:/usr/dt/man";
     ;;
 esac
 
-if [ ! -z ${PYTHONPATH} ]; then
-    export PYTHONPATH;
-fi
-
+MANPATH="${MANPATH}:/usr/local/man:/usr/local/share/man";
+MANPATH="${MANPATH}:/usr/man:/usr/share/man";
 PATH="${PATH}:/usr/local/bin:/usr/local/sbin";
 PATH="${PATH}:/usr/bin:/usr/sbin";
 PATH="${PATH}:/bin:/sbin";
-MANPATH="${MANPATH}:/usr/local/man:/usr/local/share/man";
-MANPATH="${MANPATH}:/usr/man:/usr/share/man";
 
-if [ -d /usr/local/pgsql ]; then
-    PATH="${PATH}:/usr/local/pgsql/bin";
-    MANPATH="${MANPATH}:/usr/local/pgsql/man";
+PG_ROOT="/opt/local/lib/${PG_VERSION}";
+
+if [ -d ${PG_ROOT} ]; then
+    MANPATH="${MANPATH}:${PG_ROOT}/man";
+    PATH="${PATH}:${PG_ROOT}/bin";
+
+    PG_DEFAULT_DB="/opt/local/var/db/${PG_VERSION}/defaultdb";
+    PG_CONF="${PG_DEFAULT_DB}/postgresql.conf";
 fi
 
-if [ -d /usr/local/mysql ]; then
-    PATH="${PATH}:/usr/local/mysql/bin";
-    MANPATH="${MANPATH}:/usr/local/mysql/man";
-fi
-
-if [ -d /usr/local/aolserver ]; then
-    PATH="${PATH}:/usr/local/aolserver/bin";
-    MANPATH="${MANPATH}:/usr/local/aolserver/man";
-fi
-
-if [ -d /usr/X11 ]; then
-    X11HOME="/usr/X11";
-elif [ -d /usr/X11R6 ]; then
-    X11HOME="/usr/X11R6";
-elif [ -d /usr/openwin ]; then
-    X11HOME="/usr/openwin";
-fi
-
-if [ ! -z ${X11HOME} ]; then
-    export X11HOME;
-    PATH="${PATH}:${X11HOME}/bin";
-    MANPATH="${MANPATH}:${X11HOME}/man";
-fi
-
-export PATH;
 export MANPATH;
+export PATH;
 
 [ -n "${DEBUG}" ] && echo "... ending .paths";
 
