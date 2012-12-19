@@ -2,6 +2,13 @@
 
 function d() { sdiff -w 160 $1 $2 | less; }
 
+function gclone() {
+    git clone --recursive "ssh://gerrit.gilt.com:29418/${1}.git"
+    pushd ${1}
+    /web/tools/bin/install-hooks
+    popd
+}
+
 function getHostname() { echo `hostname | cut -d. -f1`; }
 
 function getTTY() { echo `tty | sed 's@/dev/@@'`; }
