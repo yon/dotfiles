@@ -3,6 +3,10 @@
 MANPATH="${HOME}/man";
 PATH="${HOME}/bin";
 
+if [ -d /web/tools/bin ]; then
+    PATH="${PATH}:/web/tools/bin";
+fi
+
 if [ -d /opt/local ]; then
     MANPATH="${MANPATH}:/opt/local/man";
     PATH="${PATH}:/opt/local/bin:/opt/local/sbin:/opt/local/libexec";
