@@ -6,6 +6,7 @@ function gclone() {
     git clone --recursive "ssh://gerrit.gilt.com:29418/${1}.git" && \
         pushd ${1} && \
         /web/tools/bin/install-hooks && \
+        git config user.email "yfeldman@gilt.com" && \
         git config rerere.enabled true && \
         popd
 }
