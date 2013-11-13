@@ -5,7 +5,7 @@
 	cim = commit -m
 	co = checkout
 	cp = cherry-pick -x
-	d = diff --full-index --ignore-all-space
+	d = diff --full-index
 	l = log -c --no-merges
 	lp = log -c -p --full-index --ignore-all-space --no-merges
 	ls = log -c --no-merges --stat
