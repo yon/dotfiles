@@ -21,13 +21,11 @@
 	autocrlf = input
 [fetch]
 	prune = true
-[github]
-	user = yon
-	token = cab8316b802277f7e8fb1817862c1493
 [pull]
 	rebase = true
 [push]
 	default = tracking
+[rerere]
+	enabled = true
 [user]
-	email = yon@milliped.com
 	name = Yonatan Feldman
