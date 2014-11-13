@@ -12,7 +12,7 @@ function gilt_gerrit_clone() {
 }
 
 function gilt_github_clone() {
-    git clone --recursive "ssh://gerrit.gilt.com:29418/${1}.git" && \
+    git clone --recursive "git@github.com:gilt/${1}.git" && \
         pushd ${1} && \
         git config user.email "yfeldman@gilt.com" && \
         git config rerere.enabled true && \
