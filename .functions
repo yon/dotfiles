@@ -2,10 +2,18 @@
 
 function d() { sdiff -w 160 $1 $2 | less; }
 
-function gclone() {
+function gilt_gerrit_clone() {
     git clone --recursive "ssh://gerrit.gilt.com:29418/${1}.git" && \
         pushd ${1} && \
         /web/tools/bin/install-hooks && \
+        git config user.email "yfeldman@gilt.com" && \
+        git config rerere.enabled true && \
+        popd
+}
+
+function gilt_github_clone() {
+    git clone --recursive "ssh://gerrit.gilt.com:29418/${1}.git" && \
+        pushd ${1} && \
         git config user.email "yfeldman@gilt.com" && \
         git config rerere.enabled true && \
         popd
