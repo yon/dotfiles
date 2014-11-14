@@ -3,6 +3,10 @@
 MANPATH="${HOME}/man";
 PATH="${HOME}/bin";
 
+if [ -d ~/Code/gilt/mobile/mobile-service-tools/bin ]; then
+    PATH="${PATH}:~/Code/gilt/mobile/mobile-service-tools/bin";
+fi
+
 if [ -d /web/tools/bin ]; then
     PATH="${PATH}:/web/tools/bin";
 fi
