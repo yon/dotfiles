@@ -1,6 +1,4 @@
 .DS_Store
 .boot2docker/certs
-.ssh/id_boot2docker
-.ssh/id_rsa
 .ssh/known_hosts
 .vim/viminfo
