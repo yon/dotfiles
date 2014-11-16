@@ -1,0 +1,4 @@
+autodetach on
+defscrollback 10000
+escape b
+startup_message off
