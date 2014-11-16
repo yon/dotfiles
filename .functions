@@ -80,5 +80,3 @@ function spotlightCleanup() {
 }
 
 [ -n "${DEBUG}" ] && echo "... ending .functions";
-
-# vim:ft=sh:

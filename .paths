@@ -53,5 +53,3 @@ export MANPATH;
 export PATH;
 
 [ -n "${DEBUG}" ] && echo "... ending .paths";
-
-# vim:ft=sh:

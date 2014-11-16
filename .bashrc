@@ -40,5 +40,3 @@ ulimit -c 0;
 [ -r ${HOME}/.functions ] && . ${HOME}/.functions;
 
 [ -n "${DEBUG}" ] && echo "... ending .bashrc";
-
-# vim:ft=sh:

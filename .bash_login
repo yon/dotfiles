@@ -26,5 +26,3 @@ then
 fi
 
 [ -n "${DEBUG}" ] && echo "... ending .bash_login";
-
-# vim:ft=sh:
