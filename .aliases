@@ -23,7 +23,6 @@ alias -- \
     mg='mutt -F ~/.mutt/gilt' \
     p='lpr -P' \
     q='lpq -P' \
-    pull_all='git checkout dev; git pull; git checkout qa; git pull; git checkout prod; git pull; git checkout dev' \
     re='rm -rf *~' \
     rs='resize' \
     rt="echo -ne \'\\033c\'" \
@@ -59,5 +58,3 @@ SunOS*)
 esac
 
 [ -n "${DEBUG}" ] && echo '... ending .aliases';
-
-# vim:ft=sh:
