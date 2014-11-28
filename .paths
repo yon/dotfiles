@@ -11,15 +11,6 @@ if [ -d /web/tools/bin ]; then
     PATH="${PATH}:/web/tools/bin";
 fi
 
-if [ -d /opt/local ]; then
-    MANPATH="${MANPATH}:/opt/local/man";
-    PATH="${PATH}:/opt/local/bin:/opt/local/sbin:/opt/local/libexec";
-fi
-
-if [ -d /opt/local/libexec/git-core ]; then
-    PATH="${PATH}:/opt/local/libexec/git-core";
-fi
-
 if [ -d /usr/libexec ]; then
     PATH="${PATH}:/usr/libexec";
 fi
@@ -38,16 +29,6 @@ MANPATH="${MANPATH}:/usr/man:/usr/share/man";
 PATH="${PATH}:/usr/local/bin:/usr/local/sbin";
 PATH="${PATH}:/usr/bin:/usr/sbin";
 PATH="${PATH}:/bin:/sbin";
-
-PG_ROOT="/opt/local/lib/${PG_VERSION}";
-
-if [ -d ${PG_ROOT} ]; then
-    MANPATH="${MANPATH}:${PG_ROOT}/man";
-    PATH="${PATH}:${PG_ROOT}/bin";
-
-    PG_DEFAULT_DB="/opt/local/var/db/${PG_VERSION}/defaultdb";
-    PG_CONF="${PG_DEFAULT_DB}/postgresql.conf";
-fi
 
 export MANPATH;
 export PATH;

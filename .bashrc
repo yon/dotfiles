@@ -33,7 +33,6 @@ umask 0022;
 ulimit -c 0;
 
 [ -r ${HOME}/.bash_environment ] && . ${HOME}/.bash_environment;
-[ -r /opt/local/etc/bash_completion ] && . /opt/local/etc/bash_completion
 [ -r /etc/shell-mods.sh ] && . /etc/shell-mods.sh;
 [ -r ${HOME}/etc/shell-mods.sh ] && . ${HOME}/etc/shell-mods.sh;
 [ -r ${HOME}/.aliases ] && . ${HOME}/.aliases;
