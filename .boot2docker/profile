@@ -1,6 +1,0 @@
-#
-# boot2docker profile
-#
-
-DiskSize = 20000
-Memory = 4096
