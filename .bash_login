@@ -9,14 +9,7 @@
 # ssh key management
 if [ -r ${HOME}/.ssh/id_rsa ]; then
     if [ -x `${TYPE_CMD} keychain` ]; then
-        `${TYPE_CMD} keychain` --quiet ${HOME}/.ssh/id_rsa;
-
-        if [ -d ${HOME}/.keychain ]
-        then
-            . ${HOME}/.keychain/${HOSTNAME}-sh > /dev/null;
-        else
-            . ${HOME}/.ssh-agent-${HOSTNAME} > /dev/null;
-        fi
+        `${TYPE_CMD} keychain` --agents ssh --inherit any --quiet id_rsa;
     fi
 fi
 
