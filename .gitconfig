@@ -17,6 +17,8 @@
         tree = log --all --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 [color]
 	ui = auto
+[commit]
+	gpgsign = true
 [core]
 	autocrlf = input
 [fetch]
@@ -29,3 +31,4 @@
 	enabled = true
 [user]
 	name = Yonatan Feldman
+	signingkey = A3EEC242
