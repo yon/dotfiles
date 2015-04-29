@@ -11,7 +11,6 @@ alias -- \
     bye='exit' \
     du='du -k | sort -n' \
     e='enscript -2rG -P' \
-    g='git' \
     l='ls -CF' \
     la='ls -aCF' \
     ll='ls -lF' \
