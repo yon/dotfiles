@@ -1,0 +1,7 @@
+[extensions]
+color =
+pager =
+purge =
+
+[ui]
+username = Yonatan Feldman <yon@milliped.com>
