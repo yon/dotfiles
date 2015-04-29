@@ -1,6 +1,8 @@
+syntax: glob
+
 *~
 .DS_Store
 .boot2docker
-.hg
+.git
 .ssh/known_hosts
 .vim/viminfo
