@@ -5,6 +5,7 @@ set autoindent
 set autowrite
 set backspace=indent,eol,start
 set expandtab
+set hidden
 set history=50
 set ignorecase
 set matchtime=2
@@ -51,16 +52,22 @@ map ` '
 map [ M
 map ] M
 
+" save current buffer and hop to the next one
+map <c-n> :w<cr>:n<cr>
+map <c-v> :new<cr>:0r !
+
+" map window navigation keys to more convenient modifiers
+map <c-h> <c-w>h
+map <c-j> <c-w>j
+map <c-k> <c-w>k
+map <c-l> <c-w>l
+
 " emulate emacs' meta-.
 nmap ³ :tag <c-r>=expand("<cword>")<cr><cr>
 
 " make + and - increment and decrement numbers.
 nmap + <c-a>
 nmap - <c-x>
-
-" save current buffer and hop to the next one
-nmap <c-n> :w<cr>:n<cr>
-nmap <c-v> :new<cr>:0r ! 
 
 " turn on syntax mode
 syntax on
