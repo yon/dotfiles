@@ -1,11 +1,7 @@
 [ -n "${DEBUG}" ] && echo "... starting .paths";
 
-MANPATH="${HOME}/man";
-PATH="${HOME}/bin";
-
-if [ -d /opt/facebook/bin ]; then
-    PATH="${PATH}:/opt/facebook/bin";
-fi
+MANPATH="${PATH}:${HOME}/man";
+PATH="${PATH}:${HOME}/bin";
 
 if [ -d /usr/libexec ]; then
     PATH="${PATH}:/usr/libexec";
