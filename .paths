@@ -1,32 +1,17 @@
 [ -n "${DEBUG}" ] && echo "... starting .paths";
 
-MANPATH="${PATH}:${HOME}/man";
-PATH="${PATH}:${HOME}/bin";
-
-if [ -d /opt/facebook/bin ]; then
-    PATH="${PATH}:/opt/facebook/bin";
+if [ -d /opt/local/bin ]; then
+    PATH="${PATH}:/opt/local/bin";
 fi
 
 if [ -d /usr/libexec ]; then
     PATH="${PATH}:/usr/libexec";
 fi
 
-case "${SYSTEM}" in
-Darwin*)
-    PATH="${PATH}:/usr/libexec";
+if [ -d /System/Library/CoreServices ]; then
     PATH="${PATH}:/System/Library/CoreServices";
-    ;;
-Linux*)
-    ;;
-esac
+fi
 
-MANPATH="${MANPATH}:/usr/local/man:/usr/local/share/man";
-MANPATH="${MANPATH}:/usr/man:/usr/share/man";
-PATH="${PATH}:/usr/local/bin:/usr/local/sbin";
-PATH="${PATH}:/usr/bin:/usr/sbin";
-PATH="${PATH}:/bin:/sbin";
-
-export MANPATH;
-export PATH;
+PATH="${PATH}:${HOME}/bin";
 
 [ -n "${DEBUG}" ] && echo "... ending .paths";
