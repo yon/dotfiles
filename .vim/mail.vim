@@ -1,4 +1,4 @@
-set noautoindent
-set textwidth=72
+setlocal noautoindent
+setlocal textwidth=72
 
 abbr fcc Fcc: =

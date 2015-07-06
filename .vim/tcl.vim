@@ -1,6 +1,6 @@
-set autoindent
-set shiftwidth=4
-set softtabstop=4
-set textwidth=0
+setlocal autoindent
+setlocal shiftwidth=4
+setlocal softtabstop=4
+setlocal textwidth=0
 
 abbr apc ad_page_contract {

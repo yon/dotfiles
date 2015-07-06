@@ -1,1 +1,1 @@
-set noautoindent
+setlocal noautoindent

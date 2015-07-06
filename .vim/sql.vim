@@ -1,7 +1,7 @@
-set autoindent
-set textwidth=0
-set shiftwidth=4
-set softtabstop=4
+setlocal autoindent
+setlocal textwidth=0
+setlocal shiftwidth=4
+setlocal softtabstop=4
 
 "abbr bit bitmap
 "abbr con constraint

@@ -1,10 +1,12 @@
-set shiftwidth=2
-set softtabstop=2
+setlocal shiftwidth=2
+setlocal softtabstop=2
 
-" on file saves events call convert apt file to a different format
-" autocmd! BufWritePost,FileWritePost   *.apt     call APT_Convert("html")
-" autocmd! BufWritePost,FileWritePost   *.apt     call APT_Convert("xml")
-" autocmd! BufWritePost,FileWritePost   *.apt     call APT_Convert("pdf")
+if has("autocmd")
+  " on file saves events call convert apt file to a different format
+  " autocmd! BufWritePost,FileWritePost   *.apt     call APT_Convert("html")
+  " autocmd! BufWritePost,FileWritePost   *.apt     call APT_Convert("xml")
+  " autocmd! BufWritePost,FileWritePost   *.apt     call APT_Convert("pdf")
+endif
 
 function! APT_Convert(format)
   " generic conversion function takes a format (html, xml, pdf)

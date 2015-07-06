@@ -1,7 +1,7 @@
-set autoindent
-set comments=sr:<!--,el:-->
-set shiftwidth=2
-set softtabstop=2
+setlocal autoindent
+setlocal comments=sr:<!--,el:-->
+setlocal shiftwidth=2
+setlocal softtabstop=2
 
 " special characters in html elements
 abbr ,A &#193;

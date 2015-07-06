@@ -72,10 +72,12 @@ nmap - <c-x>
 " turn on syntax mode
 syntax on
 
-" on filetype event source type specific configuration file
-autocmd FileType                        *         call Source_FT_RC()
+if has("autocmd")
+  " on filetype event source type specific configuration file
+  autocmd FileType * call SourceFileTypeBasedConfiguration()
+endif
 
-function! Source_FT_RC()
+function! SourceFileTypeBasedConfiguration()
   " source type specific configuration file
   "
   " configuration file is: $HOME/.vim/ + filetype + .vim
@@ -88,10 +90,12 @@ function! Source_FT_RC()
   endif
 endfunction
 
-" on new file event insert type specific template into the buffer
-autocmd BufNewFile                      *         call Load_FT_Template()
+if has("autocmd")
+  " on new file event insert type specific template into the buffer
+  autocmd BufNewFile * call LoadFileTypeBasedTemplate()
+endif
 
-function! Load_FT_Template()
+function! LoadFileTypeBasedTemplate()
   " load a template based on filetype
   "
   " template file is: $HOME/.vim/templates/filetype

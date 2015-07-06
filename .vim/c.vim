@@ -1,6 +1,6 @@
-set autoindent
-set cindent
-set comments=sr:/*,mb:*,el:*/,://
-set formatoptions=croq
-set shiftwidth=4
-set softtabstop=4
+setlocal autoindent
+setlocal cindent
+setlocal comments=sr:/*,mb:*,el:*/,://
+setlocal formatoptions=croq
+setlocal shiftwidth=4
+setlocal softtabstop=4

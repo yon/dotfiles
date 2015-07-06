@@ -1,4 +1,4 @@
-set autoindent
-set comments=sr:<!--,el:-->
-set shiftwidth=4
-set softtabstop=4
+setlocal autoindent
+setlocal comments=sr:<!--,el:-->
+setlocal shiftwidth=4
+setlocal softtabstop=4
