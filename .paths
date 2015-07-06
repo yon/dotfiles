@@ -3,12 +3,8 @@
 MANPATH="${HOME}/man";
 PATH="${HOME}/bin";
 
-if [ -d ~/Code/gilt/mobile-service-tools/bin ]; then
-    PATH="${PATH}:~/Code/gilt/mobile-service-tools/bin";
-fi
-
-if [ -d /web/tools/bin ]; then
-    PATH="${PATH}:/web/tools/bin";
+if [ -d /opt/facebook/bin ]; then
+    PATH="${PATH}:/opt/facebook/bin";
 fi
 
 if [ -d /usr/libexec ]; then
