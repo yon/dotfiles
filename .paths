@@ -3,6 +3,10 @@
 MANPATH="${PATH}:${HOME}/man";
 PATH="${PATH}:${HOME}/bin";
 
+if [ -d /opt/facebook/bin ]; then
+    PATH="${PATH}:/opt/facebook/bin";
+fi
+
 if [ -d /usr/libexec ]; then
     PATH="${PATH}:/usr/libexec";
 fi
