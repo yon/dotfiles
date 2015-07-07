@@ -1,6 +1,7 @@
 *~
 .DS_Store
 .boot2docker
+.gnupg/random_seed
 .hg
 .ssh/known_hosts
 .vim/viminfo
