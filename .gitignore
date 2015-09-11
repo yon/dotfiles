@@ -4,4 +4,5 @@
 .gnupg/random_seed
 .hg
 .ssh/known_hosts
+.vim/.netrwhist
 .vim/viminfo
