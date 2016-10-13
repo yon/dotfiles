@@ -4,6 +4,10 @@ if [ -d /opt/local/bin ]; then
     PATH="${PATH}:/opt/local/bin";
 fi
 
+if [ -d /usr/local/sbin ]; then
+    PATH="${PATH}:/usr/local/sbin";
+fi
+
 if [ -d /usr/libexec ]; then
     PATH="${PATH}:/usr/libexec";
 fi
