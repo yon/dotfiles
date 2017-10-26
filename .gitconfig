@@ -31,3 +31,5 @@
 	email = yon@milliped.com
 	name = Yonatan Feldman
 	signingkey = A3EEC242
+[include]
+	path = ~/.gitconfig-local
