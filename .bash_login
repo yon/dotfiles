@@ -9,7 +9,8 @@
 # ssh key management
 if [ -r ${HOME}/.ssh/id_rsa ]; then
     if [ `${TYPE_CMD} keychain` ]; then
-        `${TYPE_CMD} keychain` --agents ssh --inherit any --quiet id_rsa;
+        `${TYPE_CMD} keychain` --agents ssh --inherit any --quiet id_rsa fb_id_rsa;
+        # `${TYPE_CMD} keychain` --agents ssh,gpg --inherit any --quiet id_rsa fb_id_rsa A3EEC242;
     fi
 fi
 
