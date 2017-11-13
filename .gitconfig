@@ -21,6 +21,8 @@
 	autocrlf = input
 [fetch]
 	prune = true
+[gpg]
+	program = gpg1
 [pull]
 	rebase = true
 [push]
@@ -33,5 +35,3 @@
 	signingkey = A3EEC242
 [include]
 	path = ~/.gitconfig-local
-[gpg]
-	program = gpg1
