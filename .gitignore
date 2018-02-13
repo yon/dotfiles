@@ -1,4 +1,5 @@
 *~
+*.local
 .DS_Store
 .config
 .boot2docker
