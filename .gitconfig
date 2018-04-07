@@ -1,8 +1,8 @@
 [alias]
 	a = add -A
-	cam = commit -a -S -m
-	ci = commit -v -S
-	cim = commit -S -m
+	cam = commit -a -m
+	ci = commit -v
+	cim = commit -m
 	co = checkout
 	cp = cherry-pick -x
 	d = diff --full-index
@@ -17,6 +17,8 @@
         tree = log --all --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 [color]
 	ui = auto
+[commit]
+	gpgsign = true
 [core]
 	autocrlf = input
 [fetch]
