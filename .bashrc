@@ -1,7 +1,6 @@
 [ -n "${DEBUG}" ] && echo "... starting .bashrc";
 
 [ -r /etc/bashrc ] && . /etc/bashrc;
-[ -r /home/engshare/admin/scripts/master.bashrc ] && . /home/engshare/admin/scripts/master.bashrc;
 
 # enabled
 shopt -s cmdhist
