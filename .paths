@@ -1,7 +1,17 @@
 [ -n "${DEBUG}" ] && echo "... starting .paths";
 
+PATH="/usr/bin";
+
+if [ -d /usr/sbin ]; then
+    PATH="${PATH}:/usr/sbin";
+fi
+
 if [ -d /opt/local/bin ]; then
     PATH="${PATH}:/opt/local/bin";
+fi
+
+if [ -d /usr/local/bin ]; then
+    PATH="${PATH}:/usr/local/bin";
 fi
 
 if [ -d /usr/local/sbin ]; then
