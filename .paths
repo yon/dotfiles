@@ -1,13 +1,17 @@
 [ -n "${DEBUG}" ] && echo "... starting .paths";
 
-PATH="/usr/bin";
-
-if [ -d /usr/sbin ]; then
-    PATH="${PATH}:/usr/sbin";
-fi
+PATH="/bin";
 
 if [ -d /opt/local/bin ]; then
     PATH="${PATH}:/opt/local/bin";
+fi
+
+if [ -d /usr/bin ]; then
+    PATH="${PATH}:/usr/bin";
+fi
+
+if [ -d /usr/sbin ]; then
+    PATH="${PATH}:/usr/sbin";
 fi
 
 if [ -d /usr/local/bin ]; then
@@ -26,6 +30,8 @@ if [ -d /System/Library/CoreServices ]; then
     PATH="${PATH}:/System/Library/CoreServices";
 fi
 
-PATH="${PATH}:${HOME}/bin";
+if [ -d ${HOME}/bin ]; then
+    PATH="${PATH}:${HOME}/bin";
+fi
 
 [ -n "${DEBUG}" ] && echo "... ending .paths";
