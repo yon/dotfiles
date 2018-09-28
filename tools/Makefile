@@ -1,4 +1,4 @@
-all: 1password atom brew cleanmymac dropbox google-chrome istat-menus keychain whatsapp
+all:	1password atom brew cleanmymac dropbox google-chrome istat-menus keychain whatsapp
 
 1password:	brew /Applications/1Password\ 7.app/Contents/MacOS/1Password\ 7
 
@@ -45,4 +45,4 @@ whatsapp:	brew /Applications/WhatsApp.app/Contents/MacOS/WhatsApp
 /Applications/WhatsApp.app/Contents/MacOS/WhatsApp:
 	brew cask install whatsapp
 
-.PHONY: 1password all atom brew cleanmymac dropbox google-chrome istat-menus keychain whatsapp
+.PHONY:	1password all atom brew cleanmymac dropbox google-chrome istat-menus keychain whatsapp
