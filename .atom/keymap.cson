@@ -30,3 +30,8 @@
 # If you are unfamiliar with CSON, you can read more about it in the
 # Atom Flight Manual:
 # http://flight-manual.atom.io/using-atom/sections/basic-customization/#configuring-with-cson
+'.platform-darwin atom-text-editor':
+  'alt-down': 'editor:move-to-beginning-of-next-paragraph'
+  'alt-shift-down': 'editor:select-to-beginning-of-next-paragraph'
+  'alt-shift-up': 'editor:select-to-beginning-of-previous-paragraph'
+  'alt-up': 'editor:move-to-beginning-of-previous-paragraph'
