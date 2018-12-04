@@ -1,13 +1,34 @@
-{
-  "*": {
-    "core": {
-      "telemetryConsent": "no"
-    },
-    "exception-reporting": {
-      "userId": "3b075196-45e3-485a-a964-94115b16249b"
-    },
-    "welcome": {
-      "showOnStartup": false
-    }
-  }
-}
+"*":
+  "atom-beautify":
+    general:
+      muteAllErrors: true
+      showLoadingView: false
+    haskell:
+      beautify_on_save: true
+  "atom-haskell":
+    hasAddedConfiguration: true
+  "autocomplete-haskell":
+    hideHintPanelIfEmpty: false
+  core:
+    telemetryConsent: "no"
+  editor: {}
+  "exception-reporting":
+    userId: "3b075196-45e3-485a-a964-94115b16249b"
+  "haskell-ghc-mod":
+    lowMemorySystem: true
+    onChangeCheck: true
+    onChangeLint: true
+  "ide-haskell":
+    messageDisplayFrontend: "linter"
+    startupMessageIdeBackend: false
+    switchTabOnCheck: false
+  "ide-haskell-cabal":
+    cabal:
+      activeGhcVersion: "8.0"
+  "ide-haskell-repl":
+    defaultRepl: "stack"
+  "linter-ui-default":
+    hidePanelWhenEmpty: false
+    panelHeight: 177
+  welcome:
+    showOnStartup: false
