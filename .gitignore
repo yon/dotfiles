@@ -1,11 +1,13 @@
+*.local
+*~
+.DS_Store
 .atom/packages
 .boot2docker
 .config
-.DS_Store
 .gnupg/random_seed
+.gnupg/reader_0.status
+.gnupg/tofu.db
 .hg
 .ssh/known_hosts
 .vim/.netrwhist
 .vim/viminfo
-*.local
-*~
