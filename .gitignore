@@ -5,3 +5,4 @@
 .boot2docker
 .config
 .hg
+.local
