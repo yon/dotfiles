@@ -1,17 +1,25 @@
 [ -n "${DEBUG}" ] && echo "... starting .paths";
 
-PATH="/bin";
+PATH="";
+
+if [ -d ${HOME}/.nix-profile/bin ]; then
+    PATH="${PATH}:${HOME}/.nix-profile/bin";
+fi
+
+if [ -d /nix/var/nix/profiles/default/bin ]; then
+    PATH="${PATH}:/nix/var/nix/profiles/default/bin";
+fi
+
+if [ -d ${HOME}/bin ]; then
+    PATH="${PATH}:${HOME}/bin";
+fi
+
+if [ -d ${HOME}/.local/bin ]; then
+    PATH="${PATH}:${HOME}/.local/bin";
+fi
 
 if [ -d /opt/local/bin ]; then
     PATH="${PATH}:/opt/local/bin";
-fi
-
-if [ -d /usr/bin ]; then
-    PATH="${PATH}:/usr/bin";
-fi
-
-if [ -d /usr/sbin ]; then
-    PATH="${PATH}:/usr/sbin";
 fi
 
 if [ -d /usr/local/bin ]; then
@@ -22,20 +30,24 @@ if [ -d /usr/local/sbin ]; then
     PATH="${PATH}:/usr/local/sbin";
 fi
 
+if [ -d /usr/bin ]; then
+    PATH="${PATH}:/usr/bin";
+fi
+
+if [ -d /usr/sbin ]; then
+    PATH="${PATH}:/usr/sbin";
+fi
+
+if [ -d /bin ]; then
+    PATH="${PATH}:/bin";
+fi
+
 if [ -d /usr/libexec ]; then
     PATH="${PATH}:/usr/libexec";
 fi
 
 if [ -d /System/Library/CoreServices ]; then
     PATH="${PATH}:/System/Library/CoreServices";
-fi
-
-if [ -d ${HOME}/bin ]; then
-    PATH="${PATH}:${HOME}/bin";
-fi
-
-if [ -d ${HOME}/.local/bin ]; then
-    PATH="${PATH}:${HOME}/.local/bin";
 fi
 
 [ -n "${DEBUG}" ] && echo "... ending .paths";
