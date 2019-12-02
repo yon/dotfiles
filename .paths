@@ -46,8 +46,4 @@ if [ -d /usr/libexec ]; then
     PATH="${PATH}:/usr/libexec";
 fi
 
-if [ -d /System/Library/CoreServices ]; then
-    PATH="${PATH}:/System/Library/CoreServices";
-fi
-
 [ -n "${DEBUG}" ] && echo "... ending .paths";
