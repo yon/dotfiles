@@ -1,10 +1,8 @@
-[ -n "${DEBUG}" ] && echo "... starting .bash_login";
-
-[ -r ${HOME}/.bashrc ] && . ${HOME}/.bashrc;
+[ -n "${DEBUG}" ] && echo "... starting .zlogin";
 
 # use sane control characters
-/bin/stty sane
-/bin/stty erase 
+# /bin/stty sane
+# /bin/stty erase 
 
 # ssh key management
 if [ -r ${HOME}/.ssh/id_rsa ]; then
@@ -14,9 +12,9 @@ if [ -r ${HOME}/.ssh/id_rsa ]; then
     fi
 fi
 
-if [ -d ${HOME}/.home ]
+if [ -d ${HOME}/.files ]
 then
     make -s;
 fi
 
-[ -n "${DEBUG}" ] && echo "... ending .bash_login";
+[ -n "${DEBUG}" ] && echo "... ending .zlogin";

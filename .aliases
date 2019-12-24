@@ -1,14 +1,8 @@
 [ -n "${DEBUG}" ] && echo '... starting .aliases';
 
 alias -- \
-    +r='chmod +r' \
-    +w='chmod +w' \
-    +x='chmod +x' \
     -='cd -' \
     ..='cd ..' \
-    @='setxtermsize' \
-    cap='cap -s user=yon' \
-    bye='exit' \
     du='du -k | sort -n' \
     e='enscript -2rG -P' \
     l='ls -CF' \
@@ -18,17 +12,11 @@ alias -- \
     llar='ls -alrF' \
     llr='ls -lrF' \
     lr='ls -rCF' \
-    m='mutt' \
-    mg='mutt -F ~/.mutt/gilt' \
-    p='lpr -P' \
-    q='lpq -P' \
     re='rm -rf *~' \
-    rs='resize' \
     rt="echo -ne \'\\033c\'" \
     s='ssh -x' \
     scp='scp -p' \
     sx='ssh -AX' \
-    t="cat /dev/null > log/development.log && for i in log/thin*.log; do cat /dev/null > \$i; done && thin --config config/environments/${RAILS_ENV}/thin.yml" \
     vi="${EDITOR}" \
     xe='xemacs' \
 # leave this line to swallow the \ at the end of the previous line
@@ -45,13 +33,6 @@ Linux*)
         df='df -kl' \
         ps='ps -ef' \
         top='top -d 1' \
-# leave this line to swallow the \ at the end of the previous line
-    ;;
-SunOS*)
-    alias -- \
-        df='df -kl' \
-        ps='ps -aux' \
-        top='top -s 1' \
 # leave this line to swallow the \ at the end of the previous line
     ;;
 esac
