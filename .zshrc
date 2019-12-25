@@ -44,6 +44,7 @@ zstyle ':vcs_info:*' enable git
 RPROMPT=\$vcs_info_msg_0_
 
 # completion
+setopt glob_dots
 zstyle ':completion:*:*:make:*' tag-order 'targets'
 autoload -U compinit && compinit
 
