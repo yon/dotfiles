@@ -23,6 +23,7 @@ bindkey -e
 umask 0022;
 ulimit -c 0;
 
+# prompt
 PROMPT=""
 if [ -n "${SSH_CLIENT}" ]; then
     PROMPT+="%m:";
@@ -37,6 +38,10 @@ setopt prompt_subst
 RPROMPT=\$vcs_info_msg_0_
 zstyle ':vcs_info:git:*' formats '%F{240}%r (%b)%f'
 zstyle ':vcs_info:*' enable git
+
+# completion
+zstyle ':completion:*:*:make:*' tag-order 'targets'
+autoload -U compinit && compinit
 
 [ -r ${HOME}/.aliases ] && . ${HOME}/.aliases;
 [ -r ${HOME}/.functions ] && . ${HOME}/.functions;
