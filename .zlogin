@@ -12,9 +12,6 @@ if [ -r ${HOME}/.ssh/id_rsa ]; then
     fi
 fi
 
-if [ -d ${HOME}/.files ]
-then
-    make -s;
-fi
+[ -d ${HOME}/.files ] && make -s;
 
 [ -n "${DEBUG}" ] && echo "... ending .zlogin";
