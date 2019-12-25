@@ -17,6 +17,9 @@ setopt -o histreduceblanks
 setopt -o incappendhistory
 setopt -o sharehistory
 
+# make zle (zsh line editor) behave like emacs
+bindkey -e
+
 umask 0022;
 ulimit -c 0;
 
