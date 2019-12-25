@@ -1,26 +1,38 @@
-DOTFILES=$(HOME)/.files
+DOTFILE_DIR=$(HOME)/.files
+DOTFILES=$(shell ls -A -1 $(DOTFILE_DIR))
 
 default:	setup update clean link set_permissions
 
 clean:
-	for file in `ls -A -1 $(DOTFILES)`; do \
+	for file in $(DOTFILES); do \
 		/bin/rm -f -r $(HOME)/$${file}; \
 	done
 
-link:
-	for file in `ls -A -1 $(DOTFILES) | grep -v -x .git`; do \
-		/bin/ln -n -s $(DOTFILES)/$${file} $(HOME)/$${file}; \
+link:	link_global link_local
+
+link_global:	DOTFILES_GLOBAL=$(shell ls -A -1 $(DOTFILE_DIR) | grep -v -x .git | grep -v -x *.local)
+link_global:
+	for file in $(DOTFILES_GLOBAL); do \
+		/bin/ln -n -s $(DOTFILE_DIR)/$${file} $(HOME)/$${file}; \
 	done
+
+link_local:	DOTFILES_LOCAL=$(shell ls -A -1 $(DOTFILE_DIR) | grep -v -x .git | grep -x *.local)
+link_local:
+	if [ -n "$(SSH_CLIENT)" ]; then \
+		for file in $(DOTFILES_LOCAL); do \
+			/bin/ln -n -s $(DOTFILE_DIR)/$${file} $(HOME)/$${file}; \
+		done \
+	fi
 
 set_permissions:
 	chmod 700 $(HOME);
-	chmod -R u=rwX,g=rX,o= $(DOTFILES);
-	chmod -R u=rwX,go= $(DOTFILES)/.ssh;
+	chmod -R u=rwX,g=rX,o= $(DOTFILE_DIR);
+	chmod -R u=rwX,go= $(DOTFILE_DIR)/.ssh;
 
 setup:
-	if [ ! -d $(DOTFILES) ]; then \
-		git clone git@github.com:yon/dotfiles.git $(DOTFILES); \
+	if [ ! -d $(DOTFILE_DIR) ]; then \
+		git clone git@github.com:yon/dotfiles.git $(DOTFILE_DIR); \
 	fi
 
 update:	setup
-	cd $(DOTFILES) && git pull && cd $(HOME);
+	cd $(DOTFILE_DIR) && git pull && cd $(HOME);
