@@ -1,8 +1,5 @@
 *.local
 *~
 .DS_Store
-.atom/packages
 .boot2docker
 .config
-.hg
-.local
