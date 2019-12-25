@@ -8,7 +8,7 @@ clean:
 	done
 
 link:
-	for file in `ls -A -1 $(DOTFILES)`; do \
+	for file in `ls -A -1 $(DOTFILES) | grep -v -x .git`; do \
 		/bin/ln -n -s $(DOTFILES)/$${file} $(HOME)/$${file}; \
 	done
 
