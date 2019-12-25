@@ -1,9 +1,5 @@
 [ -n "${DEBUG}" ] && echo "... starting .zlogin";
 
-# use sane control characters
-# /bin/stty sane
-# /bin/stty erase 
-
 # ssh key management
 if [ -r ${HOME}/.ssh/id_rsa ]; then
     if [ `which keychain` ]; then
