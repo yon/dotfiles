@@ -2,26 +2,27 @@
 
 [ -r ${HOME}/.env ] && . ${HOME}/.env;
 
-# cd/pushd/popd options
-setopt -o autopushd
-setopt -o pushdignoredups
-setopt -o pushdsilent
-
-# history options
-setopt -o appendhistory
-setopt -o extendedhistory
-setopt -o histexpiredupsfirst
-setopt -o histfindnodups
-setopt -o histignoredups
-setopt -o histreduceblanks
-setopt -o incappendhistory
-setopt -o sharehistory
+# misc
+umask 0022;
+ulimit -c 0;
 
 # make zle (zsh line editor) behave like emacs
 bindkey -e
 
-umask 0022;
-ulimit -c 0;
+# cd/pushd/popd
+setopt auto_pushd
+setopt pushd_ignore_dups
+setopt pushd_silent
+
+# history
+setopt append_history
+setopt extended_history
+setopt hist_expire_dups_first
+setopt hist_find_no_dups
+setopt hist_ignore_dups
+setopt hist_reduce_blanks
+setopt inc_append_history
+setopt share_history
 
 # prompt
 PROMPT=""
@@ -30,14 +31,14 @@ if [ -n "${SSH_CLIENT}" ]; then
 fi
 PROMPT+="%F{240}%~%f %# ";
 
-# git rprompt
+# rprompt (git)
 autoload -Uz vcs_info
 precmd_vcs_info() { vcs_info }
 precmd_functions+=( precmd_vcs_info )
 setopt prompt_subst
-RPROMPT=\$vcs_info_msg_0_
-zstyle ':vcs_info:git:*' formats '%F{240}%r (%b)%f'
+zstyle ':vcs_info:*' formats '%F{240}%r (%b)%f'
 zstyle ':vcs_info:*' enable git
+RPROMPT=\$vcs_info_msg_0_
 
 # completion
 zstyle ':completion:*:*:make:*' tag-order 'targets'
