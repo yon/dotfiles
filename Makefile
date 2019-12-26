@@ -1,6 +1,6 @@
 DOTFILE_DIR := $(HOME)/.files
 EXCLUDES := . .. .git
-DOTFILES := $(filter-out $(EXCLUDES), $(wildcard .* *))
+DOTFILES := $(filter-out $(EXCLUDES), $(shell ls -A -1 $(DOTFILE_DIR)))
 
 default:	setup update clean link set_permissions
 
