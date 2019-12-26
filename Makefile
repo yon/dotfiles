@@ -1,5 +1,6 @@
-DOTFILE_DIR=$(HOME)/.files
-DOTFILES=$(shell ls -A -1 $(DOTFILE_DIR))
+DOTFILE_DIR := $(HOME)/.files
+EXCLUDES := . .. .git
+DOTFILES := $(filter-out $(EXCLUDES), $(wildcard .* *))
 
 default:	setup update clean link set_permissions
 
@@ -10,13 +11,13 @@ clean:
 
 link:	link_global link_local
 
-link_global:	DOTFILES_GLOBAL=$(shell ls -A -1 $(DOTFILE_DIR) | grep -v -x .git | grep -v -x *.local)
+link_global:	DOTFILES_GLOBAL := $(filter-out $(wildcard .*.local), $(DOTFILES))
 link_global:
 	for file in $(DOTFILES_GLOBAL); do \
 		/bin/ln -n -s $(DOTFILE_DIR)/$${file} $(HOME)/$${file}; \
 	done
 
-link_local:	DOTFILES_LOCAL=$(shell ls -A -1 $(DOTFILE_DIR) | grep -v -x .git | grep -x *.local)
+link_local:	DOTFILES_LOCAL := $(filter $(wildcard .*.local), $(DOTFILES))
 link_local:
 	if [ -n "$(SSH_CLIENT)" ]; then \
 		for file in $(DOTFILES_LOCAL); do \
