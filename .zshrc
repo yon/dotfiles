@@ -3,7 +3,7 @@
 [ -r ${HOME}/.env ] && . ${HOME}/.env;
 
 # misc
-umask 0022;
+umask 0077;
 ulimit -c 0;
 
 # make zle (zsh line editor) behave like emacs
