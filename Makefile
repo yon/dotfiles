@@ -9,22 +9,10 @@ clean:
 		/bin/rm -f -r $(HOME)/$${file}; \
 	done
 
-link:	link_global link_local
-
-link_global:	DOTFILES_GLOBAL := $(filter-out $(shell ls -A -1 $(DOTFILE_DIR)/.*.local), $(DOTFILES))
-link_global:
-	for file in $(DOTFILES_GLOBAL); do \
+link:
+	for file in $(DOTFILES); do \
 		/bin/ln -n -s $(DOTFILE_DIR)/$${file} $(HOME)/$${file}; \
 	done
-
-link_local:	DOTFILES_LOCAL := $(filter $(shell ls -A -1 $(DOTFILE_DIR)/.*.local), $(DOTFILES))
-#link_local:	DOTFILES_LOCAL := $(filter $(wildcard .*.local), $(DOTFILES))
-link_local:
-	if [ -n "$(SSH_CLIENT)" ]; then \
-		for file in $(DOTFILES_LOCAL); do \
-			/bin/ln -n -s $(DOTFILE_DIR)/$${file} $(HOME)/$${file}; \
-		done \
-	fi
 
 set_permissions:
 	chmod 700 $(HOME);
