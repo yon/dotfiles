@@ -1,4 +1,4 @@
-[ -n "${DEBUG}" ] && echo '... starting .aliases';
+[ -n "${DEBUG}" ] && echo ">>> `basename $0`";
 
 alias -- \
     -='cd -' \
@@ -37,4 +37,4 @@ Linux*)
     ;;
 esac
 
-[ -n "${DEBUG}" ] && echo '... ending .aliases';
+[ -n "${DEBUG}" ] && echo "<<< `basename $0`";

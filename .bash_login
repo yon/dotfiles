@@ -1,4 +1,4 @@
-[ -n "${DEBUG}" ] && echo "... starting .bash_login";
+[ -n "${DEBUG}" ] && echo ">>> `basename $0`";
 
 [ -r ${HOME}/.bashrc ] && . ${HOME}/.bashrc;
 
@@ -16,4 +16,4 @@ fi
 
 [ -d ${HOME}/.files ] && make -s;
 
-[ -n "${DEBUG}" ] && echo "... ending .bash_login";
+[ -n "${DEBUG}" ] && echo "<<< `basename $0`";

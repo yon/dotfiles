@@ -1,5 +1,5 @@
-[ -n "${DEBUG}" ] && echo "... starting .bash_logout";
+[ -n "${DEBUG}" ] && echo ">>> `basename $0`";
 
 [ -d /tmp/xauth-${USER}-${$} ] && rm -rf /tmp/xauth-${USER}-${$};
 
-[ -n "${DEBUG}" ] && echo "... ending .bash_logout";
+[ -n "${DEBUG}" ] && echo "<<< `basename $0`";

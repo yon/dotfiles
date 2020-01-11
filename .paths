@@ -1,4 +1,4 @@
-[ -n "${DEBUG}" ] && echo "... starting .paths";
+[ -n "${DEBUG}" ] && echo ">>> `basename $0`";
 
 PATH="";
 
@@ -46,4 +46,4 @@ if [ -d /usr/libexec ]; then
     PATH="${PATH}:/usr/libexec";
 fi
 
-[ -n "${DEBUG}" ] && echo "... ending .paths";
+[ -n "${DEBUG}" ] && echo "<<< `basename $0`";

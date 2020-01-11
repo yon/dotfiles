@@ -1,4 +1,4 @@
-[ -n "${DEBUG}" ] && echo "... starting .zshrc";
+[ -n "${DEBUG}" ] && echo ">>> `basename $0`";
 
 [ -r ${HOME}/.env ] && . ${HOME}/.env;
 
@@ -51,4 +51,4 @@ autoload -U compinit && compinit
 [ -r ${HOME}/.aliases ] && . ${HOME}/.aliases;
 [ -r ${HOME}/.functions ] && . ${HOME}/.functions;
 
-[ -n "${DEBUG}" ] && echo "... ending .zshrc";
+[ -n "${DEBUG}" ] && echo "<<< `basename $0`";

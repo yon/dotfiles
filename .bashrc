@@ -1,4 +1,4 @@
-[ -n "${DEBUG}" ] && echo "... starting .bashrc";
+[ -n "${DEBUG}" ] && echo ">>> `basename $0`";
 
 [ -r /etc/bashrc ] && . /etc/bashrc;
 
@@ -36,9 +36,7 @@ ulimit -c 0;
 
 [ -r ${HOME}/.bash_environment ] && . ${HOME}/.bash_environment;
 [ -r ${HOME}/.bash_completion ] && . ${HOME}/.bash_completion;
-[ -r /etc/shell-mods.sh ] && . /etc/shell-mods.sh;
-[ -r ${HOME}/etc/shell-mods.sh ] && . ${HOME}/etc/shell-mods.sh;
 [ -r ${HOME}/.aliases ] && . ${HOME}/.aliases;
 [ -r ${HOME}/.functions ] && . ${HOME}/.functions;
 
-[ -n "${DEBUG}" ] && echo "... ending .bashrc";
+[ -n "${DEBUG}" ] && echo "<<< `basename $0`";

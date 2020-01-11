@@ -1,4 +1,4 @@
-[ -n "${DEBUG}" ] && echo "... starting .functions";
+[ -n "${DEBUG}" ] && echo ">>> `basename $0`";
 
 function d() { sdiff -w 160 $1 $2 | less; }
 
@@ -6,4 +6,4 @@ function getHostname() { echo `hostname | cut -d. -f1`; }
 
 function pman() { man -t "$@" | open -f -a Preview; }
 
-[ -n "${DEBUG}" ] && echo "... ending .functions";
+[ -n "${DEBUG}" ] && echo "<<< `basename $0`";

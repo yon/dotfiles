@@ -1,4 +1,4 @@
-[ -n "${DEBUG}" ] && echo "... starting .zlogin";
+[ -n "${DEBUG}" ] && echo ">>> `basename $0`";
 
 # ssh key management
 if [ -r ${HOME}/.ssh/id_rsa ]; then
@@ -10,4 +10,4 @@ fi
 
 [ -d ${HOME}/.files ] && make -s;
 
-[ -n "${DEBUG}" ] && echo "... ending .zlogin";
+[ -n "${DEBUG}" ] && echo "<<< `basename $0`";
