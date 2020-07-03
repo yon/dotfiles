@@ -48,8 +48,10 @@ setopt glob_dots
 zstyle ':completion:*:*:make:*' tag-order 'targets'
 autoload -U compinit && compinit
 
+if [ -e /Users/yon/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/yon/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+eval "$(direnv hook zsh)"
+
 [ -r ${HOME}/.aliases ] && . ${HOME}/.aliases;
 [ -r ${HOME}/.functions ] && . ${HOME}/.functions;
 
 [ -n "${DEBUG}" ] && echo "<<< `basename $0`";
-if [ -e /Users/yon/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/yon/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
