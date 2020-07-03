@@ -2,13 +2,13 @@
 
 PATH="";
 
-if [ -d ${HOME}/.nix-profile/bin ]; then
-    PATH="${PATH}:${HOME}/.nix-profile/bin";
-fi
+#if [ -d ${HOME}/.nix-profile/bin ]; then
+#    PATH="${PATH}:${HOME}/.nix-profile/bin";
+#fi
 
-if [ -d /nix/var/nix/profiles/default/bin ]; then
-    PATH="${PATH}:/nix/var/nix/profiles/default/bin";
-fi
+#if [ -d /nix/var/nix/profiles/default/bin ]; then
+#    PATH="${PATH}:/nix/var/nix/profiles/default/bin";
+#fi
 
 if [ -d ${HOME}/bin ]; then
     PATH="${PATH}:${HOME}/bin";

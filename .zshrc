@@ -52,3 +52,4 @@ autoload -U compinit && compinit
 [ -r ${HOME}/.functions ] && . ${HOME}/.functions;
 
 [ -n "${DEBUG}" ] && echo "<<< `basename $0`";
+if [ -e /Users/yon/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/yon/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
