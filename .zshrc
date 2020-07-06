@@ -46,10 +46,16 @@ RPROMPT=\$vcs_info_msg_0_
 # completion
 setopt glob_dots
 zstyle ':completion:*:*:make:*' tag-order 'targets'
-autoload -U compinit && compinit
 
 if [ -e /Users/yon/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/yon/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 eval "$(direnv hook zsh)"
+
+if [ -r ${HOME}/src/github.com/spwhitt/nix-zsh-completions/nix-zsh-completions.plugin.zsh ]; then
+    source ${HOME}/src/github.com/spwhitt/nix-zsh-completions/nix-zsh-completions.plugin.zsh
+    fpath=(${HOME}/nix-zsh-completions $fpath)
+fi
+
+autoload -U compinit && compinit
 
 [ -r ${HOME}/.aliases ] && . ${HOME}/.aliases;
 [ -r ${HOME}/.functions ] && . ${HOME}/.functions;
