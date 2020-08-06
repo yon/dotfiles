@@ -47,8 +47,9 @@ RPROMPT=\$vcs_info_msg_0_
 setopt glob_dots
 zstyle ':completion:*:*:make:*' tag-order 'targets'
 
-if [ -e /Users/yon/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/yon/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
-eval "$(direnv hook zsh)"
+if [ -r ${HOME}/.nix-profile/etc/profile.d/nix.sh ]; then . ${HOME}/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+[ -x ${HOME}/.nix-profile/bin/direnv ] && eval "$(direnv hook zsh)";
 
 if [ -r ${HOME}/src/github.com/spwhitt/nix-zsh-completions/nix-zsh-completions.plugin.zsh ]; then
     source ${HOME}/src/github.com/spwhitt/nix-zsh-completions/nix-zsh-completions.plugin.zsh
