@@ -1,49 +1,59 @@
 [ -n "${DEBUG}" ] && echo ">>> `basename $0`";
 
-PATH="";
+paths=();
 
 #if [ -d ${HOME}/.nix-profile/bin ]; then
-#    PATH="${PATH}:${HOME}/.nix-profile/bin";
+#    paths+=("${HOME}/.nix-profile/bin");
 #fi
 
 #if [ -d /nix/var/nix/profiles/default/bin ]; then
-#    PATH="${PATH}:/nix/var/nix/profiles/default/bin";
+#    paths+=("/nix/var/nix/profiles/default/bin");
 #fi
 
 if [ -d ${HOME}/bin ]; then
-    PATH="${PATH}:${HOME}/bin";
+    paths+=("${HOME}/bin");
 fi
 
 if [ -d ${HOME}/.local/bin ]; then
-    PATH="${PATH}:${HOME}/.local/bin";
+    paths+=("${HOME}/.local/bin");
+fi
+
+if [ -d /opt/homebrew/bin ]; then
+    paths+=("/opt/homebrew/bin");
+fi
+
+if [ -d /opt/homebrew/sbin ]; then
+    paths+=("/opt/homebrew/sbin");
 fi
 
 if [ -d /opt/local/bin ]; then
-    PATH="${PATH}:/opt/local/bin";
+    paths+=("/opt/local/bin");
 fi
 
 if [ -d /usr/local/bin ]; then
-    PATH="${PATH}:/usr/local/bin";
+    paths+=("/usr/local/bin");
 fi
 
 if [ -d /usr/local/sbin ]; then
-    PATH="${PATH}:/usr/local/sbin";
+    paths+=("/usr/local/sbin");
 fi
 
 if [ -d /usr/bin ]; then
-    PATH="${PATH}:/usr/bin";
+    paths+=("/usr/bin");
 fi
 
 if [ -d /usr/sbin ]; then
-    PATH="${PATH}:/usr/sbin";
+    paths+=("/usr/sbin");
 fi
 
 if [ -d /bin ]; then
-    PATH="${PATH}:/bin";
+    paths+=("/bin");
 fi
 
 if [ -d /usr/libexec ]; then
-    PATH="${PATH}:/usr/libexec";
+    paths+=("/usr/libexec");
 fi
+
+IFS=: && PATH=${paths};
 
 [ -n "${DEBUG}" ] && echo "<<< `basename $0`";
