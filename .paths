@@ -56,4 +56,8 @@ fi
 
 IFS=: && PATH=${paths};
 
+if [ -r /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc ]; then
+    . /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
+fi
+
 [ -n "${DEBUG}" ] && echo "<<< `basename $0`";
