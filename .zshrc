@@ -48,9 +48,9 @@ zstyle ':completion:*:*:make:*' tag-order 'targets'
 #     . /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc;
 # fi
 
-# if [ -r ${HOME}/.nix-profile/etc/profile.d/nix.sh ]; then . ${HOME}/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+if [ -r ${HOME}/.nix-profile/etc/profile.d/nix.sh ]; then . ${HOME}/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
-# [ -x ${HOME}/.nix-profile/bin/direnv ] && eval "$(direnv hook zsh)";
+[ -x ${HOME}/.nix-profile/bin/direnv ] && eval "$(direnv hook zsh)";
 
 # if [ -r ${HOME}/src/github.com/spwhitt/nix-zsh-completions/nix-zsh-completions.plugin.zsh ]; then
 #     source ${HOME}/src/github.com/spwhitt/nix-zsh-completions/nix-zsh-completions.plugin.zsh

@@ -2,13 +2,13 @@
 
 paths=();
 
-#if [ -d ${HOME}/.nix-profile/bin ]; then
-#    paths+=("${HOME}/.nix-profile/bin");
-#fi
+if [ -d ${HOME}/.nix-profile/bin ]; then
+    paths+=("${HOME}/.nix-profile/bin");
+fi
 
-#if [ -d /nix/var/nix/profiles/default/bin ]; then
-#    paths+=("/nix/var/nix/profiles/default/bin");
-#fi
+if [ -d /nix/var/nix/profiles/default/bin ]; then
+    paths+=("/nix/var/nix/profiles/default/bin");
+fi
 
 if [ -d ${HOME}/bin ]; then
     paths+=("${HOME}/bin");
