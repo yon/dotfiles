@@ -9,6 +9,14 @@ ulimit -c 0;
 # make zle (zsh line editor) behave like emacs
 bindkey -e
 
+my-backward-delete-word () {
+    #local WORDCHARS=${WORDCHARS/\/}
+    local WORDCHARS=''
+    zle backward-delete-word
+}
+zle -N my-backward-delete-word
+bindkey '\e^?' my-backward-delete-word
+
 # cd/pushd/popd
 setopt auto_pushd
 setopt pushd_ignore_dups
