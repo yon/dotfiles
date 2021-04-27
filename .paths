@@ -20,7 +20,7 @@ candidates=(
 paths=();
 
 for p in ${candidates}; do
-    [ -d ${p} ] && paths+=(${p});
+    [ -x ${p} ] && paths+=(${p});
 done
 
 IFS=: && PATH=${paths};
