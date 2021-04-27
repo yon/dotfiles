@@ -17,6 +17,7 @@ link:
 set_permissions:
 	chmod 700 $(HOME);
 	chmod -R u=rwX,g=rX,o= $(DOTFILE_DIR);
+	chmod -R u=rwX,go= $(DOTFILE_DIR)/.gnupg;
 	chmod -R u=rwX,go= $(DOTFILE_DIR)/.ssh;
 
 setup:
