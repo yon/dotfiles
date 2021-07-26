@@ -65,7 +65,7 @@ if [ -r ${HOME}/.nix-profile/etc/profile.d/nix.sh ]; then . ${HOME}/.nix-profile
 #     fpath=(${HOME}/nix-zsh-completions $fpath)
 # fi
 
-autoload -U compinit && compinit
+autoload -U compinit && compinit -d /dev/null
 
 [ -r ${HOME}/.aliases ] && . ${HOME}/.aliases;
 [ -r ${HOME}/.functions ] && . ${HOME}/.functions;
