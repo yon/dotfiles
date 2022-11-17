@@ -64,7 +64,7 @@ if [ -r ${HOME}/.nix-profile/etc/profile.d/nix.sh ]; then . ${HOME}/.nix-profile
 if [ -f '/Users/yon/.local/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/yon/.local/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/yon/.local/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/yon/.local/google-cloud-sdk/completion.zsh.inc'; fi
+#if [ -f '/Users/yon/.local/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/yon/.local/google-cloud-sdk/completion.zsh.inc'; fi
 
 # if [ -r ${HOME}/src/github.com/spwhitt/nix-zsh-completions/nix-zsh-completions.plugin.zsh ]; then
 #     source ${HOME}/src/github.com/spwhitt/nix-zsh-completions/nix-zsh-completions.plugin.zsh
