@@ -21,6 +21,8 @@
 	gpgsign = true
 [core]
 	autocrlf = input
+[credential]
+	helper = "!f() { echo username=yon; echo \"password=$GH_AUTH_TOKEN\"; };f"
 [fetch]
 	prune = true
 [pull]
