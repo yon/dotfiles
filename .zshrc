@@ -65,7 +65,7 @@ if [ -f '/Users/yon/.local/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/yon/
 # The next line enables shell command completion for gcloud.
 #if [ -f '/Users/yon/.local/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/yon/.local/google-cloud-sdk/completion.zsh.inc'; fi
 
-autoload -U compinit && compinit -d /dev/null
+autoload -Uz compinit && compinit -d /dev/null
 
 [ -r ${HOME}/.aliases ] && . ${HOME}/.aliases;
 [ -r ${HOME}/.functions ] && . ${HOME}/.functions;
