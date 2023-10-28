@@ -52,18 +52,11 @@ RPROMPT=\$vcs_info_msg_0_
 setopt glob_dots
 zstyle ':completion:*:*:make:*' tag-order 'targets'
 
-# if [ -r /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ]; then
-#     . /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc;
-# fi
-
 [ -x `which direnv` ] && eval "$(direnv hook zsh)";
 [ -x `which rtx` ] && eval "$(rtx activate zsh)";
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/yon/.local/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/yon/.local/google-cloud-sdk/path.zsh.inc'; fi
-
 # The next line enables shell command completion for gcloud.
-#if [ -f '/Users/yon/.local/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/yon/.local/google-cloud-sdk/completion.zsh.inc'; fi
+# [ -f '/Users/yon/.local/google-cloud-sdk/completion.zsh.inc' ] && . '/Users/yon/.local/google-cloud-sdk/completion.zsh.inc';
 
 autoload -Uz compinit && compinit -d /dev/null
 
