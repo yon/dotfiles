@@ -53,7 +53,7 @@ setopt glob_dots
 zstyle ':completion:*:*:make:*' tag-order 'targets'
 
 [ -x `which direnv` ] && eval "$(direnv hook zsh)";
-[ -x `which rtx` ] && eval "$(rtx activate zsh)";
+[ -x `which mise` ] && eval "$(mise activate zsh)";
 
 # The next line enables shell command completion for gcloud.
 # [ -f '/Users/yon/.local/google-cloud-sdk/completion.zsh.inc' ] && . '/Users/yon/.local/google-cloud-sdk/completion.zsh.inc';
