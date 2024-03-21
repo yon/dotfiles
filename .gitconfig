@@ -37,3 +37,5 @@
         signingkey = 8DAD16897306EC95
 [include]
 	path = ~/.gitconfig-local
+[init]
+	defaultBranch = main
