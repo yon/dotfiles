@@ -3,7 +3,7 @@
 # ssh key management
 if [ -r ${HOME}/.gnupg/private-keys-v1.d/ ]; then
     if [ `which keychain` ]; then
-        `which keychain` --agents gpg --inherit any --quiet $GPG_KEY_ID;
+        `which keychain` --ssh-spawn-gpg --quiet $GPG_KEY_ID;
     fi
 fi
 
