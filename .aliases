@@ -5,6 +5,7 @@ alias -- \
     ..='cd ..' \
     du='du -k | sort -n' \
     e='enscript -2rG -P' \
+    jq='jq --color-output' \
     l='ls -CFG' \
     la='ls -aCFG' \
     ll='ls -lFG' \
