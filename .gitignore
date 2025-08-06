@@ -2,3 +2,13 @@
 .DS_Store
 .boot2docker
 .config/
+
+# Claude AI temporary/workspace files
+.claude/ide/
+.claude/projects/
+.claude/shell-snapshots/
+.claude/statsig/
+.claude/todos/
+
+# GnuPG lock files
+.gnupg/.#lk*
