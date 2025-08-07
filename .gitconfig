@@ -1,4 +1,5 @@
 [alias]
+	# Basic shortcuts
 	a = add -A
 	cam = commit -a -m
 	ci = commit -v
@@ -6,21 +7,69 @@
 	co = checkout
 	cp = cherry-pick -x
 	d = diff --full-index
+	s = status
+
+	# Enhanced logging
 	l = log -c --no-merges --show-signature
 	lp = log -c -p --full-index --ignore-all-space --no-merges --show-signature
 	ls = log -c --no-merges --stat --show-signature
+	tree = log --all --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	recent = log --oneline --decorate -10
+
+	# Branch operations
+	b = branch
+	ba = branch -a
+	bd = branch -d
+	bD = branch -D
+	sw = switch
+	swc = switch -c
+
+	# Merge and rebase
 	me = merge
+	rb = rebase
+	rbi = rebase -i
+
+	# Remote operations
 	pl = pull
 	ps = push
-        rtag = !git tag r`date \"+%Y-%m-%d-%H%M%S\"`
-	s = status
-        tree = log --all --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	psu = push -u origin HEAD
+	f = fetch --all --prune
+
+	# Diff improvements
+	dt = difftool
+	ds = diff --staged
+	dn = diff --name-only
+
+	# Stash operations
+	st = stash
+	stp = stash pop
+	stl = stash list
+
+	# Useful utilities
+	rtag = !git tag r`date \"+%Y-%m-%d-%H%M%S\"`
+	unstage = reset HEAD --
+	discard = checkout --
+	amend = commit --amend
+	fixup = commit --fixup
+	squash = commit --squash
+
+	# Find commits
+	find = log --pretty=\"format:%Cgreen%H %Cblue%s\" --name-status --grep
+
+	# Show what I did today
+	today = log --since=\"6am\" --oneline --author=\"Yonatan Feldman\"
 [color]
 	ui = auto
 [commit]
 	gpgsign = true
 [core]
 	autocrlf = input
+	editor = vim
+	pager = less -R
+	excludesfile = ~/.gitignore_global
+	attributesfile = ~/.gitattributes
+	quotepath = false
+	precomposeunicode = true
 [credential]
 	helper = "!f() { echo username=yon; echo \"password=$GH_AUTH_TOKEN\"; };f"
 [fetch]
@@ -39,3 +88,22 @@
 	path = ~/.gitconfig-local
 [init]
 	defaultBranch = main
+[diff]
+	algorithm = histogram
+	colorMoved = default
+	tool = vimdiff
+[merge]
+	tool = vimdiff
+	conflictstyle = diff3
+[rebase]
+	autoStash = true
+	autoSquash = true
+[branch]
+	autoSetupMerge = always
+	autoSetupRebase = always
+[status]
+	showUntrackedFiles = all
+[log]
+	date = relative
+[help]
+	autocorrect = 1
