@@ -48,17 +48,54 @@ zstyle ':vcs_info:*' formats '%F{240}%r (%b%u%c)%f'
 zstyle ':vcs_info:*' enable git
 RPROMPT=\$vcs_info_msg_0_
 
-# completion
+# completion optimizations
 setopt glob_dots
+setopt complete_in_word
+setopt auto_menu
+setopt auto_list
+
+# Modern completion styling
+zstyle ':completion:*' menu select
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
+zstyle ':completion:*:warnings' format '%F{red}No matches for:%f %d'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*:*:make:*' tag-order 'targets'
 
-[ -x `which direnv` ] && eval "$(direnv hook zsh)";
-[ -x `which mise` ] && eval "$(mise activate zsh)";
+# Cache completions for better performance
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+
+# Lazy load heavy tools to improve startup time
+direnv() {
+    unfunction "$0"
+    if command -v direnv >/dev/null 2>&1; then
+        eval "$(command direnv hook zsh)"
+        direnv "$@"
+    else
+        echo "direnv not found" >&2
+        return 1
+    fi
+}
+
+mise() {
+    unfunction "$0"
+    if command -v mise >/dev/null 2>&1; then
+        eval "$(command mise activate zsh)"
+        mise "$@"
+    else
+        echo "mise not found" >&2
+        return 1
+    fi
+}
 
 # The next line enables shell command completion for gcloud.
 # [ -f '/Users/yon/.local/google-cloud-sdk/completion.zsh.inc' ] && . '/Users/yon/.local/google-cloud-sdk/completion.zsh.inc';
 
-autoload -Uz compinit && compinit -d /dev/null
+# Initialize completions
+autoload -Uz compinit
+# Use a null device for zcompdump to avoid corruption issues
+compinit -d /dev/null
 
 [ -r ${HOME}/.aliases ] && . ${HOME}/.aliases;
 [ -r ${HOME}/.functions ] && . ${HOME}/.functions;
