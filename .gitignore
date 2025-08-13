@@ -6,6 +6,7 @@
 # Claude AI temporary/workspace files
 .claude/ide/
 .claude/projects/
+.claude/settings.local.json
 .claude/shell-snapshots/
 .claude/statsig/
 .claude/todos/
