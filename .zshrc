@@ -89,8 +89,7 @@ mise() {
     fi
 }
 
-# The next line enables shell command completion for gcloud.
-# [ -f '/Users/yon/.local/google-cloud-sdk/completion.zsh.inc' ] && . '/Users/yon/.local/google-cloud-sdk/completion.zsh.inc';
+if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc'; fi
 
 # Initialize completions
 autoload -Uz compinit
