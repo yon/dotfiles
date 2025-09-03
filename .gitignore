@@ -13,3 +13,8 @@
 
 # GnuPG lock files
 .gnupg/.#lk*
+
+# Shell history files
+.history
+.zsh_history
+.bash_history
