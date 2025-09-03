@@ -70,6 +70,7 @@
 	attributesfile = ~/.gitattributes
 	quotepath = false
 	precomposeunicode = true
+	whitespace = trailing-space,space-before-tab,tab-in-indent
 [credential]
 	helper = "!f() { echo username=yon; echo \"password=$GH_AUTH_TOKEN\"; };f"
 [fetch]
