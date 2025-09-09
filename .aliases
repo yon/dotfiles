@@ -3,7 +3,7 @@
 alias -- \
     -='cd -' \
     ..='cd ..' \
-    du='du -k | sort -n' \
+    du='du -d 1 -h | sort -h' \
     e='enscript -2rG -P' \
     gam='/Users/yon/bin/gam7/gam' \
     jq='jq --color-output' \
