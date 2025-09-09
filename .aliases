@@ -5,6 +5,7 @@ alias -- \
     ..='cd ..' \
     du='du -k | sort -n' \
     e='enscript -2rG -P' \
+    gam='/Users/yon/bin/gam7/gam' \
     jq='jq --color-output' \
     l='ls -CFG' \
     la='ls -aCFG' \
