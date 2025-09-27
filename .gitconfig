@@ -72,7 +72,9 @@
 	precomposeunicode = true
 	whitespace = trailing-space,space-before-tab,tab-in-indent
 [credential]
-	helper = "!f() { echo username=yon; echo \"password=$GH_AUTH_TOKEN\"; };f"
+	# Use GitHub CLI's credential manager for secure authentication
+	# Setup with: gh auth setup-git
+	helper = cache --timeout=3600
 [fetch]
 	prune = true
 [pull]
