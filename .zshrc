@@ -93,8 +93,12 @@ if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/op
 
 # Initialize completions
 autoload -Uz compinit
-# Use a null device for zcompdump to avoid corruption issues
-compinit -d /dev/null
+# Rebuild completions if dump file is corrupted
+if [[ ! -f ~/.zcompdump ]] || ! zcompile -t ~/.zcompdump 2>/dev/null; then
+    compinit
+else
+    compinit -C
+fi
 
 [ -r ${HOME}/.aliases ] && . ${HOME}/.aliases;
 [ -r ${HOME}/.functions ] && . ${HOME}/.functions;
