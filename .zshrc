@@ -89,12 +89,13 @@ mise() {
     fi
 }
 
-if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc'; fi
-
-# Initialize completions
+# Initialize completions first, before any other scripts
 autoload -Uz compinit
-# Use a null device for zcompdump to avoid corruption issues
-compinit -d /dev/null
+# Always skip the dump file - it's consistently corrupted on this system
+compinit -D
+
+# Now load Google Cloud SDK completions (after compinit)
+if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc'; fi
 
 [ -r ${HOME}/.aliases ] && . ${HOME}/.aliases;
 [ -r ${HOME}/.functions ] && . ${HOME}/.functions;
