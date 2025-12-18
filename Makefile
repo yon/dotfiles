@@ -22,7 +22,7 @@ set_permissions:
 
 setup:
 	if [ ! -d $(DOTFILE_DIR) ]; then \
-		git clone git@github.com:yon/dotfiles.git $(DOTFILE_DIR); \
+		git clone https://github.com/yon/dotfiles.git $(DOTFILE_DIR); \
 	fi
 
 update:	setup
