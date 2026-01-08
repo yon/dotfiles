@@ -7,6 +7,6 @@ if [ -r ${HOME}/.gnupg/private-keys-v1.d/ ]; then
     fi
 fi
 
-[ -d ${HOME}/.files ] && make -s;
+[ -d ${HOME}/.files ] && (cd ${HOME}/.files && make -s);
 
 [ -n "${DEBUG}" ] && echo "<<< `basename $0`";
