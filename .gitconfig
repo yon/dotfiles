@@ -58,55 +58,59 @@
 
 	# Show what I did today
 	today = log --since=\"6am\" --oneline --author=\"Yonatan Feldman\"
+[branch]
+	autoSetupMerge = always
+	autoSetupRebase = always
 [color]
 	ui = auto
 [commit]
 	gpgsign = true
 [core]
+	attributesfile = ~/.gitattributes
 	autocrlf = input
 	editor = vim
-	pager = less -R
 	excludesfile = ~/.gitignore_global
-	attributesfile = ~/.gitattributes
-	quotepath = false
+	pager = less -R
 	precomposeunicode = true
+	quotepath = false
 	whitespace = trailing-space,space-before-tab,tab-in-indent
 [credential]
 	# Use GitHub CLI's credential manager for secure authentication
 	# Setup with: gh auth setup-git
 	helper = cache --timeout=3600
-[fetch]
-	prune = true
-[pull]
-	rebase = true
-[push]
-	default = current
-[rerere]
-	enabled = true
-[user]
-	email = yon@milliped.com
-	name = Yonatan Feldman
-        signingkey = 8DAD16897306EC95
-[include]
-	path = ~/.gitconfig-local
-[init]
-	defaultBranch = main
 [diff]
 	algorithm = histogram
 	colorMoved = default
 	tool = vimdiff
-[merge]
-	tool = vimdiff
-	conflictstyle = diff3
-[rebase]
-	autoStash = true
-	autoSquash = true
-[branch]
-	autoSetupMerge = always
-	autoSetupRebase = always
-[status]
-	showUntrackedFiles = all
-[log]
-	date = relative
+[fetch]
+	prune = true
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = /Users/yon/.ssh/allowed_signers
 [help]
 	autocorrect = 1
+[include]
+	path = ~/.gitconfig-local
+[init]
+	defaultBranch = main
+[log]
+	date = relative
+[merge]
+	conflictstyle = diff3
+	tool = vimdiff
+[pull]
+	rebase = true
+[push]
+	default = current
+[rebase]
+	autoSquash = true
+	autoStash = true
+[rerere]
+	enabled = true
+[status]
+	showUntrackedFiles = all
+[user]
+	email = yon@milliped.com
+	name = Yonatan Feldman
+	signingkey = /Users/yon/.ssh/id_ecdsa_sk_rk.pub
