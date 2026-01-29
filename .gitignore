@@ -1,13 +1,12 @@
-*~
-.DS_Store
+.bash_history
 .boot2docker
-.config/
-
-# Claude AI temporary/workspace files
+.claude/.credentials.json
+.claude/cache/
 .claude/debug/
 .claude/file-history/
 .claude/history.jsonl
 .claude/ide/
+.claude/paste-cache/
 .claude/plans/
 .claude/plugins/
 .claude/projects/
@@ -16,11 +15,9 @@
 .claude/stats-cache.json
 .claude/statsig/
 .claude/todos/
-
-# GnuPG lock files
+.config/
+.DS_Store
 .gnupg/.#lk*
-
-# Shell history files
 .history
 .zsh_history
-.bash_history
+*~
