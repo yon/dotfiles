@@ -90,8 +90,6 @@
 	allowedSignersFile = /Users/yon/.ssh/allowed_signers
 [help]
 	autocorrect = 1
-[include]
-	path = ~/.gitconfig-local
 [init]
 	defaultBranch = main
 [log]
@@ -123,5 +121,7 @@
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
 [credential "https://gist.github.com"]
-	helper = 
+	helper =
 	helper = !/opt/homebrew/bin/gh auth git-credential
+[include]
+	path = ~/.gitconfig-local
