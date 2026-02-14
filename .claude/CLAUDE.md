@@ -1,0 +1,1 @@
+/Users/yon/.llms/global.md
