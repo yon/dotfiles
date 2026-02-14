@@ -10,6 +10,7 @@ alias -- \
     l='ls -CFG' \
     la='ls -aCFG' \
     ll='ls -lFG' \
+    obsidian='/Applications/Obsidian.app/Contents/MacOS/Obsidian' \
     lla='ls -alFG' \
     llar='ls -alrFG' \
     llr='ls -lrFG' \
