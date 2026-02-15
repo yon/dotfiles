@@ -1,10 +1,10 @@
 {
+  "model": "us.anthropic.claude-opus-4-6-v1",
   "statusLine": {
     "type": "command",
     "command": "input=$(cat); cwd=$(echo \"$input\" | jq -r '.workspace.current_dir'); dir_display=$(printf '\\033[2m%s\\033[0m' \"$cwd\"); git_info=\"\"; if git -C \"$cwd\" rev-parse --git-dir > /dev/null 2>&1; then repo=$(git -C \"$cwd\" rev-parse --show-toplevel 2>/dev/null | xargs basename); branch=$(git -C \"$cwd\" rev-parse --abbrev-ref HEAD 2>/dev/null); staged=\"\"; unstaged=\"\"; if ! git -C \"$cwd\" diff --quiet --cached 2>/dev/null; then staged=\"+\"; fi; if ! git -C \"$cwd\" diff --quiet 2>/dev/null; then unstaged=\"!\"; fi; git_info=$(printf ' \\033[2m%s (%s%s%s)\\033[0m' \"$repo\" \"$branch\" \"$unstaged\" \"$staged\"); fi; echo \"${dir_display}${git_info}\""
   },
-  "mcpServers": {
-  },
+  "mcpServers": {},
   "commitStyle": {
     "noAttribution": true
   },
