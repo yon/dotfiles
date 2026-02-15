@@ -66,18 +66,11 @@ zstyle ':completion:*:*:make:*' tag-order 'targets'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 
-# Lazy load heavy tools to improve startup time
-direnv() {
-    unfunction "$0"
-    if command -v direnv >/dev/null 2>&1; then
-        eval "$(command direnv hook zsh)"
-        direnv "$@"
-    else
-        echo "direnv not found" >&2
-        return 1
-    fi
-}
+if command -v direnv >/dev/null 2>&1; then
+    eval "$(command direnv hook zsh)"
+fi
 
+# Lazy load heavy tools to improve startup time
 mise() {
     unfunction "$0"
     if command -v mise >/dev/null 2>&1; then
