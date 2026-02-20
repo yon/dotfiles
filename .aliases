@@ -3,6 +3,7 @@
 alias -- \
     -='cd -' \
     ..='cd ..' \
+    djos='~/src/github.com/yon/djos/.djos/scripts/djos' \
     du='du -d 1 -h | sort -h' \
     e='enscript -2rG -P' \
     gam='/Users/yon/bin/gam7/gam' \
