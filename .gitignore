@@ -1,11 +1,13 @@
 .bash_history
 .boot2docker
 .claude/.credentials.json
+.claude/backups/
 .claude/cache/
 .claude/debug/
 .claude/file-history/
 .claude/history.jsonl
 .claude/ide/
+.claude/image-cache/
 .claude/paste-cache/
 .claude/plans/
 .claude/plugins/
