@@ -3,8 +3,6 @@
 # Build PATH from candidates (only if directory exists and is executable)
 PATH=""
 for p in \
-    "${HOME}/.nix-profile/bin" \
-    "/nix/var/nix/profiles/default/bin" \
     "${HOME}/bin" \
     "${HOME}/.local/bin" \
     "/opt/homebrew/bin" \
@@ -13,6 +11,7 @@ for p in \
     "/opt/local/sbin" \
     "/usr/local/bin" \
     "/usr/local/sbin" \
+    "/Applications/Obsidian.app/Contents/MacOS" \
     "/usr/bin" \
     "/usr/sbin" \
     "/usr/libexec" \
