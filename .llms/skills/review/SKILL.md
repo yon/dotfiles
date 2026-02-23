@@ -57,36 +57,42 @@ WRONG (rubber stamp):                  RIGHT (multi-dimensional):
 
 ### Step 3: Select and Launch Reviewers
 
-Based on change categories, read agent definitions from `.claude/agents/` and spawn reviewers **in parallel**:
+Based on change categories, read agent definitions from `~/.llms/agents/` and spawn reviewers **in parallel**:
 
 | Agent File | subagent_type | When to Spawn |
 |------------|---------------|---------------|
-| `code-reviewer.md` | `senior-code-reviewer` | Always |
-| `test-reviewer.md` | `senior-code-reviewer` | Always |
-| `security-reviewer.md` | `security-code-auditor` | Auth, input handling, config, deps |
-| `architecture-reviewer.md` | `senior-code-reviewer` | New modules, boundary changes |
-| `performance-reviewer.md` | `senior-code-reviewer` | Data access, algorithms, hot paths |
-| `doc-reviewer.md` | `senior-code-reviewer` | Public APIs, README changes |
+| `code-reviewer.md` | `general-purpose` | Always |
+| `test-reviewer.md` | `general-purpose` | Always |
+| `security-reviewer.md` | `general-purpose` | Auth, input handling, config, deps |
+| `architecture-reviewer.md` | `general-purpose` | New modules, boundary changes |
+| `performance-reviewer.md` | `general-purpose` | Data access, algorithms, hot paths |
+| `doc-reviewer.md` | `general-purpose` | Public APIs, README changes |
 
 **For plan review** (`/review --plan`):
 
 | Agent File | subagent_type | When to Spawn |
 |------------|---------------|---------------|
-| `architecture-reviewer.md` | `senior-code-reviewer` | Always for plans |
-| `test-reviewer.md` | `senior-code-reviewer` | Always for plans |
-| `security-reviewer.md` | `security-code-auditor` | If plan touches auth/data |
+| `architecture-reviewer.md` | `general-purpose` | Always for plans |
+| `test-reviewer.md` | `general-purpose` | Always for plans |
+| `security-reviewer.md` | `general-purpose` | If plan touches auth/data |
 
 **Spawning pattern** -- all selected reviewers in the same response:
 
-```
-Task(subagent_type="senior-code-reviewer",
-     prompt="<content of .claude/agents/code-reviewer.md>\n\nReview: {changed_files}")
+```python
+# Read agent definitions from ~/.llms/agents/
+code_reviewer_def = Read("~/.llms/agents/code-reviewer.md")
+test_reviewer_def = Read("~/.llms/agents/test-reviewer.md")
+security_reviewer_def = Read("~/.llms/agents/security-reviewer.md")
 
-Task(subagent_type="senior-code-reviewer",
-     prompt="<content of .claude/agents/test-reviewer.md>\n\nReview: {test_files}")
+# Spawn with agent definitions as prompts
+Task(subagent_type="general-purpose",
+     prompt=f"{code_reviewer_def}\n\nReview these files: {changed_files}")
 
-Task(subagent_type="security-code-auditor",
-     prompt="<content of .claude/agents/security-reviewer.md>\n\nAudit: {changed_files}")
+Task(subagent_type="general-purpose",
+     prompt=f"{test_reviewer_def}\n\nReview test coverage for: {test_files}")
+
+Task(subagent_type="general-purpose",
+     prompt=f"{security_reviewer_def}\n\nAudit: {changed_files}")
 ```
 
 - [ ] Agent definitions read
