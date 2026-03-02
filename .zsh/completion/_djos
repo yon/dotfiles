@@ -1,41 +1,56 @@
 #compdef djos
 
-_djos_completion() {
-    local -a completions
-    local -a completions_with_descriptions
-    local -a response
-    (( ! $+commands[djos] )) && return 1
+_djos() {
+    local -a commands
+    commands=(
+        'auth:Authentication operations'
+        'backfill:Backfill historical data'
+        'calendar:Calendar operations'
+        'discuss:Discussion topic management'
+        'email:Email operations'
+        'index:Index management'
+        'ingest:Ingest data from external sources'
+        'people:People file operations'
+        'prep:Prep email generation'
+        'query:Unified lookup'
+        'render:Render entity views'
+        'stale:Stale content detection'
+        'task:Task management'
+        'transcript:Transcript operations'
+    )
 
-    response=("${(@f)$(env COMP_WORDS="${words[*]}" COMP_CWORD=$((CURRENT-1)) _DJOS_COMPLETE=zsh_complete djos)}")
+    local state
+    _arguments -C \
+        '1: :->command' \
+        '*::arg:->args'
 
-    for type key descr in ${response}; do
-        if [[ "$type" == "plain" ]]; then
-            if [[ "$descr" == "_" ]]; then
-                completions+=("$key")
-            else
-                completions_with_descriptions+=("$key":"$descr")
-            fi
-        elif [[ "$type" == "dir" ]]; then
-            _path_files -/
-        elif [[ "$type" == "file" ]]; then
-            _path_files -f
-        fi
-    done
-
-    if [ -n "$completions_with_descriptions" ]; then
-        _describe -V unsorted completions_with_descriptions -U
-    fi
-
-    if [ -n "$completions" ]; then
-        compadd -U -V unsorted -a completions
-    fi
+    case $state in
+        command)
+            _describe 'command' commands
+            ;;
+        args)
+            case $words[1] in
+                query)
+                    # Get completions from the people index
+                    local -a completions
+                    if [[ -n "$DJOS_ROOT" ]] && [[ -f "$DJOS_ROOT/.djos/state/index-people.json" ]]; then
+                        completions=(${(f)"$(python3 -c "
+import json
+try:
+    with open('$DJOS_ROOT/.djos/state/index-people.json') as f:
+        data = json.load(f)
+    for key, entry in data.items():
+        if key != '_meta' and isinstance(entry, dict) and 'slug' in entry:
+            print(entry['slug'])
+except:
+    pass
+" 2>/dev/null)"})
+                    fi
+                    _describe 'person' completions
+                    ;;
+            esac
+            ;;
+    esac
 }
 
-if [[ $zsh_eval_context[-1] == loadautofunc ]]; then
-    # autoload from fpath, call function directly
-    _djos_completion "$@"
-else
-    # eval/source/. command, register function for later
-    compdef _djos_completion djos
-fi
-
+_djos "$@"
