@@ -66,6 +66,8 @@ zstyle ':completion:*:*:make:*' tag-order 'targets'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 
+fpath=(~/.zsh/completion $fpath)
+
 if command -v direnv >/dev/null 2>&1; then
     eval "$(command direnv hook zsh)"
 fi
