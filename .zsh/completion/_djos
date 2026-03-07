@@ -31,22 +31,46 @@ _djos() {
         args)
             case $words[1] in
                 query)
-                    # Get completions from the people index
+                    # Get completions from all entity indexes with type hints
                     local -a completions
-                    if [[ -n "$DJOS_ROOT" ]] && [[ -f "$DJOS_ROOT/.djos/state/index-people.json" ]]; then
+                    if [[ -n "$DJOS_ROOT" ]]; then
                         completions=(${(f)"$(python3 -c "
 import json
+
+# Build slug:type mapping
+slug_to_type = {}
+
+# Read people slugs
 try:
     with open('$DJOS_ROOT/.djos/state/index-people.json') as f:
-        data = json.load(f)
-    for key, entry in data.items():
+        people_data = json.load(f)
+    for key, entry in people_data.items():
         if key != '_meta' and isinstance(entry, dict) and 'slug' in entry:
-            print(entry['slug'])
+            slug_to_type[entry['slug']] = 'person'
 except:
     pass
+
+# Read all entity types
+try:
+    with open('$DJOS_ROOT/.djos/state/index-entities.json') as f:
+        entities_data = json.load(f)
+    for entity_type, entities in entities_data.items():
+        if entity_type.startswith('_'):
+            continue
+        if isinstance(entities, dict):
+            # Use singular form (e.g., 'system' not 'systems')
+            type_singular = entity_type.rstrip('s')
+            for slug in entities.keys():
+                slug_to_type[slug] = type_singular
+except:
+    pass
+
+# Output in zsh completion format: value:description
+for slug in sorted(slug_to_type.keys()):
+    print(f'{slug}:{slug_to_type[slug]}')
 " 2>/dev/null)"})
                     fi
-                    _describe 'person' completions
+                    _describe 'entity' completions
                     ;;
             esac
             ;;
