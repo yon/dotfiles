@@ -87,7 +87,7 @@
 [gpg]
 	format = ssh
 [gpg "ssh"]
-	allowedSignersFile = /Users/yon/.ssh/allowed_signers
+	allowedSignersFile = ~/.ssh/allowed_signers
 [help]
 	autocorrect = 1
 [init]
@@ -111,7 +111,7 @@
 [user]
 	email = yon@milliped.com
 	name = Yonatan Feldman
-	signingkey = /Users/yon/.ssh/id_ecdsa_sk_rk.pub
+	signingkey = ~/.ssh/id_ecdsa_sk_rk.pub
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
