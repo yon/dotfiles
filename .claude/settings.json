@@ -11,14 +11,15 @@
     "commit-commands@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
     "ralph-loop@claude-plugins-official": true,
+    "remember@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true,
-    "remember@claude-plugins-official": true
+    "superpowers@claude-plugins-official": true
   },
   "effortLevel": "medium",
   "commitStyle": {
     "noAttribution": true
   },
+  "model": "sonnet",
   "mcpServers": {},
   "prStyle": {
     "noAttribution": true
