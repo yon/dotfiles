@@ -1,55 +1,31 @@
 ---
 name: deploy
-description: "Deploy to staging or production with safety checks. Trigger: deploy, ship, release, push to staging, push to production"
+description: Use when deploying to staging or production, shipping a release, or pushing to an environment
 ---
 
-# /deploy — Deploy to Environment
+# /deploy — Deploy with Safety Checks
 
-Deploy the project to a target environment.
+**REQUIRED BACKGROUND:** `superpowers:verification-before-completion` — evidence before assertions. `superpowers:finishing-a-development-branch` — integration options.
 
 ---
 
 ## Steps
 
-### 1. Determine Target
-- `/deploy staging` or `/deploy` → staging (default)
-- `/deploy production` → production (requires confirmation)
+1. **Target.** `/deploy` or `/deploy staging` → staging. `/deploy production` → production (requires explicit confirmation).
+2. **Pre-deploy checks (mandatory).**
+   - `make check` (build + test + lint + typecheck) — abort on any failure.
+   - For production: also require quality score ≥ 90 (`make score`).
+   - `git status` clean — warn if uncommitted changes are present.
+3. **Deploy.**
+   - Staging: `make deploy-staging`.
+   - Production: prompt with current version + last staging deploy + commit; require typed `yes`; then `make deploy-production`.
+4. **Verify.** Health check / smoke test. Report deployed version + commit.
+5. **Record.** Deployment line in the session log. Note rollback command.
 
-### 2. Pre-Deploy Checks
-**MANDATORY before any deployment:**
-
-1. Run `make check` (build + test + lint + typecheck)
-2. Verify all checks pass — **abort if any fail**
-3. For production: verify quality score >= 90 (`make score`)
-4. Check for uncommitted changes — warn if present
-
-### 3. Deploy
-
-**Staging:**
-```bash
-make deploy-staging
-```
-
-**Production:**
-```
-⚠️  PRODUCTION DEPLOYMENT
-Are you sure you want to deploy to production?
-Current version: [version/commit]
-Last staging deploy: [date/commit]
-
-Type "yes" to confirm.
-```
-Then: `make deploy-production`
-
-### 4. Post-Deploy Verification
-- Verify the deployment succeeded (health check, smoke test)
-- Report the deployed version/commit
-
-### 5. Rollback Information
-- Show how to rollback if needed
-- Record the deployment in the session log
+---
 
 ## Rules
-- **NEVER deploy to production without explicit user confirmation**
-- **NEVER deploy with failing checks**
-- **ALWAYS record deployments in session log**
+
+- Never deploy to production without explicit user confirmation.
+- Never deploy with failing checks.
+- Always record deployments in the session log.
