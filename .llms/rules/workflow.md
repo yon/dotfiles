@@ -17,11 +17,11 @@ UNDERSTAND → PLAN → VALIDATE → BUILD → VERIFY → REVIEW → SHIP → OB
 | Stage | What Happens | Skills | Rule |
 |-------|-------------|--------|------|
 | UNDERSTAND | Explore codebase, read `.context.md` files | `/explore-module` | `code-conventions.md` |
-| PLAN | Decompose into tracer bullets | `/decompose` | `workflow.md` |
+| PLAN | Decompose into tracer bullets | `superpowers:writing-plans` | `workflow.md` |
 | VALIDATE | Agents review the plan | `/review-plan` | `workflow.md` |
-| BUILD | TDD, one tracer bullet at a time | `/create-feature`, `/fix-bug`, `/refactor` | `testing-protocol.md` |
+| BUILD | TDD, one tracer bullet at a time | `/create-feature`, `/refactor`, `superpowers:systematic-debugging` (bugs) | `testing-protocol.md` |
 | VERIFY | Linters as law, tests as contract | `/lint`, `/test` | `quality-and-verification.md` |
-| REVIEW | Multi-agent code review | `/review`, `/team-review` | `agent-coordination.md` |
+| REVIEW | Multi-agent code review | `/review` (uses `superpowers:dispatching-parallel-agents`) | `agent-coordination.md` |
 | SHIP | Small PR, one tracer bullet per PR | `/deploy` | `git-and-delivery.md` |
 | OBSERVE | Tracing, context-rich outputs | — | `code-conventions.md` |
 

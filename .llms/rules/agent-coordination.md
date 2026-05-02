@@ -34,8 +34,8 @@ ______________________________________________________________________
 | Skill | Worktree Command |
 |-------|-----------------|
 | `/create-feature [name]` | `EnterWorktree(name="feature-[name]")` |
-| `/fix-bug [issue]` | `EnterWorktree(name="fix-[issue]")` |
 | `/refactor [scope]` | `EnterWorktree(name="refactor-[scope]")` |
+| Bug fix (`superpowers:systematic-debugging`) | `EnterWorktree(name="fix-[issue]")` |
 
 Each worktree = one branch = one PR. This provides complete isolation from the main working tree.
 
