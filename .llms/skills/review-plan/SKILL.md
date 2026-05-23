@@ -13,7 +13,7 @@ Catch architectural mistakes in the plan, where they cost minutes, instead of in
 
 ## Workflow
 
-1. **Locate plan.** `/review-plan [file]` or default to most recent `working/plans/*.md`.
+1. **Locate plan.** `/review-plan [file]` or default to the active plan in the current session.
 2. **Spawn reviewers in parallel** — each reads the plan (not code) and checks one dimension. Inject the persona via the Task prompt; `subagent_type: general-purpose` is a safe default.
 
 | Reviewer | Checks |

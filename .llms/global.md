@@ -2,62 +2,31 @@
 
 ## Core Principles
 
-- **Simplicity First**: Make every change as simple as possible. Impact minimal code.
-- **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
-- **Minimal Impact**: Changes should only touch what's necessary. Avoid introducing bugs.
+- **Simplicity first.** Make changes as small as possible. Touch only what's needed.
+- **Find root causes.** No temporary fixes, no working around symptoms. Senior-engineer standards.
+- **Don't fake it.** Never claim work is done without verifying it works. If you can't verify in this environment, say so explicitly.
 
-## Workflow Orchestration
+## Working Style
 
-### Plan Mode Default
-
-- Enter plan mode for ANY non-trivial task (3+ steps or architectural decisions)
-- If something goes sideways, STOP and re-plan immediately - don't keep pushing
-- Use plan mode for verification steps, not just building
-- Write detailed specs upfront to reduce ambiguity
-
-### Subagent Strategy
-
-- Offload research, exploration, and parallel analysis to subagents to keep main context clean
-- For complex problems, throw more compute at it via subagents
-- One task per subagent for focused execution
-
-### Self-Improvement Loop
-
-- After ANY correction from the user: update project's `lessons.md` with the pattern
-- Write rules that prevent the same mistake
-- Ruthlessly iterate on these lessons until mistake rate drops
-- Review lessons at session start for relevant project
-
-### Verification Before Done
-
-- Never mark a task complete without proving it works
-- Diff behavior between main and your changes when relevant
-- Ask yourself: "Would a staff engineer approve this?"
-- Run tests, check logs, demonstrate correctness
-
-### Demand Elegance (Balanced)
-
-- For non-trivial changes: pause and ask "is there a more elegant way?"
-- If a fix feels hacky: "Knowing everything I know now, implement the elegant solution"
-- Skip this for simple, obvious fixes - don't over-engineer
-- Challenge your own work before presenting it
-
-### Autonomous Bug Fixing
-
-- When given a bug report: just fix it. Don't ask for hand-holding
-- Point at logs, errors, failing tests -> then resolve them
-- Zero context switching required from the user
-- Go fix failing CI tests without being told how
+- **Plan before non-trivial work.** Anything touching multiple files or requiring more than a couple of steps gets a plan first (`superpowers:writing-plans` or its built-in equivalent).
+- **Stop and re-plan when something goes sideways.** Don't push through. Re-orient and propose a revised approach.
+- **Offload research and parallel work to subagents.** Keep the main context clean. One focused task per subagent.
+- **Verify before declaring done.** Run the build, run the tests, demonstrate correctness — see `rules/quality-and-verification.md`.
+- **Demand elegance, in proportion.** For non-trivial work, pause to ask if there's a cleaner path. For obvious fixes, just do it.
+- **Fix bugs autonomously.** Given a failing test, error, or log, diagnose and fix. Don't ask for hand-holding on what's already evident.
 
 ## Tool Preferences
 
-- **Web fetching**: Use `/curl` instead of the native WebFetch tool. It uses browser headers to avoid bot blocking.
+- **Web fetching:** use the `/curl` skill (browser headers, redirect-following) instead of the native WebFetch tool when fetching pages that might block bots.
 
-## Task Management
+## Reference Documents
 
-1. **Plan First**: Write plan with checkable items before starting
-2. **Verify Plan**: Check in before starting implementation
-3. **Track Progress**: Mark items complete as you go
-4. **Explain Changes**: High-level summary at each step
-5. **Document Results**: Add review notes when done
-6. **Capture Lessons**: Update lessons file after corrections
+These live alongside this file and are loaded by the harness as needed:
+
+- `rules/engineering-principles.md` — DRY/KISS/SOLID enforcement, immutability, typing, DI.
+- `rules/code-conventions.md` — naming, file organization, comments, logging, observability.
+- `rules/security-practices.md` — secrets, validation, auth, dependency hygiene.
+- `rules/quality-and-verification.md` — verification checklist and quality gates.
+- `rules/git-and-delivery.md` — branches, commits, PRs, work decomposition.
+- `rules/workflow.md` — SDLC stages and how the skills fit together.
+- `rules/agent-coordination.md` — when and how to spawn parallel agents.

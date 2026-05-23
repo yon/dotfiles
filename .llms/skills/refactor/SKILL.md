@@ -18,22 +18,22 @@ See `catalog.md` for common refactoring moves and `characterization-tests.md` fo
 ## Workflow
 
 ```
-0. Worktree           — refactor-[scope]
-0.5 Read .context.md  — for the module being refactored (run /explore-module if missing)
-1. Goal               — what smells, what structural improvement is the goal
-2. Baseline green     — make check must pass before touching anything
-3. Coverage check     — run coverage on the target
-                       >= 80%  → proceed
-                       < 80%   → write characterization tests first
-4. Plan               — list each refactoring move as a separately committable step
-                       save to working/plans/
+0. Worktree       — refactor-[scope]
+1. Goal           — what smells, what structural improvement is the goal
+2. Baseline green — make check must pass before touching anything
+3. Coverage check — run coverage on the target
+                    >= 80%  → proceed
+                    < 80%   → write characterization tests first
+4. Plan           — list each refactoring move as a separately committable step
+                    (`superpowers:writing-plans`)
 5. Execute one step at a time:
      change → make check
        green → commit with descriptive message
        red   → fix or revert this step
-6. Update .context.md — structural changes
-7. Review             — /review (architecture + code dimensions)
+6. Review         — /review (architecture + code dimensions)
 ```
+
+If the project uses per-module `.context.md` files, read them before starting and update them after structural changes.
 
 ---
 

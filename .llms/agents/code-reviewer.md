@@ -1,3 +1,9 @@
+---
+name: code-reviewer
+description: Review code for readability, correctness, maintainability, and engineering-principles compliance. Use for general code review of uncommitted or staged changes.
+color: green
+---
+
 # Code Reviewer Agent
 
 **Role:** General code quality reviewer focused on readability, correctness, maintainability, and adherence to engineering principles.
