@@ -215,26 +215,7 @@ ______________________________________________________________________
 
 ## Context-Rich Outputs
 
-**Every error, result, and log entry should include enough context to understand what happened without reproducing the scenario.**
-
-### Error Context
-
-Every error includes four elements:
-
-- **Operation** — what was being attempted
-- **Inputs** — the relevant data (sanitized of secrets)
-- **Expected outcome** — what should have happened
-- **Actual outcome** — what actually happened
-
-```
-BAD:  raise ValueError("invalid input")
-GOOD: raise ValueError(f"Cannot create order: quantity {qty} exceeds stock {available} for product {product_id}")
-
-BAD:  return Err("failed")
-GOOD: return Err(format!("Failed to connect to database at {host}:{port}: {err} (attempt {attempt}/{max_retries})"))
-```
-
-Cross-reference: See `engineering-principles.md` Fail Fast section for the full error context standard.
+Error message context is defined in `engineering-principles.md` Fail Fast section — every error must include the operation, inputs, expected outcome, and actual outcome. The patterns below extend that to non-error outputs.
 
 ### Result Pattern with Metadata
 
@@ -294,50 +275,6 @@ ______________________________________________________________________
 
 ______________________________________________________________________
 
-## Local Module Context (.context.md)
+## Per-Module Documentation
 
-**Every module/directory with code files MUST have a `.context.md` file.** Claude reads this FIRST instead of exploring, giving immediate understanding of module purpose, interfaces, and state.
-
-### Template
-
-```markdown
-# Module: [name]
-
-## Purpose
-[1-2 sentences describing what this module does and why it exists]
-
-## Key Files
-- `file.ext` — [what it does]
-- `other_file.ext` — [what it does]
-
-## Public Interfaces
-- `function_name(params) -> return` — [brief description]
-- `ClassName` — [brief description]
-
-## Dependencies
-- Internal: [modules this depends on]
-- External: [third-party packages]
-
-## Recent Changes
-- [date]: [what changed and why]
-
-## Known Issues
-- [any open problems or technical debt]
-```
-
-### Maintenance Rules
-
-- **Created** when a new module is first implemented
-- **Updated** after every implementation phase (the orchestrator enforces this — see `orchestrator.md` Step 4)
-- **Reviewed** at session start when working on a module
-- **Accurate** — if `.context.md` is stale, update it before starting work
-
-### Including in Subagent Prompts
-
-When spawning subagents (see `agent-coordination.md`), read the relevant `.context.md` files and include their content in the task prompt. This gives subagents accurate module understanding without exploration overhead:
-
-```
-context = Read("src/payments/.context.md")
-Task(subagent_type="production-code-engineer",
-     prompt=f"Module context:\n{context}\n\nYour task: ...")
-```
+Some projects benefit from a short per-module summary file (`.context.md` or similar) that captures purpose, public interfaces, and key files. This is optional — only adopt it when modules are large enough that fresh-eyes exploration is consistently expensive. See the `/explore-module` skill for the template and maintenance workflow.

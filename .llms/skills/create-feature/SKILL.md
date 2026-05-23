@@ -26,16 +26,16 @@ Horizontal slicing (all DB → all logic → all API → wire up) postpones ever
 ## Workflow
 
 ```
-0. Worktree           — `superpowers:using-git-worktrees`, named feature-[name]
-0.5 Read .context.md  — for every module that will be touched (run /explore-module if missing)
-1. Plan               — gather requirements, decompose into bullets, save to working/plans/
-2. Validate plan      — /review-plan
-3. Build per bullet   — RED → GREEN → REFACTOR (see superpowers:test-driven-development)
-4. Update .context.md — for every module touched
-5. Verify             — make check
-6. Review             — /review (always); add security if auth/input/secrets touched
-7. Fix & score        — Critical/Major findings; re-verify; present score
+0. Worktree         — `superpowers:using-git-worktrees`, named feature-[name]
+1. Plan             — gather requirements, decompose into bullets (`superpowers:writing-plans`)
+2. Validate plan    — /review-plan
+3. Build per bullet — RED → GREEN → REFACTOR (see superpowers:test-driven-development)
+4. Verify           — make check
+5. Review           — /review (always); add security-reviewer if auth/input/secrets touched
+6. Fix & score      — Critical/Major findings; re-verify; present score
 ```
+
+If the project uses per-module `.context.md` files (see `/explore-module`), read them for every module you'll touch before planning, and update them after building.
 
 Each bullet is its own miniature loop of steps 3–5. Don't move on until the current bullet is green.
 

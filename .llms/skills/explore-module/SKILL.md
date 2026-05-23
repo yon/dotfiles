@@ -79,4 +79,3 @@ Key design decisions, patterns, invariants.
 - Before starting work on a module: read first, always.
 - After implementation: update Key Files, Public Interfaces, Recent Changes.
 - After refactoring: update Architecture Notes and Dependencies.
-- The orchestrator updates `.context.md` automatically after each implementation phase — see `orchestrator.md`.
