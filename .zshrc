@@ -68,6 +68,9 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 
 fpath=(~/.zsh/completion $fpath)
 
+# bun completions
+[ -s "/Users/yon/.bun/_bun" ] && source "/Users/yon/.bun/_bun"
+
 if command -v direnv >/dev/null 2>&1; then
     eval "$(command direnv hook zsh)"
 fi
