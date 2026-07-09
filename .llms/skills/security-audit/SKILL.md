@@ -22,7 +22,7 @@ Focused security review — code, dependencies, and configuration.
 ## Steps
 
 1. **Dependencies.** `make security` (or the project equivalent) — flag known CVEs.
-2. **Code.** Spawn a security reviewer via the Task tool. Inject the persona; `general-purpose` is a safe `subagent_type` default. The prompt must request severity-rated (Critical/High/Medium/Low) findings on:
+2. **Code.** Dispatch the `security-reviewer` agent (fall back to `general-purpose` with the persona injected only if it's unavailable). The prompt must request severity-rated (Critical/High/Medium/Low) findings on:
    - OWASP Top 10
    - hardcoded secrets / credentials
    - authn/authz patterns and gaps
