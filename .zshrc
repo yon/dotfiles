@@ -99,3 +99,9 @@ if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/op
 [ -r ${HOME}/.functions ] && . ${HOME}/.functions;
 
 [ -n "${DEBUG}" ] && echo "<<< `basename $0`";
+
+# >>> grok installer >>>
+export PATH="$HOME/.grok/bin:$PATH"
+fpath=(~/.grok/completions/zsh $fpath)
+autoload -Uz compinit && compinit -C
+# <<< grok installer <<<
