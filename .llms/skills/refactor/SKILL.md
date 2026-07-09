@@ -30,7 +30,7 @@ See `catalog.md` for common refactoring moves and `characterization-tests.md` fo
      change → make check
        green → commit with descriptive message
        red   → fix or revert this step
-6. Review         — /review (architecture + code dimensions)
+6. Review         — built-in /code-review; dispatch architecture-reviewer for structural moves
 ```
 
 If the project uses per-module `.context.md` files, read them before starting and update them after structural changes.

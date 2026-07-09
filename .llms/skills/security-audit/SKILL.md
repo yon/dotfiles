@@ -22,7 +22,7 @@ Focused security review — code, dependencies, and configuration.
 ## Steps
 
 1. **Dependencies.** `make security` (or the project equivalent) — flag known CVEs.
-2. **Code.** Dispatch the `security-reviewer` agent (fall back to `general-purpose` with the persona injected only if it's unavailable). The prompt must request severity-rated (Critical/High/Medium/Low) findings on:
+2. **Code.** Dispatch the `security-reviewer` agent (fall back to `general-purpose` with the persona injected only if it's unavailable). The prompt must request severity-rated (Critical/Major/Minor) findings on:
    - OWASP Top 10
    - hardcoded secrets / credentials
    - authn/authz patterns and gaps
@@ -34,7 +34,7 @@ Focused security review — code, dependencies, and configuration.
 ```markdown
 ## Security Audit
 
-**Scope:** [...]   **Risk Level:** [Critical / High / Medium / Low / Clean]
+**Scope:** [...]   **Risk Level:** [Critical / Major / Minor / Clean]
 
 ### Dependency Vulnerabilities
 | Package | Version | CVE | Severity | Fix |
@@ -47,7 +47,7 @@ Focused security review — code, dependencies, and configuration.
 [issues]
 
 ### Summary
-Critical: [N]   High: [N]   Medium: [N]   Low: [N]
+Critical: [N]   Major: [N]   Minor: [N]
 
 ### Priority Actions
 1. …
@@ -57,8 +57,4 @@ Critical: [N]   High: [N]   Medium: [N]   Low: [N]
 
 ## Gate
 
-| Severity | Action |
-|---|---|
-| Critical | Block deployment. Fix immediately. |
-| High | Block PR. Fix before merge. |
-| Medium / Low | Document and track. |
+Same finding-driven gate as everywhere else (`quality-and-verification.md`): Critical and Major block (Critical additionally blocks deployment, fix immediately); Minor is documented and tracked, never blocking. CVE severities map: High -> Major, Medium/Low -> Minor.

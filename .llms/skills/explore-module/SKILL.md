@@ -17,12 +17,14 @@ description: Use when starting work in an unfamiliar module, when a module's `.c
      present + recent (< 2 weeks)  → read it; you understand the module
      present + stale  (> 2 weeks)  → read for baseline, then update outdated sections
      missing                       → full exploration (step 3)
-3. Explore (only if needed)
+3. Explore (only if needed) — dispatch the built-in Explore agent ("very thorough")
+   so the raw file reads stay out of the main context; its brief:
      - read entry points, public interfaces, index/barrel files
      - trace exports / public functions / API endpoints
      - identify dependencies (internal + external)
      - git log --oneline -20 -- [path]
      - read tests for behavioral expectations
+     - RETURN: findings structured per the template below
 4. Write/update .context.md (template below)
 5. Verify accuracy   — purpose clear, key files complete, no phantom dependencies
 ```
