@@ -31,7 +31,17 @@ Never write: "TBD", "handle edge cases appropriately", "similar to the above", "
 - Wire dependencies **natively** (`gh api repos/{owner}/{repo}/issues/<n>/dependencies/blocked_by -F issue_id=<id>`) AND restate them in each body. Attach children via the sub-issues API (`.../issues/<epic>/sub_issues -F sub_issue_id=<id>` — numeric `id`, not number). Apply the repo's labels.
 - Note conflict surfaces: files two sub-issues (or existing open issues) both touch, with a one-toucher-per-wave warning in each affected body.
 
-## 4. Register in the program
+## 4. Owner review gate — BEFORE anything is created
+
+Reviewing epics and sub-issues is one of the owner's most important jobs: once created, these bodies are executed literally by agents that don't second-guess them. Nothing is filed until the owner has approved it. Draft everything first (epic body + every sub-issue body, complete per sections 1-3), then review in two rounds via AskUserQuestion:
+
+1. **Epic round.** One question: approve the epic design? Present the essentials in the question/description text — scope, the sub-issue list (number-to-be, title, one-line summary, dependency arrows), the binding design principles, and anything you're least sure about. Use the option `preview` fields to show the draft epic body. Options: "Approve as drafted", "Approve with changes" (the owner's notes are the changes — apply them), "Wrong decomposition" (re-slice per their notes and re-present), plus whatever alternative you genuinely considered (e.g. a different split) as a real option with its own preview, if one exists.
+1. **Sub-issue round(s).** Batch the sub-issues (AskUserQuestion takes up to 4 questions per call — one question per sub-issue, multiple calls for larger epics). Each question presents that issue's title + the parts most worth human judgment: the acceptance criteria, the contract's riskiest choices, and its Out-of-scope line. Preview shows the full draft body. Options: "Approve", "Approve with changes", "Needs rework". A "Needs rework" answer gets fixed and re-presented before filing; approved siblings wait — file everything in one pass at the end so dependency wiring never points at an issue that later changed.
+1. **What the owner's notes say, wins.** Apply every note verbatim-faithfully; if a note conflicts with evidence you gathered, say so in the next round's question text rather than silently ignoring either. Never file a body the owner hasn't seen in its final form — a last-minute edit after approval means one more approval pass for that issue.
+
+Skip this gate ONLY if the owner has explicitly pre-authorized filing in this session ("file it", "don't ask, create them"); note that authorization in the epic body.
+
+## 5. Register in the program
 
 Check for an execution-plan doc by actually running `ls docs/plans/*execution-plan*.md 2>/dev/null | sort | tail -1` — never assert absence without running it (a tested agent claimed "no plan doc" in a repo that had two). If one exists, add the epic's runnable set, chain order, and conflict rows there, and commit. If not, put the wave order in the epic body. Untracked work is forbidden: anything discovered during investigation that is out of scope becomes its own issue before you finish.
 
@@ -49,4 +59,4 @@ Check for an execution-plan doc by actually running `ls docs/plans/*execution-pl
 
 ## Done when
 
-Epic + sub-issues exist with native wiring and labels; every body passes the executor bar and the failure-mode table; evidence and reference commands are embedded; program doc updated (or wave order in the epic); anything discovered-but-out-of-scope is filed. A cold-start agent given only one sub-issue's URL could execute it without asking you anything.
+Epic + sub-issues exist with native wiring and labels, **each body owner-approved in its final form before filing**; every body passes the executor bar and the failure-mode table; evidence and reference commands are embedded; program doc updated (or wave order in the epic); anything discovered-but-out-of-scope is filed. A cold-start agent given only one sub-issue's URL could execute it without asking you anything.
