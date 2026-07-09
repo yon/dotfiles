@@ -127,7 +127,7 @@ Exit: **Finish** (nothing runnable, nothing in flight) or **Stop** (epic unimple
 - Gate green; conventional commits; NO AI attribution; `gh pr create --base epic/<n>-<slug>`. Return: PR URL, gate summary, deviations.
 - You are long-lived: stay available — findings and rebase work come back to you until this PR closes.
 
-**Finish.** Every sub-issue merged, parked, or skipped; gate green on the final branch. Report **complete** or **complete-with-remainder** (each parked/skipped/blocked issue with reason + link). Mark the epic PR ready-for-review: checklist with per-PR review outcomes, remainder, owner live-verification checklist, migration-rename notes. Remove sub-issue worktrees; keep the epic worktree until the owner merges. Tell the owner what they must do: review → merge → deploy → prove live.
+**Finish.** Every sub-issue merged, parked, or skipped; gate green on the final branch. Report **complete** or **complete-with-remainder** (each parked/skipped/blocked issue with reason + link). Mark the epic PR ready-for-review: checklist with per-PR review outcomes, remainder, owner live-verification checklist, migration-rename notes — and state in the PR body: **merge with a MERGE COMMIT, not squash** — the one-commit-per-issue history is the deliverable (bisect/revert/blame at issue granularity; `git log --first-parent` still reads one entry per epic). Remove sub-issue worktrees; keep the epic worktree until the owner merges. Tell the owner what they must do: review commit-by-commit → merge (merge commit) → deploy → prove live.
 
 ## Per-PR states
 
