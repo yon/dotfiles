@@ -241,7 +241,8 @@ ______________________________________________________________________
 
 ### Merge Strategy
 
-- **Squash and merge** for feature branches (clean main history)
+- **Squash and merge** for single-issue feature branches (clean main history)
+- **Merge commit** for epic integration branches (agent-implemented epics): the branch already carries one squashed conventional commit per issue — a merge commit preserves that granularity on main (bisect/revert/blame per issue) while `git log --first-parent` still reads one entry per epic. Squashing here would collapse the reviewed increments into an unbisectable mega-commit.
 - **Regular merge** for release branches (preserve branch history)
 - **Never force push** to `main`
 
