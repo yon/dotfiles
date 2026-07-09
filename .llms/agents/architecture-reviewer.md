@@ -2,6 +2,7 @@
 name: architecture-reviewer
 description: Review structural decisions, module boundaries, coupling, cohesion, and SOLID alignment. Use for design reviews and architecture-level concerns.
 color: cyan
+tools: Bash, Glob, Grep, Read, WebFetch, WebSearch, TodoWrite
 ---
 
 # Architecture Reviewer Agent

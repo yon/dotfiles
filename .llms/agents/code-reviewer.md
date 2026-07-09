@@ -2,6 +2,7 @@
 name: code-reviewer
 description: Review code for readability, correctness, maintainability, and engineering-principles compliance. Use for general code review of uncommitted or staged changes.
 color: green
+tools: Bash, Glob, Grep, Read, WebFetch, WebSearch, TodoWrite
 ---
 
 # Code Reviewer Agent

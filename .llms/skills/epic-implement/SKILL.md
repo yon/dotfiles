@@ -142,7 +142,7 @@ Exit: **Finish** (nothing runnable, nothing in flight) or **Stop** (epic unimple
 | Reviewer | Hard triggers |
 |---|---|
 | adversarial-correctness | state machines, concurrency, crash-recovery; irreversible-data logic (identity/dedup/merge); money/budget/threshold arithmetic; untrusted-input parsing; > ~5 files / ~300 lines or cross-module; you can't predict the diff's behavior (when unsure, trigger) |
-| security | outbound sends, input parsing, auth/credentials, new dependencies, subprocess/shell |
+| security | outbound sends, input parsing, auth/credentials, crypto, new dependencies, subprocess/shell, new or changed API endpoints, file upload/download |
 | architecture | new modules, changed core interfaces (repo CLAUDE.md names them), cross-cutting refactors |
 | performance | queries over the repo's largest datasets, ingest-scale loops, LLM/external-API paths |
 | data-integrity | migrations, live-data scripts, FK/schema changes |

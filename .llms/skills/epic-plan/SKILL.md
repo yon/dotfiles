@@ -29,9 +29,11 @@ You are capturing work as a GitHub epic whose sub-issues will be executed LATER,
 - Wire natively AND restate in bodies: `gh api repos/{owner}/{repo}/issues/<n>/dependencies/blocked_by -F issue_id=<id>`; children via `.../issues/<epic>/sub_issues -F sub_issue_id=<id>` (numeric `id`, not number). Apply repo labels.
 - Note conflict surfaces (files two issues touch) with a one-toucher-at-a-time warning in each affected body.
 
-## 4. Owner review gate — BEFORE anything is created
+## 4. Review gates — BEFORE anything is created
 
-Once filed, these bodies are executed literally by agents that don't second-guess them — so nothing files until the owner approves it. Draft everything (epic + all sub-issues, complete per 1-3), then AskUserQuestion in rounds:
+**Adversarial pre-review first.** Before the owner sees anything, spawn one reviewer over the complete draft set (epic + all sub-issues) with a refute mandate: is the decomposition sound (tracer bullets, dependency order, conflict surfaces complete)? Does every contract meet the executor bar (section above)? Is every AC testable as written? What did the investigation miss? Fix what it finds — the owner reviews the corrected draft, not the first one.
+
+**Then the owner gate.** Once filed, these bodies are executed literally by agents that don't second-guess them — so nothing files until the owner approves it. AskUserQuestion in rounds:
 
 1. **Epic round**: scope, sub-issue list with dependency arrows, binding principles, and what you're least sure about; draft body as option preview. Options: approve / approve-with-changes / wrong-decomposition (+ any real alternative split you considered, with its own preview).
 2. **Sub-issue rounds** (up to 4 questions per call): per issue — title, ACs, riskiest contract choices, Out-of-scope; full body as preview. Options: approve / approve-with-changes / needs-rework. Rework loops back before filing; file everything in one pass at the end so wiring never points at a body that later changed.

@@ -278,3 +278,55 @@ ______________________________________________________________________
 ## Per-Module Documentation
 
 Some projects benefit from a short per-module summary file (`.context.md` or similar) that captures purpose, public interfaces, and key files. This is optional — only adopt it when modules are large enough that fresh-eyes exploration is consistently expensive. See the `/explore-module` skill for the template and maintenance workflow.
+
+______________________________________________________________________
+
+## Security Practices
+
+**Secure by default: insecurity requires deliberate, documented opt-in.**
+
+### Secrets
+
+- NEVER hardcode secrets/keys/tokens, commit `.env`/credentials/private keys, log secrets at any level, or pass them in URLs.
+- Use env vars or a secrets manager; ship `.env.example` with dummy values; add sensitive files to `.gitignore` BEFORE creating them.
+- Exposed credentials get rotated even if the commit is reverted — git history is permanent.
+- Pre-commit check: no files matching `*.pem, *.key, *.env, credentials.*, secrets.*`; no live values behind `api_key=`, `password=`, `secret=`, `token=`.
+
+### Input Validation
+
+Parse, don't validate, at every boundary (HTTP, CLI, files, messages) — see `engineering-principles.md` §8 Fail Fast. Threat-specific rules:
+
+| Threat | Prevention |
+|--------|-----------|
+| SQL Injection | Parameterized queries ONLY — never string concatenation |
+| XSS | Output encoding, CSP headers, sanitize user-generated HTML |
+| Command Injection | Never pass user input to shell commands; use library functions |
+| Path Traversal | Validate and resolve paths; never use user input directly in file paths |
+| SSRF | Allowlist target URLs/IPs; users never control outbound request targets |
+| Deserialization | Never deserialize untrusted data with `pickle`/`eval`/`unserialize` |
+
+Where the legitimate value space is enumerable (senders, recipients, callback targets), pin an explicit allowlist instead of pattern-hardening arbitrary input.
+
+### Auth
+
+- Established libraries only — never roll your own crypto. Passwords hashed with bcrypt/argon2/scrypt (never MD5/SHA1/bare SHA256). Rate-limit auth endpoints. HTTPS everywhere.
+- Check permissions at the point of access; least privilege; default to deny; validate resource ownership; log authorization failures.
+
+### Dependencies
+
+- Before adding: check CVEs/advisories, maintenance status, license; minimize count — every dep is attack surface.
+- Ongoing: automated vulnerability alerts, pinned versions (no `latest`/`*` in production), regular scheduled updates.
+
+### Errors & Data
+
+- Never expose to users: stack traces, DB errors, internal paths, or specific auth-failure reasons (use "invalid credentials"). Log detail server-side with correlation IDs; fail closed.
+- Encrypt at rest and in transit; minimize collection; enforce retention; mask PII in logs.
+
+### Infrastructure
+
+- Containers: minimal pinned base images, non-root user, no secrets in layers, scan images.
+- Config: debug off in production, no default credentials, security headers (CORS/CSP/HSTS/X-Frame-Options), sane timeouts and file permissions.
+
+### Security Review Triggers
+
+The single maintained trigger table (security row included) lives in the `epic-implement` skill — consult it, don't fork it.

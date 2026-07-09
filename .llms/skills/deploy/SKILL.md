@@ -14,7 +14,7 @@ description: Use when deploying to staging or production, shipping a release, or
 1. **Target.** `/deploy` or `/deploy staging` → staging. `/deploy production` → production (requires explicit confirmation).
 2. **Pre-deploy checks (mandatory).**
    - `make check` (build + test + lint + typecheck) — abort on any failure.
-   - For production: also require quality score ≥ 90 (`make score`).
+   - For production: no unresolved Critical/Major review findings on what's shipping.
    - `git status` clean — warn if uncommitted changes are present.
 3. **Deploy.**
    - Staging: `make deploy-staging`.

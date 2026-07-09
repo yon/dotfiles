@@ -212,7 +212,7 @@ ______________________________________________________________________
 
 1. Rebase on latest `main` — resolve conflicts locally
 1. Run `make check` — all green
-1. Run `/review` — multi-agent code review
+1. Run the review gate — built-in `/code-review` for a working diff; the AI-DLC panel (`aidlc.md` stage 6) for PRs
 1. Squash fixup commits — clean, atomic history
 1. Write a clear PR description
 

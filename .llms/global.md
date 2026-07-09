@@ -19,14 +19,16 @@
 
 - **Web fetching:** use the `/curl` skill (browser headers, redirect-following) instead of the native WebFetch tool when fetching pages that might block bots.
 
+## Session Recovery
+
+Starting fresh or after heavy compaction: re-derive state from CLAUDE.md, the most recent plan file, `git log --oneline -10`, and `git diff` — never from a blank slate. State your understanding of the current task before proceeding.
+
 ## Reference Documents
 
-These live alongside this file and are loaded by the harness as needed:
+These live alongside this file and are auto-loaded into every session (keep them lean):
 
+- `rules/aidlc.md` — the development lifecycle governing ALL work: scope test (trivial/direct/epic), capture-as-issues, design-first, subagent dispatch and crew rules, TDD with real-world fixtures, review panels, deploy + prove-live, observability/cost gates, learn loop.
 - `rules/engineering-principles.md` — DRY/KISS/SOLID enforcement, immutability, typing, DI.
-- `rules/code-conventions.md` — naming, file organization, comments, logging, observability.
-- `rules/security-practices.md` — secrets, validation, auth, dependency hygiene.
-- `rules/quality-and-verification.md` — verification checklist and quality gates.
+- `rules/code-conventions.md` — naming, file organization, comments, logging, observability, security practices.
+- `rules/quality-and-verification.md` — verification checklist and the test-hardening ladder.
 - `rules/git-and-delivery.md` — branches, commits, PRs, work decomposition.
-- `rules/workflow.md` — SDLC stages and how the skills fit together.
-- `rules/agent-coordination.md` — when and how to spawn parallel agents.

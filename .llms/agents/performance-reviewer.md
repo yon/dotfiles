@@ -2,6 +2,7 @@
 name: performance-reviewer
 description: Identify algorithmic inefficiencies, resource leaks, and scalability bottlenecks. Use for performance-critical code and data-heavy paths.
 color: yellow
+tools: Bash, Glob, Grep, Read, WebFetch, WebSearch, TodoWrite
 ---
 
 # Performance Reviewer Agent

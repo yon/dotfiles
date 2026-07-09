@@ -2,6 +2,7 @@
 name: test-reviewer
 description: Review tests for correctness, coverage, maintainability, and TDD compliance. Use to evaluate test quality and catch tests that pass without actually testing anything.
 color: yellow
+tools: Bash, Glob, Grep, Read, WebFetch, WebSearch, TodoWrite
 ---
 
 # Test Reviewer Agent

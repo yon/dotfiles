@@ -1,6 +1,7 @@
 ---
 name: lint
 description: Use when checking code style, running linters, formatters, or static analysis, fixing lint errors, or scaffolding a linter stack for a project
+allowed-tools: Bash(make lint:*), Bash(make format:*), Bash(make typecheck:*)
 ---
 
 # /lint — Linters, Formatters, Static Analysis

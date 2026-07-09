@@ -1,6 +1,7 @@
 ---
 name: test
 description: Use when running, debugging, or extending the test suite — unit, integration, e2e, property, mutation, or flaky-test management
+allowed-tools: Bash(make test:*), Bash(make test-quick:*), Bash(make test-coverage:*), Bash(make check:*)
 ---
 
 # /test — Run and Analyze Tests
