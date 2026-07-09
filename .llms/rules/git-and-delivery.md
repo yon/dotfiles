@@ -186,6 +186,12 @@ main ← PR 1 (tracer bullet) ← PR 2 (error handling) ← PR 3 (edge cases)
 - Review and merge sequentially — don't let the stack grow beyond 3-4 deep
 - Rebase subsequent PRs after merge
 
+### When NOT to stack: agent-implemented epics (learned 2026-07-09)
+
+Considered stacked PRs for the autonomous epic-implement workflow (agents build a whole epic on an integration branch, owner merges one PR to main); rejected. Stacking assumes serial, human-reviewed layers each merging to main — an agent epic is parallel (up to ~4 disjoint sub-issues concurrently, an order a stack would falsely serialize), the intermediate PRs are ephemeral scaffolding nobody consumes, and every merge under a stack forces a restack cascade across all open PRs above it (each one a semantic-conflict opportunity; a 10-issue epic blows past the 3-4-deep cap immediately). Genuinely dependent chains get stacking's sequencing for free by dispatching each issue only after its blocker merges into the integration branch — a stack that collapses at every level, so no tower to maintain.
+
+**Keep stacking's one real virtue — reviewable increments — via squash discipline instead**: each sub-issue squash-merges into the integration branch as exactly one conventional commit referencing its issue and sub-PR, so the final PR to main is reviewed commit-by-commit, one commit per issue. Hub-and-spoke plus squash discipline = stacked-PR review ergonomics without restack cost.
+
 ______________________________________________________________________
 
 ## Pre-Commit Checklist
