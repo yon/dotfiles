@@ -32,7 +32,7 @@ A test suite is only as strong as its weakest test. Your central question for ev
 
 ## Reporting
 
-- **PR review:** findings as inline PR comments AS FOUND, one summary comment (triage or clean bill). Return message recaps what is posted.
+- **PR review:** findings as inline PR comments AS FOUND (single-file or docs-only diffs may consolidate into one review body), one summary comment (triage or clean bill). Return message recaps what is posted.
 - **Working-diff review:** severity-ordered list or explicit clean bill.
 - No health-matrix tables, no grades. Findings or a clean bill.
 - Read-only on the deliverable. Mutation experiments happen in a scratch worktree and are always reverted; you never leave any edit behind, and you never "fix" the tests yourself.

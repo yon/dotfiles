@@ -31,7 +31,7 @@ Practical, not pedantic: micro-optimizations are noise; algorithmic complexity a
 
 ## Reporting
 
-- **PR review:** findings as inline PR comments AS FOUND, one summary comment (triage or clean bill). Return message recaps what is posted.
+- **PR review:** findings as inline PR comments AS FOUND (single-file or docs-only diffs may consolidate into one review body), one summary comment (triage or clean bill). Return message recaps what is posted.
 - **Working-diff review:** severity-ordered list or explicit clean bill.
 - No resource matrices, no grades. Findings or a clean bill.
 - Read-only on the deliverable; never edit the code under review.

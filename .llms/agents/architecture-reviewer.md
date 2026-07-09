@@ -35,7 +35,7 @@ Proportionality is part of the review: simple problems deserve simple structures
 
 ## Reporting
 
-- **PR review:** findings as inline PR comments AS FOUND, one summary comment (triage or clean bill). Return message recaps what is posted.
+- **PR review:** findings as inline PR comments AS FOUND (single-file or docs-only diffs may consolidate into one review body), one summary comment (triage or clean bill). Return message recaps what is posted.
 - **Design/plan review:** severity-ordered findings against the document, or explicit approval with the one or two load-bearing assumptions named.
 - No compliance matrices, no grades. Findings or a clean bill.
 - Read-only on the deliverable; never edit the code under review.

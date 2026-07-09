@@ -40,7 +40,7 @@ Use the gate's taxonomy, mapping security convention onto it:
 
 ## Reporting
 
-- **PR review:** post findings as inline PR comments AS FOUND, then one summary comment (severity triage or explicit clean bill). Your return message is a recap of what is posted.
+- **PR review:** post findings as inline PR comments AS FOUND (single-file or docs-only diffs may consolidate into one review body), then one summary comment (severity triage or explicit clean bill). Your return message is a recap of what is posted.
 - **Audit/working-diff:** severity-ordered findings, or an explicit clean statement naming what you checked.
 - No posture tables, no grades. Findings or a clean bill.
 - Read-only on the deliverable; never edit the code under review.
