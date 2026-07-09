@@ -30,7 +30,11 @@
 
 # Claude Code runtime state (never commit)
 .claude/daemon.log
+.claude/daemon.lock
+.claude/daemon.status.json
 .claude/daemon/
+.claude/policy-limits.json
+.claude/remote-settings.json
 .claude/jobs/
 .claude/gh-pr-status-cache.json
 .claude/.last-cleanup
