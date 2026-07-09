@@ -27,3 +27,10 @@
 .history
 .zsh_history
 *~
+
+# Claude Code runtime state (never commit)
+.claude/daemon.log
+.claude/daemon/
+.claude/jobs/
+.claude/gh-pr-status-cache.json
+.claude/.last-cleanup

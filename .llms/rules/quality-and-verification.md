@@ -68,6 +68,35 @@ ______________________________________________________________________
 
 ______________________________________________________________________
 
+## Test Hardening Ladder
+
+**Principle: physical constraints over prompt rules.** Agents can rationalize around a written rule; they cannot rationalize around a failing test, a surviving mutant, or a threshold a tool reports. Whenever a quality property matters, prefer encoding it as a deterministic, tool-checked gate (test, coverage floor, complexity ceiling, mutation kill) over restating it in an instruction. Agents also invert the old economics: practices that were too tedious to sustain by hand (property-based testing, mutation analysis, pushing coverage into the last file) are now cheap to run routinely — the constraint is compute and review attention, not effort. (Doctrine per Robert C. Martin's "Agentic Discipline" work, 2026.)
+
+**Layered tests are double-entry bookkeeping.** Acceptance criteria, unit tests, and end-to-end/live verification state the same intent at different altitudes; drift between layers is where bugs hide. Layers are valuable precisely because they overlap — but overlap is a cost, so apply it in proportion (see tiers).
+
+### The ladder — apply pragmatically, not maximally
+
+Baseline is mandatory everywhere; each rung above is EARNED by risk, not applied by default. "Just because we can doesn't mean we should."
+
+| Rung | What | When it applies |
+|------|------|-----------------|
+| **Baseline (always)** | Criteria-tagged unit tests (TDD), coverage on new code, complexity/function-size ceilings, lint/typecheck | Every change, every project — this is the existing gate |
+| **Property-based testing** | Agent assesses suitability, defines domain + invariants, generates, fixes what it finds | Functions with clear invariants: parsers, encoders/decoders, normalizers, arithmetic (budgets, scores, thresholds), round-trip pairs (serialize/deserialize, build/resolve), order-independent merges. Not for glue code or I/O shells |
+| **Mutation testing** | Run the mutation tool; every surviving mutant is either killed by a new/strengthened test or explicitly waived with a reason | Periodic hardening passes and high-risk modules (identity/merge logic, money/budget math, security-relevant parsing) — NOT per-PR; it is compute-heavy. A surviving mutant means a test that never really tested |
+| **Spec-level overload** | Separate acceptance-spec layer (BDD-style scenarios) + automated E2E/QA procedures beyond the unit suite | Large or multi-team surfaces, user-facing flows with UI/protocol contracts. Skip for small tools and libraries where criteria-tagged unit tests already state intent twice |
+
+### Hardening pass (role, not a person)
+
+A hardening pass over a module = close coverage gaps → identify PBT candidates and add them → run mutation → kill or waive survivors → re-run the full gate. Dispatch it as its own agent with this checklist; it edits tests only, never the code under test (if a mutant can only be killed by changing the code, that is a finding to report, not a refactor to make). Findings that reveal real bugs become tracked issues.
+
+### Guardrails
+
+- **Test-to-code volume is not the metric.** Kill rate, coverage of new code, and invariant coverage are. Ratios (his example ran ~2:1 test:app LOC) are an observation, not a target.
+- **Compute honesty**: mutation runs are CPU-bound; as suites grow, scope them (changed-module impact analysis) rather than silently skipping. Anything skipped or scoped down is reported, never silent — same no-silent-caps rule as everything else.
+- **Human judgment stays on intent and feel.** Gates verify what was specified; only the owner judges whether the specified thing is the right thing.
+
+______________________________________________________________________
+
 ## Engineering Principles Compliance
 
 ### Violations (deducted from score)

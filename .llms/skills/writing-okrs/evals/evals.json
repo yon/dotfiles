@@ -1,0 +1,26 @@
+{
+  "skill_name": "writing-okrs",
+  "evals": [
+    {
+      "id": 0,
+      "name": "critique-task-shaped-krs",
+      "prompt": "Can you review these draft OKRs for my data platform team and tell me if they're any good? Objective: Modernize our data infrastructure. KR1: Build a new ingestion pipeline in Spark. KR2: Migrate all 40 legacy ETL jobs to the new pipeline. KR3: Launch a self-serve data catalog. KR4: Hire 2 senior data engineers.",
+      "expected_output": "Identifies that KR1/KR3/KR4 are activities/outputs not outcomes, KR4 is a resourcing task, suggests outcome-based reframes (metric deltas), notes the objective is vague/maintenance-flavored. Should work KR-by-KR with current vs proposed. Should flag that hitting all KRs may not achieve the intent (completeness).",
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "control-boundary-reframe",
+      "prompt": "My developer-experience team has this KR and my VP says it's not really in our control: 'Reduce average PR merge time across all engineering teams from 3 days to 1 day by Q4.' He's right that we don't control how fast other teams review PRs. But we built the CI/merge-queue tooling. How should I rephrase it?",
+      "expected_output": "Confirms the control-boundary problem, reframes to what the DX team owns (e.g. CI/pipeline latency they control, or adoption of the merge-queue tooling), explains the paved-road logic, possibly offers adoption-% as a year-one outcome. Should not just restate the same uncontrollable metric.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "draft-from-scratch-gameable",
+      "prompt": "Help me set OKRs for my customer support team for next quarter. Our big goal is to make customers happier and get faster at resolving tickets. I want something concrete we can actually measure.",
+      "expected_output": "Drafts an objective + KRs from scratch, works toward measurable outcomes (CSAT, resolution time, etc.), and crucially pairs a speed metric with a quality guardrail to avoid gaming (e.g. faster resolution WITHOUT dropping CSAT or raising reopen rate). Should ask about baselines or note them as to-be-set. Interactive/propose style.",
+      "files": []
+    }
+  ]
+}
