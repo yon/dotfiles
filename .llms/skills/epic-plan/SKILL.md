@@ -3,60 +3,58 @@ name: epic-plan
 description: Use when capturing a feature, remediation, port/resurrection of old functionality, or any multi-issue program of work as a GitHub epic with sub-issues for later execution by separate agents — including when asked to "create an epic", "file this as issues", or "plan this so a lesser model can execute it".
 ---
 
-# Plan Epic
+# Epic Plan
 
-You are capturing work as a GitHub epic whose sub-issues will be executed LATER, by SEPARATE agents (often weaker models), with none of your current context. Every claim you don't verify now becomes a bug in their run; every detail you leave out becomes their re-investigation.
+You are capturing work as a GitHub epic whose sub-issues will be executed LATER, by SEPARATE agents (often weaker models), with none of your current context. Every claim you don't verify now becomes a bug in their run; every omission becomes their re-investigation. This is AI-DLC stages 1-3 (`~/.files/.llms/rules/aidlc.md`); `epic-implement` executes what you file.
 
-**Executor bar (binding):** assume the executor is a skilled developer who knows almost nothing about this codebase, follows instructions literally, and does not infer. Exact commands, exact paths, exact regexes, quoted evidence. If `superpowers:writing-plans` is available in your environment, its "No Placeholders" section states the same bar and its step format is useful when an executor later expands one sub-issue into a step-level plan — but do not depend on it; this section is self-sufficient.
+**Executor bar (binding):** assume a skilled developer who knows nothing about this codebase, follows instructions literally, and does not infer. Exact commands, paths, regexes; quoted evidence. Never write "TBD", "handle edge cases appropriately", "similar to the above", "port the old logic" (without the command to view it), or a schema/API in prose only.
 
-Never write: "TBD", "handle edge cases appropriately", "similar to the above", "port the old logic" (without the exact command to view it), or a schema/API described in prose only.
+## 1. Investigate — evidence, not memory
 
-## 1. Investigate before designing — evidence, not memory
+- **Git archaeology.** Prior art (old version, deleted file, dead branch): `git log --all --oneline -i --grep=<term>`, `git log --all -S <term>`, read via `git show <commit>~1:<path>`. Record the exact commands IN the issue — the executor re-reads the source, not your summary. Mine `fix:` commits for hard-won lessons and bake each into the design.
+- **Live evidence, read-only.** Real counts, ids, row shapes from the live system, quoted verbatim. "There are probably many" does not survive review. Never mutate while investigating.
+- **Reconcile existing code.** Find partial ports, dead code, and helpers the work must consume or delete; name each, decide consume/extend/delete, forbid parallel copies.
+- **Stamp**: date + main SHA on the epic, with "line numbers are from <date>; re-grep before editing."
 
-- **Git archaeology.** If anything like this existed before (old version, deleted file, dead branch): `git log --all --oneline -i --grep=<term>`, `git log --all -S <term>`, then read the final version via `git show <last-commit>~1:<path>`. Record those exact commands IN the issue — the executor re-reads the source, not your summary. Mine the fix-history (`fix:` commits) for hard-won lessons and bake each one into the design.
-- **Live evidence, read-only.** Pull real counts, ids, senders, subjects, row shapes from the live system (DB queries, API reads). Quote them verbatim in the epic. A design justified by real numbers survives review; "there are probably many" does not. Never mutate anything while investigating.
-- **Reconcile existing code.** Search for partial ports, dead code, and existing helpers the new work must consume or delete (`grep -rn <term> src/`). An issue that re-specifies something that already exists teaches the executor to build a duplicate. Name what exists, whether to consume, extend, or delete it, and forbid parallel copies.
-- **Verify every anchor now** and stamp the epic with the date + main SHA, plus the caveat: "line numbers are from <date>; re-grep before editing."
+## 2. Design — epic carries principles, each issue a contract
 
-## 2. Design at the epic level, contract per issue
-
-- The **epic body** carries: the narrative + evidence, the reference commands (archaeology, queries), and the **binding design principles** every sub-issue obeys (safety invariants, allowlists, gates, "no LLM here", model decisions). Principles stated once at the epic, referenced by children.
-- Each **sub-issue** carries a full contract: types/signatures (as code, not prose — and any embedded code must be CORRECT as written; if you cannot make it correct, specify behavior + tests instead of shipping known-buggy code with a fix-me note), schema (as SQL/DDL), error taxonomy, the TDD matrix (tests FIRST, fixtures quoted verbatim from the live evidence — a regex tested only against invented data is untested), acceptance criteria, live-proof steps for the lead, and an explicit **Out of scope** naming the sibling that owns each excluded piece.
-- **Acceptance criteria are numbered and testable — they ARE the correctness spec.** Each is `AC<n>`, phrased given/when/then with concrete inputs and expected outputs, so the implementor can write a test from it verbatim and a mechanical checker can later verify "a test tagged AC<n> exists and passed." An AC that names a command instead of a test states the exact command and its expected output. Anything not phrasable this way is not a criterion — it's either a binding design principle (move it to the epic) or noise (cut it). Downstream review conformance is checked against these numbers, so a vague AC re-inflates the cost of every stage after capture.
-- Follow the repo's CLAUDE.md conventions (naming, migration format, budget/observability rules for any LLM call, dry-run-by-default for data scripts). Where a convention exists, cite it; never restate it wrong from memory.
+- **Epic body**: narrative + evidence, the reference commands, and the binding design principles all children obey (safety invariants, allowlists, gates, model decisions) — stated once, referenced by children.
+- **Each sub-issue**: full contract — types/signatures as code (correct as written; if you can't make it correct, specify behavior + tests instead), schema as DDL, error taxonomy, the TDD matrix with fixtures quoted from the live evidence, acceptance criteria, live-proof steps for the lead, and an **Out of scope** naming the sibling that owns each exclusion.
+- **Acceptance criteria** per AI-DLC stage 1: numbered `AC<n>`, given/when/then, concrete inputs and expected outputs — the implementor writes tests from them verbatim and review verifies against the numbers mechanically. Command-verified ACs state the exact command and expected output.
+- Cite the repo's CLAUDE.md conventions; never restate one from memory.
 
 ## 3. Decompose and wire
 
-- One issue = one branch = one PR. Slice as tracer bullets: each sub-issue lands independently testable.
-- Wire dependencies **natively** (`gh api repos/{owner}/{repo}/issues/<n>/dependencies/blocked_by -F issue_id=<id>`) AND restate them in each body. Attach children via the sub-issues API (`.../issues/<epic>/sub_issues -F sub_issue_id=<id>` — numeric `id`, not number). Apply the repo's labels.
-- Note conflict surfaces: files two sub-issues (or existing open issues) both touch, with a one-toucher-per-wave warning in each affected body.
+- One issue = one branch = one PR; slice as independently-testable tracer bullets.
+- Wire natively AND restate in bodies: `gh api repos/{owner}/{repo}/issues/<n>/dependencies/blocked_by -F issue_id=<id>`; children via `.../issues/<epic>/sub_issues -F sub_issue_id=<id>` (numeric `id`, not number). Apply repo labels.
+- Note conflict surfaces (files two issues touch) with a one-toucher-at-a-time warning in each affected body.
 
 ## 4. Owner review gate — BEFORE anything is created
 
-Reviewing epics and sub-issues is one of the owner's most important jobs: once created, these bodies are executed literally by agents that don't second-guess them. Nothing is filed until the owner has approved it. Draft everything first (epic body + every sub-issue body, complete per sections 1-3), then review in two rounds via AskUserQuestion:
+Once filed, these bodies are executed literally by agents that don't second-guess them — so nothing files until the owner approves it. Draft everything (epic + all sub-issues, complete per 1-3), then AskUserQuestion in rounds:
 
-1. **Epic round.** One question: approve the epic design? Present the essentials in the question/description text — scope, the sub-issue list (number-to-be, title, one-line summary, dependency arrows), the binding design principles, and anything you're least sure about. Use the option `preview` fields to show the draft epic body. Options: "Approve as drafted", "Approve with changes" (the owner's notes are the changes — apply them), "Wrong decomposition" (re-slice per their notes and re-present), plus whatever alternative you genuinely considered (e.g. a different split) as a real option with its own preview, if one exists.
-1. **Sub-issue round(s).** Batch the sub-issues (AskUserQuestion takes up to 4 questions per call — one question per sub-issue, multiple calls for larger epics). Each question presents that issue's title + the parts most worth human judgment: the acceptance criteria, the contract's riskiest choices, and its Out-of-scope line. Preview shows the full draft body. Options: "Approve", "Approve with changes", "Needs rework". A "Needs rework" answer gets fixed and re-presented before filing; approved siblings wait — file everything in one pass at the end so dependency wiring never points at an issue that later changed.
-1. **What the owner's notes say, wins.** Apply every note verbatim-faithfully; if a note conflicts with evidence you gathered, say so in the next round's question text rather than silently ignoring either. Never file a body the owner hasn't seen in its final form — a last-minute edit after approval means one more approval pass for that issue.
+1. **Epic round**: scope, sub-issue list with dependency arrows, binding principles, and what you're least sure about; draft body as option preview. Options: approve / approve-with-changes / wrong-decomposition (+ any real alternative split you considered, with its own preview).
+2. **Sub-issue rounds** (up to 4 questions per call): per issue — title, ACs, riskiest contract choices, Out-of-scope; full body as preview. Options: approve / approve-with-changes / needs-rework. Rework loops back before filing; file everything in one pass at the end so wiring never points at a body that later changed.
+3. **Owner notes win** — but if a note conflicts with gathered evidence, surface the conflict in the next round rather than silently dropping either. Never file a body the owner hasn't seen in final form.
 
-Skip this gate ONLY if the owner has explicitly pre-authorized filing in this session ("file it", "don't ask, create them"); note that authorization in the epic body.
+Skip ONLY on explicit pre-authorization this session ("file it", "don't ask"); note the authorization in the epic body.
 
 ## 5. Register in the program
 
-Check for an execution-plan doc by actually running `ls docs/plans/*execution-plan*.md 2>/dev/null | sort | tail -1` — never assert absence without running it (a tested agent claimed "no plan doc" in a repo that had two). If one exists, add the epic's runnable set, chain order, and conflict rows there, and commit. If not, put the wave order in the epic body. Untracked work is forbidden: anything discovered during investigation that is out of scope becomes its own issue before you finish.
+Check for an execution-plan doc by RUNNING `ls docs/plans/*execution-plan*.md 2>/dev/null | sort | tail -1` — never assert absence without running it. Exists → add the epic's runnable set, chain order, conflict rows; commit. Doesn't → wave order goes in the epic body. Anything discovered-but-out-of-scope becomes its own issue before you finish.
 
-## Failure modes (each observed in real audits — check your draft against all of them)
+## Failure modes (each observed in real audits — check your draft against all)
 
 | Failure | Counter |
 |---|---|
-| Invented fixture shapes ("CHG123") | Quote real ids/subjects verbatim from live evidence |
-| Anchors go stale, executor trusts them | Date + SHA stamp, re-grep caveat, prefer symbol names over line numbers |
-| Re-specifies code that already exists | Reconciliation step names the existing helper: consume or delete |
-| Design detail lives only in a side doc that rots | The issue body is the source of truth; docs carry only cross-issue coordination |
-| LLM call without callSite/budget (when repo requires them) | Contract names them, or states "zero LLM calls" explicitly |
-| Vague safety ("be careful sending email") | Invariants as testable rules: allowlists, env gates default-off, audit rows for every decision |
-| Sub-issue depends on a sibling's internals not yet designed | The dependent body quotes the exact interface it consumes |
+| Invented fixture shapes | Quote real ids/subjects verbatim from live evidence |
+| Stale anchors trusted | Date + SHA stamp, re-grep caveat, prefer symbol names over line numbers |
+| Re-specifies existing code | Reconciliation names the existing helper: consume or delete |
+| Design lives in a side doc that rots | Issue body is the source of truth; docs carry only cross-issue coordination |
+| LLM call without tag/budget (where repo requires) | Contract names them, or states "zero LLM calls" |
+| Vague safety ("be careful") | Testable invariants: allowlists, env gates default-off, audit rows |
+| Depends on a sibling's undesigned internals | The dependent body quotes the exact interface it consumes |
 
 ## Done when
 
-Epic + sub-issues exist with native wiring and labels, **each body owner-approved in its final form before filing**; every body passes the executor bar and the failure-mode table; evidence and reference commands are embedded; program doc updated (or wave order in the epic); anything discovered-but-out-of-scope is filed. A cold-start agent given only one sub-issue's URL could execute it without asking you anything.
+Epic + sub-issues exist, natively wired and labeled, every body owner-approved in final form; every body passes the executor bar and the failure-mode table; evidence and commands embedded; program doc updated (or wave order in the epic); out-of-scope discoveries filed. A cold-start agent given one sub-issue's URL could execute it without asking you anything.
