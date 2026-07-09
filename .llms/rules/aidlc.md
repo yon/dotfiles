@@ -1,6 +1,6 @@
 # AI-DLC — AI Development Lifecycle
 
-**The binding contract for AI-driven development; applies to all projects (per-project CLAUDE.md may tighten, never loosen). The `epic-plan` skill executes stages 1-3; the `epic-implement` skill executes stages 3-7 (leaving deploy + prove-live to the owner via checklist). This file states the invariants those skills implement — where a skill and this file disagree, fix whichever is wrong in the same session.**
+**The binding contract for AI-driven development; applies to all projects (per-project CLAUDE.md may tighten, never loosen). The `epic-plan` skill executes stages 1-3; the `epic-implement` skill executes stages 3-7 (leaving deploy + prove-live to the owner via checklist). At single-issue scale, `issue-plan` executes stage 1 and `issue-implement` executes stages 4-7 under the same contracts. This file states the invariants those skills implement — where a skill and this file disagree, fix whichever is wrong in the same session.**
 
 ```
 CAPTURE → DESIGN → DECOMPOSE → BUILD (TDD) → VERIFY → REVIEW → INTEGRATE → DEPLOY → PROVE LIVE → LEARN
@@ -12,6 +12,7 @@ CAPTURE → DESIGN → DECOMPOSE → BUILD (TDD) → VERIFY → REVIEW → INTEG
 
 - **Trivial** (single-file edit with obvious scope: a typo, a rename, running a known skill, an informational question): just do it — no plan, no issue.
 - **Direct work** (non-trivial, not epic-scale): read before writing — the relevant tests, `git log --oneline -10` for the area, dependencies and dependents — then plan first (plan mode or `superpowers:writing-plans`), then BUILD → VERIFY → REVIEW below. Review runs on the working diff (built-in `/code-review`); the gate is finding-driven the same as stage 6, but Minors may be fixed inline instead of filed.
+- **Captured work** (single issue executed later, by a separate session): capture with `issue-plan` (bug/feature/chore, executor-ready); execute with `issue-implement` (one branch, one PR, stage-6 review, owner merges). Direct work above is for doing it NOW in-session; the moment work is deferred to another session, it must be captured to the issue-plan bar.
 - **Epic-scale** (multi-issue program of work): the full lifecycle below, captured as a GitHub epic.
 
 ## 1. CAPTURE
@@ -56,7 +57,7 @@ CAPTURE → DESIGN → DECOMPOSE → BUILD (TDD) → VERIFY → REVIEW → INTEG
 ## 6. REVIEW — hard gate, per PR, before merge
 
 - AC conformance is checked mechanically before any panel: map complete, tagged tests passed in the gate output, command-verified ACs re-run.
-- Panel: the tests reviewer always; an optional pool (adversarial-correctness, security, architecture, performance, data-integrity, hardener) joins by published triggers plus lead judgment, with the composition posted to the PR before reviews start. The single maintained trigger table lives in the `epic-implement` skill; repo CLAUDE.md rows augment it, never fork it. A post-merge Critical/Major in a PR that skipped a reviewer means a missing row — added the same session.
+- Panel: the tests reviewer always; an optional pool (adversarial-correctness, security, architecture, performance, data-integrity, hardener) joins by published triggers plus lead judgment, with the composition posted to the PR before reviews start. The single maintained trigger table lives in the `epic-implement` skill (consulted, never forked, by `issue-implement`); repo CLAUDE.md rows augment it, never fork it. A post-merge Critical/Major in a PR that skipped a reviewer means a missing row — added the same session.
 - Findings are PR comments posted as found: severity (Critical/Major/Minor) + concrete failure scenario. A finding without a repro is a question. The lead verifies before dispatching fixes and replies with verdicts — nothing lives only in chat.
 - Fix rounds: the PR's own implementor fixes; the finding's own reviewer verifies the delta (fix-commits diff only); a full re-panel with FRESH reviewers only when the approach was rewritten. 5-round cap, then explicit accept-with-documented-reason or escalate — never merge past a Critical/Major silently.
 - Model tiering by cost-of-being-wrong: mechanical work cheapest tier; implementors and checklist reviewers mid; adversarial-correctness and security strong; delta verification routes to the finder and inherits its tier (a fresh strong-tier verifier only when the finder is dead); the frontier model is escalation-only. Pattern-match trigger checks use no model.

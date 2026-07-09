@@ -1,6 +1,6 @@
 ---
 name: epic-plan
-description: Use when capturing a feature, remediation, port/resurrection of old functionality, or any multi-issue program of work as a GitHub epic with sub-issues for later execution by separate agents — including when asked to "create an epic", "file this as issues", or "plan this so a lesser model can execute it".
+description: Use when capturing a feature, remediation, port/resurrection of old functionality, or any multi-issue program of work as a GitHub epic with sub-issues for later execution by separate agents — including when asked to "create an epic", "file this as issues", or "plan this so a lesser model can execute it". Single-issue-scale work (one bug/feature/chore) goes to issue-plan.
 ---
 
 # Epic Plan

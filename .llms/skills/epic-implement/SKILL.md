@@ -1,6 +1,6 @@
 ---
 name: epic-implement
-description: Use when asked to implement an epic, a backlog of issues, or "/epic-implement N" — autonomous multi-agent execution of a GitHub epic's sub-issues, safe under a permission-bypassed session. Pass the epic number as the argument; if omitted, asks which open epic to run.
+description: Use when asked to implement an epic, a backlog of issues, or "/epic-implement N" — autonomous multi-agent execution of a GitHub epic's sub-issues, safe under a permission-bypassed session. Pass the epic number as the argument; if omitted, asks which open epic to run. A single issue goes to issue-implement.
 ---
 
 # Epic Implement
