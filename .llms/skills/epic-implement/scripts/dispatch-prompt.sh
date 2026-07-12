@@ -7,6 +7,9 @@
 # Slots filled:
 #   {{ISSUE_NUMBER}}  the issue number
 #   {{BRANCH}}        branch from the manifest entry
+#   {{EPIC_BRANCH}}   $EPIC_BRANCH, else the manifest's epic/* worktree
+#                     branch, else `main` (solo issue-implement work) —
+#                     the sub-PR's REQUIRED base branch
 #   {{GATE_CMD}}      arg 2, else $EPIC_GATE_CMD, else `make check`
 #   {{ISSUE_TEXT}}    issue body + ALL comments (gh issue view)
 #   {{FILES_OWNED}}   files_owned read FROM the manifest entry that
@@ -63,6 +66,7 @@ entry=$(jq -e --argjson issue "$issue" '[.worktrees[] | select(.issue == $issue)
 [ -n "$entry" ] && [ "$entry" != "null" ] \
   || fail NO_MANIFEST_ENTRY 40 "no manifest entry for issue #$issue; run worktree.sh create first"
 branch=$(jq -r .branch <<<"$entry")
+epic_branch=${EPIC_BRANCH:-$(jq -r '[.worktrees[].branch | select(startswith("epic/"))] | first // "main"' "$manifest")}
 
 workdir=$(mktemp -d)
 trap 'rm -rf "$workdir"' EXIT
@@ -87,6 +91,7 @@ awk -v issue_file="$workdir/issue.txt" \
     -v facts_file="$host_facts" \
     -v issue_num="$issue" \
     -v branch="$branch" \
+    -v epic_branch="$epic_branch" \
     -v gate_cmd="$gate_cmd" '
   function catfile(f,   l) { while ((getline l < f) > 0) print l; close(f) }
   function repl(s, tok, val,   i, out) {
@@ -106,6 +111,7 @@ awk -v issue_file="$workdir/issue.txt" \
     line = $0
     line = repl(line, "{{ISSUE_NUMBER}}", issue_num)
     line = repl(line, "{{BRANCH}}", branch)
+    line = repl(line, "{{EPIC_BRANCH}}", epic_branch)
     line = repl(line, "{{GATE_CMD}}", gate_cmd)
     print line
   }

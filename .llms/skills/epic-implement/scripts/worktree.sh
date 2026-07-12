@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# worktree.sh {create <issue> <branch> [files-owned...] | destroy <path> | check}
+# worktree.sh {create <issue> <branch> [--base <ref>] [files-owned...] | destroy <path> | check}
 #
 # Epic worktree lifecycle plus the shared ownership manifest. Run from inside
 # the target repo (main checkout or any worktree); the repo is discovered from
@@ -10,7 +10,10 @@
 #   { "worktrees": [ { "issue": 200, "branch": "...", "path": "/abs/path",
 #                      "files_owned": ["..."], "pr": null } ] }
 #
-#   create  — git worktree add from PUSHED origin/main + append manifest entry.
+#   create  — git worktree add from a PUSHED base ref (--base, default
+#             origin/main; sub-issue worktrees pass the epic branch) + append
+#             manifest entry. If <branch> already exists, checks it out
+#             instead of creating (idempotent for the epic worktree).
 #   destroy — remove the worktree (refuses if dirty: commit WIP, NEVER stash),
 #             prune, delete the manifest entry.
 #   check   — for each manifest entry with an open PR, compare
@@ -72,22 +75,35 @@ manifest_write() { # stdin -> manifest, atomically
 cmd=${1:-}
 case "$cmd" in
   create)
-    [ $# -ge 3 ] || fail USAGE 2 "usage: worktree.sh create <issue> <branch> [files-owned...]"
+    [ $# -ge 3 ] || fail USAGE 2 "usage: worktree.sh create <issue> <branch> [--base <ref>] [files-owned...]"
     issue=$2
     branch=$3
     shift 3
+    base_ref="origin/main"
+    if [ "${1:-}" = "--base" ]; then
+      [ $# -ge 2 ] || fail USAGE 2 "--base requires a ref"
+      base_ref=$2
+      shift 2
+    fi
     case "$issue" in
       *[!0-9]*|'') fail USAGE 2 "issue number must be numeric, got '$issue'" ;;
     esac
 
-    git -C "$main_checkout" fetch origin main --quiet \
-      || fail GIT_FAILED 23 "git fetch origin main failed"
+    git -C "$main_checkout" fetch origin --quiet \
+      || fail GIT_FAILED 23 "git fetch origin failed"
+    git -C "$main_checkout" rev-parse --verify --quiet "$base_ref" >/dev/null \
+      || fail GIT_FAILED 23 "base ref '$base_ref' does not exist (push it first)"
 
     wt_path="$(dirname "$main_checkout")/$(basename "$main_checkout")-issue-${issue}"
     [ -e "$wt_path" ] && fail GIT_FAILED 23 "worktree path already exists: $wt_path"
 
-    git -C "$main_checkout" worktree add "$wt_path" -b "$branch" origin/main \
-      || fail GIT_FAILED 23 "git worktree add $wt_path -b $branch origin/main failed"
+    if git -C "$main_checkout" rev-parse --verify --quiet "refs/heads/$branch" >/dev/null; then
+      git -C "$main_checkout" worktree add "$wt_path" "$branch" \
+        || fail GIT_FAILED 23 "git worktree add $wt_path $branch failed"
+    else
+      git -C "$main_checkout" worktree add "$wt_path" -b "$branch" "$base_ref" \
+        || fail GIT_FAILED 23 "git worktree add $wt_path -b $branch $base_ref failed"
+    fi
 
     files_json='[]'
     if [ $# -gt 0 ]; then

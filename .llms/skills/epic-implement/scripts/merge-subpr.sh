@@ -17,6 +17,9 @@
 #  30  PR_NOT_OPEN          state != OPEN — gh pr merge NOT called
 #  31  PR_NOT_MERGEABLE     GitHub reports not mergeable — gh pr merge NOT called
 #  32  MERGE_FAILED         gh pr merge itself failed
+#  33  WRONG_BASE           sub-PR base is not the epic PR's head branch —
+#                           gh pr merge NOT called (guards sub-issues landing
+#                           straight on main via a defaulted gh pr create)
 set -euo pipefail
 
 fail() { # fail <NAME> <code> <message...>
@@ -37,21 +40,31 @@ command -v gh >/dev/null 2>&1 || fail MISSING_DEPENDENCY 24 "gh is required"
 command -v jq >/dev/null 2>&1 || fail MISSING_DEPENDENCY 24 "jq is required"
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
-pr_json=$(gh pr view "$pr" --json state,mergeable,headRefName,closingIssuesReferences)
+pr_json=$(gh pr view "$pr" --json state,mergeable,headRefName,baseRefName,title,closingIssuesReferences)
 state=$(jq -r .state <<<"$pr_json")
 mergeable=$(jq -r .mergeable <<<"$pr_json")
 head_ref=$(jq -r .headRefName <<<"$pr_json")
+base_ref=$(jq -r .baseRefName <<<"$pr_json")
+title=$(jq -r .title <<<"$pr_json")
 linked_issues=$(jq -r '.closingIssuesReferences[].number' <<<"$pr_json")
+epic_head=$(gh pr view "$epic_pr" --json headRefName -q .headRefName)
 
 if [ "$state" != "OPEN" ]; then
   fail PR_NOT_OPEN 30 "refusing PR #$pr: state is $state, not OPEN. gh pr merge NOT called."
+fi
+if [ "$base_ref" != "$epic_head" ]; then
+  fail WRONG_BASE 33 "refusing PR #$pr: base is '$base_ref', expected the epic branch '$epic_head'. Retarget with: gh pr edit $pr --base $epic_head. gh pr merge NOT called."
 fi
 if [ "$mergeable" != "MERGEABLE" ]; then
   fail PR_NOT_MERGEABLE 31 "refusing PR #$pr: GitHub reports mergeable=$mergeable. gh pr merge NOT called."
 fi
 
+# One conventional commit per issue on the epic branch: subject = PR title
+# (which the dispatch template mandates as `type(scope): summary (#issue)`)
+# plus the sub-PR ref for the audit trail.
 echo "merge-subpr.sh: merging PR #$pr (branch $head_ref) via gh pr merge --squash"
-gh pr merge "$pr" --squash || fail MERGE_FAILED 32 "gh pr merge $pr --squash failed"
+gh pr merge "$pr" --squash --subject "$title (PR #$pr)" \
+  || fail MERGE_FAILED 32 "gh pr merge $pr --squash failed"
 
 # Close linked sub-issues (squash lands on the epic branch, not the default
 # branch, so GitHub will not auto-close them).

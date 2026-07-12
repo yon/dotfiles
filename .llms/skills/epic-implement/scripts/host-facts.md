@@ -9,6 +9,12 @@
   a sealed container 403s on a denied inference-profile ARN unless the host's
   `~/.claude/settings.bedrock.json` is copied in AND every invocation passes
   `--settings "$HOME/.claude/settings.bedrock.json"`.
+- **Installing claude inside a container:** the CLI usually isn't baked into
+  sealed images, and `sudo` there is scoped to the firewall script only. Use
+  a user-local npm prefix: `npm config set prefix ~/.npm-global &&
+  npm install -g @anthropic-ai/claude-code`. After launching an in-container
+  claude, read its log output — silent immediate death means auth/config,
+  not a crash worth retrying.
 - **gws auth is a credentials file, never a login flow.** The `gws` CLI
   authenticates via the `GOOGLE_WORKSPACE_CLI_CREDENTIALS_FILE` env var
   pointing at a credentials JSON. NEVER run `gws auth login` or
