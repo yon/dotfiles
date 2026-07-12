@@ -8,6 +8,13 @@ clean:
 	for file in $(DOTFILES); do \
 		/bin/rm -f -r $(HOME)/$${file}; \
 	done
+	for link in $(HOME)/.[!.]* $(HOME)/*; do \
+		if [ -L "$${link}" ] && [ ! -e "$${link}" ]; then \
+			case "$$(readlink "$${link}")" in \
+			$(DOTFILE_DIR)/*) /bin/rm -f "$${link}";; \
+			esac; \
+		fi; \
+	done
 
 link:
 	for file in $(DOTFILES); do \
@@ -16,7 +23,13 @@ link:
 
 set_permissions:
 	chmod 700 $(HOME);
-	chmod -R u=rwX,g=rX,o= $(DOTFILE_DIR);
+	chmod u=rwX,g=rX,o= $(DOTFILE_DIR);
+	for file in $(DOTFILES); do \
+		case "$${file}" in \
+		.claude|.gnupg|.ssh) ;; \
+		*) chmod -R u=rwX,g=rX,o= $(DOTFILE_DIR)/$${file};; \
+		esac; \
+	done
 	chmod -R u=rwX,go= $(DOTFILE_DIR)/.gnupg;
 	chmod -R u=rwX,go= $(DOTFILE_DIR)/.ssh;
 

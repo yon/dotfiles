@@ -68,6 +68,12 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 
 fpath=(~/.zsh/completion $fpath)
 
+# grok (PATH + completions; fpath must be set before compinit)
+if [ -d "${HOME}/.grok/bin" ]; then
+    export PATH="${HOME}/.grok/bin:${PATH}"
+    fpath=(~/.grok/completions/zsh $fpath)
+fi
+
 # bun completions
 [ -s "/Users/yon/.bun/_bun" ] && source "/Users/yon/.bun/_bun"
 
@@ -99,9 +105,3 @@ if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/op
 [ -r ${HOME}/.functions ] && . ${HOME}/.functions;
 
 [ -n "${DEBUG}" ] && echo "<<< `basename $0`";
-
-# >>> grok installer >>>
-export PATH="$HOME/.grok/bin:$PATH"
-fpath=(~/.grok/completions/zsh $fpath)
-autoload -Uz compinit && compinit -C
-# <<< grok installer <<<

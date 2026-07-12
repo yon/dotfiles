@@ -4,7 +4,6 @@ alias -- \
     -='cd -' \
     ..='cd ..' \
     du='du -d 1 -h | sort -h' \
-    e='enscript -2rG -P' \
     gam='/Users/yon/bin/gam7/gam' \
     jq='jq --color-output' \
     l='ls -CFG' \
@@ -21,7 +20,6 @@ alias -- \
     scp='scp -p' \
     sx='ssh -AX' \
     vi="${EDITOR}" \
-    xe='xemacs' \
 # leave this line to swallow the \ at the end of the previous line
 
 case "${SYSTEM}" in
