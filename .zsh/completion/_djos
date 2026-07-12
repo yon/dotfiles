@@ -13,13 +13,14 @@ _djos() {
     'time-analysis:Analyze how meeting time is distributed across work areas and activity types over a window \(default 30 days\).'
     'draft-feedback:Capture draft-vs-sent feedback for DJOS-drafted replies and propose style-guide additions \(written to a .proposed.md for review, never auto-applied\).'
     'ingest:Pull latest code, sync db state, run all ingest pipelines via queue drain loop, export db.'
-    'vault-render:Mark all entities dirty and render the Obsidian vault \(requires VAULT_DIR\).'
     'dedup:Recurring dedup pass over the people table \(issue #30\)\: auto-merges the conservative bucket, writes data/dedup-report.md, and leaves the rest for `person merge` / `person distinct`.'
     'digest:Build and write the daily digest \(with health banner\) to the vault, then email it to yon@dowjones.com \(issue #34; disable with DJOS_DIGEST_EMAIL=0\). --resend overrides the once-per-day idempotency guard and sends again.'
     'enrich:Run the person-enrichment batch \(extract new facts for known people\).'
-    'prep:Render today'\''s meeting prep notes to the vault.'
+    'prep:Render today'\''s meeting prep notes to the vault, then email them to yon@dowjones.com \(issue #35; disable with DJOS_PREP_EMAIL=0\). Skips the send when there are no meetings. --resend overrides the once-per-day idempotency guard and sends again.'
     'sleep:Run the nightly sleep cycle\: importance backfill, demote_stale, coalesce_buckets, and other quality-loop passes, budget-capped. --dry-run\: writes nothing and makes no LLM calls — coalesce_buckets reports its deterministic bucket plan, every other pass is skipped and reports skippedDryRun.'
+    'vault-render:Mark all entities dirty and render the Obsidian vault \(requires VAULT_DIR\).'
     'self-eval:Weekly ground-truth eval\: measure per-tier error rate and auto-tune the tier dial.'
+    'ops-report:Build and write the weekly operations report to the vault, then email it to yon@dowjones.com \(issue #36\). --resend overrides the once-per-week idempotency guard and sends again.'
     'cost:summary'
     'email:send-test'
     'person:list, merge, distinct, correct'
@@ -225,9 +226,19 @@ _djos() {
               '--resend[Send again even if today'\''s digest was already sent]' \
               '(- *)--help[show help]'
           ;;
+        'prep')
+          _arguments \
+              '--resend[Send again even if today'\''s prep was already sent]' \
+              '(- *)--help[show help]'
+          ;;
         'sleep')
           _arguments \
               '--dry-run[write nothing, spend nothing\: coalesce_buckets reports its deterministic bucket plan \(no LLM calls\); all other passes are skipped and report skippedDryRun]' \
+              '(- *)--help[show help]'
+          ;;
+        'ops-report')
+          _arguments \
+              '--resend[Send again even if this week'\''s report was already sent]' \
               '(- *)--help[show help]'
           ;;
         'health')
@@ -245,16 +256,13 @@ _djos() {
         'task list')
           _arguments '(- *)--help[show help]'
           ;;
-        'vault-render')
-          _arguments '(- *)--help[show help]'
-          ;;
         'dedup')
           _arguments '(- *)--help[show help]'
           ;;
         'enrich')
           _arguments '(- *)--help[show help]'
           ;;
-        'prep')
+        'vault-render')
           _arguments '(- *)--help[show help]'
           ;;
         'self-eval')
