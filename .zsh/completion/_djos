@@ -9,6 +9,7 @@ _djos() {
   local -a first_level
   first_level=(
     'health:Report DJOS health\: minutes since last successful ingest, queue depth, dead-letter count, and today'\''s LLM spend vs budget.'
+    'dashboard:Regenerate the self-contained djos dashboard \(data/dashboard.html\)\: read-only DB queries, Health section \(job staleness, dead-letter breakdown, queue depth\). No LLM calls.'
     'context:Compact briefing for a person\: profile, recent confirmed facts, last interactions, open threads. Accepts a slug, email, or name.'
     'time-analysis:Analyze how meeting time is distributed across work areas and activity types over a window \(default 30 days\).'
     'draft-feedback:Capture draft-vs-sent feedback for DJOS-drafted replies and propose style-guide additions \(written to a .proposed.md for review, never auto-applied\).'
@@ -18,7 +19,7 @@ _djos() {
     'enrich:Run the person-enrichment batch \(extract new facts for known people\).'
     'prep:Render today'\''s meeting prep notes to the vault, then email them to yon@dowjones.com \(issue #35; disable with DJOS_PREP_EMAIL=0\). Skips the send when there are no meetings. --resend overrides the once-per-day idempotency guard and sends again.'
     'sleep:Run the nightly sleep cycle\: importance backfill, demote_stale, coalesce_buckets, and other quality-loop passes, budget-capped. --dry-run\: writes nothing and makes no LLM calls — coalesce_buckets reports its deterministic bucket plan, every other pass is skipped and reports skippedDryRun.'
-    'vault-render:Mark all entities dirty and render the Obsidian vault \(requires VAULT_DIR\).'
+    'vault-render:Mark all entities dirty and render the Obsidian vault \(VAULT_DIR, default vault/\).'
     'self-eval:Weekly ground-truth eval\: measure per-tier error rate and auto-tune the tier dial.'
     'ops-report:Build and write the weekly operations report to the vault, then email it to yon@dowjones.com \(issue #36\). --resend overrides the once-per-week idempotency guard and sends again.'
     'cost:summary'
@@ -120,6 +121,11 @@ _djos() {
         'cost summary')
           _arguments \
               '--days=[window in days \(default 7\)]:days:' \
+              '(- *)--help[show help]'
+          ;;
+        'dashboard')
+          _arguments \
+              '--out=[output path override]:out:' \
               '(- *)--help[show help]'
           ;;
         'context')
