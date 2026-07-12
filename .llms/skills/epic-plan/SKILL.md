@@ -25,7 +25,7 @@ You are capturing work as a GitHub epic whose sub-issues will be executed LATER,
 
 ## 3. Decompose and wire
 
-- One issue = one branch = one PR; slice as independently-testable tracer bullets.
+- One issue = one branch = one PR; slice as independently-testable tracer bullets, sized so the PR lands under ~300 lines (epic #214 evidence: the median actual PR was 587 lines and 56% busted the 500 hard limit; oversized issues are the root cause, and every threshold-buster pays maximum review depth).
 - Wire natively AND restate in bodies: `gh api repos/{owner}/{repo}/issues/<n>/dependencies/blocked_by -F issue_id=<id>`; children via `.../issues/<epic>/sub_issues -F sub_issue_id=<id>` (numeric `id`, not number). Apply repo labels.
 - Note conflict surfaces (files two issues touch) with a one-toucher-at-a-time warning in each affected body.
 

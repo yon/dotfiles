@@ -11,7 +11,7 @@ CAPTURE → DESIGN → DECOMPOSE → BUILD (TDD) → VERIFY → REVIEW → INTEG
 ## 0. SCOPE — every task enters here
 
 - **Trivial** (single-file edit with obvious scope: a typo, a rename, running a known skill, an informational question): just do it — no plan, no issue.
-- **Direct work** (non-trivial, not epic-scale): read before writing — the relevant tests, `git log --oneline -10` for the area, dependencies and dependents — then plan first (plan mode or `superpowers:writing-plans`), then BUILD → VERIFY → REVIEW below. Review runs on the working diff (built-in `/code-review`); the gate is finding-driven the same as stage 6, but Minors may be fixed inline instead of filed.
+- **Direct work** (non-trivial, not epic-scale): read before writing — the relevant tests, `git log --oneline -10` for the area, dependencies and dependents — then plan first (plan mode or `superpowers:writing-plans`), then BUILD → VERIFY → REVIEW below. Review runs on the working diff (built-in `/code-review`); the gate is finding-driven the same as stage 6, Minors fixed inline the same way.
 - **Captured work** (single issue executed later, by a separate session): capture with `issue-plan` (bug/feature/chore, executor-ready); execute with `issue-implement` (one branch, one PR, stage-6 review, owner merges). Direct work above is for doing it NOW in-session; the moment work is deferred to another session, it must be captured to the issue-plan bar.
 - **Epic-scale** (multi-issue program of work): the full lifecycle below, captured as a GitHub epic.
 
@@ -36,7 +36,7 @@ CAPTURE → DESIGN → DECOMPOSE → BUILD (TDD) → VERIFY → REVIEW → INTEG
 
 ## 3a. DISPATCH — parallel subagents
 
-- Parallelism earns its cost (each subagent pays its own full context; ~N× sequential tokens) only when concurrency has genuine value — 2-4 agents for most work; ~4 concurrent implementors is the epic cap. Strong fits: dimensional review panels, module-parallel implementation over disjoint files, competing-hypothesis debugging, research swarms. Skip it for single-file changes, tightly-coupled edits (sequence them), and exploration where the file set isn't known yet.
+- Parallelism earns its cost (each subagent pays its own full context; ~N× sequential tokens; epic rebase churn is O(merges × in-flight)) only when concurrency has genuine value — 2 concurrent implementors is the epic default; raise to 3-4 only with disjoint-file proof via the worktree ownership manifest (`epic-implement` scripts). Strong fits: dimensional review panels, module-parallel implementation over disjoint files, competing-hypothesis debugging, research swarms. Skip it for single-file changes, tightly-coupled edits (sequence them), and exploration where the file set isn't known yet.
 - Every dispatch prompt is self-contained — the agent has no conversation history, only the prompt, the project CLAUDE.md, and the codebase. State the files/directories it owns (exactly one owner per file; config files included), the definition of done, and decisions already made so it doesn't relitigate them.
 - Worktree isolation: mandatory for PR-producing dispatch (branched from a pushed base); on demand for in-session parallel edits when ownership boundaries are unclear.
 - Crews are long-lived per PR: fixes, rebases, and delta verification route back to the same implementor/finder via SendMessage; respawn (briefed from the PR + issue) only when an agent is dead or incoherent.
@@ -45,7 +45,7 @@ CAPTURE → DESIGN → DECOMPOSE → BUILD (TDD) → VERIFY → REVIEW → INTEG
 
 ## 4. BUILD — TDD with domain coverage
 
-- Tests first; every `AC<n>` becomes tests tagged with its number; the PR description carries the AC→test map. An unmappable AC is a blocker raised before pushing, never shipped around.
+- Tests first, and reviewed at the RED stage: the failing test-only diff is reviewed (tests encode the ACs? tautologies? production-shaped fixtures?) BEFORE implementation begins; the reviewer, not the implementor, certifies the AC→test map. Every `AC<n>` becomes tests tagged with its number; the PR description carries the certified map. An unmappable AC is a blocker raised before pushing, never shipped around.
 - Real-world fixtures quoted verbatim from the live system (read-only); schema through the real migration runner, never hand-written DDL.
 - Edge cases per type: boundaries, empty sets, idempotency (run twice), unicode, negative and budget-exhausted paths. Mutation scripts tested for dry-run correctness, apply, idempotent re-run, integrity.
 - Hardening beyond baseline is tiered by risk per the Test Hardening Ladder (`quality-and-verification.md`): physical constraints over prompt rules.
@@ -57,16 +57,16 @@ CAPTURE → DESIGN → DECOMPOSE → BUILD (TDD) → VERIFY → REVIEW → INTEG
 ## 6. REVIEW — hard gate, per PR, before merge
 
 - AC conformance is checked mechanically before any panel: map complete, tagged tests passed in the gate output, command-verified ACs re-run.
-- Panel: the tests reviewer always; an optional pool (adversarial-correctness, security, architecture, performance, data-integrity, hardener) joins by published triggers plus lead judgment, with the composition posted to the PR before reviews start. The single maintained trigger table lives in the `epic-implement` skill (consulted, never forked, by `issue-implement`); repo CLAUDE.md rows augment it, never fork it. A post-merge Critical/Major in a PR that skipped a reviewer means a missing row — added the same session.
-- Findings are PR comments posted as found: severity (Critical/Major/Minor) + concrete failure scenario. A finding without a repro is a question. The lead verifies before dispatching fixes and replies with verdicts — nothing lives only in chat.
-- Fix rounds: the PR's own implementor fixes; the finding's own reviewer verifies the delta (fix-commits diff only); a full re-panel with FRESH reviewers only when the approach was rewritten. 5-round cap, then explicit accept-with-documented-reason or escalate — never merge past a Critical/Major silently.
-- Model tiering by cost-of-being-wrong: mechanical work cheapest tier; implementors and checklist reviewers mid; adversarial-correctness and security strong; delta verification routes to the finder and inherits its tier (a fresh strong-tier verifier only when the finder is dead); the frontier model is escalation-only. Pattern-match trigger checks use no model.
-- Minors become tracked issues (wired, linked in a reply to the finding) — never dropped, never blocking.
-- Closing invariant: every finding is a PR comment first; every survivor ends as a merged fix (referenced by commit/PR) or a tracked issue (referenced by number), posted as a reply to the original comment.
+- Panel by risk tier (the maintained tier + trigger tables live in the `epic-implement` skill — consulted, never forked, by `issue-implement`; repo CLAUDE.md rows augment, never fork): tests review happens at the red stage (stage 4), not post-implementation; Tier-FULL surfaces/triggers get adversarial-correctness + scoped mutation; everything else gets one strong fresh-context reviewer; specialist triggers apply at every tier. Composition posted to the PR before reviews start. A post-merge Critical/Major in a PR that skipped a reviewer means a missing row — added the same session.
+- Findings are PR comments posted as found: severity (Critical/Major/Minor) + a finder-VERIFIED concrete trigger (input/state → broken output) — narrative blast radius is not severity. A finding without a repro is a question. The lead verifies Critical/Major before dispatching fixes and replies with verdicts — nothing lives only in chat.
+- Fix rounds: the PR's own implementor fixes; the finding's own reviewer verifies the delta (fix-commits diff only), including any tests the fix added; a full re-panel with FRESH reviewers only when the approach was rewritten. 5-round cap, then explicit accept-with-documented-reason or escalate — never merge past a Critical/Major silently.
+- Model tiering by cost-of-being-wrong: mechanical work cheapest tier; implementors and specialist reviewers mid; adversarial-correctness, security, and the Tier-STANDARD single reviewer strong; delta verification routes to the finder and inherits its tier (a fresh strong-tier verifier only when the finder is dead); the frontier model is escalation-only. Pattern-match trigger checks use no model.
+- Minors are fixed inline in the PR's own fix round (one round runs even with zero Critical/Major), never filed as issues; implementor-disputed Minors go to ONE batch comment at merge — never dropped, never blocking.
+- Closing invariant: every finding is a PR comment first; every surviving Critical/Major ends as a merged fix (referenced by commit/PR) or a tracked issue (referenced by number), posted as a reply to the original comment; Minors end fixed in-PR or in the merge batch comment.
 
 ## 7. INTEGRATE
 
-- Sequential rebase-verify-merge; semantic conflicts resolved by COMBINING intents, never picking a side. Gate re-run per PR, one integration verification at the end, worktrees removed immediately.
+- Sequential rebase-verify-merge; semantic conflicts resolved by COMBINING intents, never picking a side. A clean rebase costs the gate only; a semantic conflict costs the gate plus ONE targeted reviewer pass scoped to the conflict region — never a fresh full panel. One integration verification at the end, worktrees removed immediately.
 
 ## 8. DEPLOY
 

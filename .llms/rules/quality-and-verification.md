@@ -2,7 +2,7 @@
 
 **Purpose:** the verification discipline for every task that creates or modifies code, and the test-hardening ladder for earning confidence beyond the baseline.
 
-**The gate is finding-driven, not score-driven.** Build/test/lint/typecheck failures block outright. Review findings block by severity: a surviving Critical or Major blocks merge; Minors become tracked issues in PR review (per `aidlc.md` stage 6) or may be fixed inline in working-diff review. There is no numeric quality score.
+**The gate is finding-driven, not score-driven.** Build/test/lint/typecheck failures block outright. Review findings block by severity: a surviving Critical or Major blocks merge; Minors are fixed inline per `aidlc.md` stage 6. There is no numeric quality score.
 
 ______________________________________________________________________
 
@@ -20,7 +20,7 @@ Baseline is mandatory everywhere; each rung above is EARNED by risk, not applied
 |------|------|-----------------|
 | **Baseline (always)** | Criteria-tagged unit tests (TDD), coverage on new code, complexity/function-size ceilings, lint/typecheck | Every change, every project — this is the existing gate |
 | **Property-based testing** | Agent assesses suitability, defines domain + invariants, generates, fixes what it finds | Functions with clear invariants: parsers, encoders/decoders, normalizers, arithmetic (budgets, scores, thresholds), round-trip pairs (serialize/deserialize, build/resolve), order-independent merges. Not for glue code or I/O shells |
-| **Mutation testing** | Run the mutation tool; every surviving mutant is either killed by a new/strengthened test or explicitly waived with a reason | Periodic hardening passes and high-risk modules (identity/merge logic, money/budget math, security-relevant parsing) — NOT per-PR; it is compute-heavy. A surviving mutant means a test that never really tested |
+| **Mutation testing** | Run the mutation tool (`make test-mutation` where the repo provides it — incremental, scoped to changed modules); every surviving mutant is either killed by a new/strengthened test or explicitly waived with a reason | Per-PR on Tier-FULL surfaces per `epic-implement` (run by the adversarial reviewer, changed modules only) plus periodic whole-module hardening passes. Route suspected test gaps to the tool BEFORE spending a reviewer on them. A surviving mutant means a test that never really tested |
 | **Spec-level overload** | Separate acceptance-spec layer (BDD-style scenarios) + automated E2E/QA procedures beyond the unit suite | Large or multi-team surfaces, user-facing flows with UI/protocol contracts. Skip for small tools and libraries where criteria-tagged unit tests already state intent twice |
 
 ### Hardening pass (role, not a person)

@@ -24,12 +24,12 @@ You are the LEAD for ONE issue: a dispatched implementor writes the code, indepe
    Re-grep the issue's anchors before relying on them — dated line numbers drift.
 2. **CriteriaPreGate.** Issue lacks numbered testable ACs → write them from the body and post as an issue comment titled "Acceptance criteria (added at dispatch)" (epic-implement's rule, verbatim).
 3. **Dispatch ONE implementor** (sonnet) with epic-implement's dispatch-prompt contract, base = main, in the worktree above. Dispatch is not about parallelism — it preserves writer/reviewer separation: you verify findings against code you did not write. Do not implement inline.
-4. **Per-PR spine.** Run epic-implement's per-PR states — Conformance → PanelCompose → Reviewing → LeadVerify → FixRound / DeltaVerify / RePanel → CapDecision — exactly as written there, with two substitutions: the base branch is main, and RebaseVerify fires only when main advances. **The tests reviewer ALWAYS runs on any code diff.** "A diff this size is proportionate to self-review" is the observed rationalization; review by the writer counts as NO review. Only diffs with no runtime surface (docs/config-only) may take the built-in `/code-review` instead of a panel.
+4. **Per-PR spine.** Run epic-implement's per-PR states — TestsRed → Implementing → Conformance → PanelCompose (risk tiers) → Reviewing → LeadVerify → FixRound / DeltaVerify / RePanel → CapDecision — exactly as written there, with two substitutions: the base branch is main, and RebaseVerify fires only when main advances. **The red-stage test review ALWAYS runs on any code diff** — "a diff this size is proportionate to self-review" is the observed rationalization; review by the writer counts as NO review. Tier-STANDARD still gets its one strong fresh-context reviewer post-implementation. Only diffs with no runtime surface (docs/config-only) may take the built-in `/code-review` instead.
 5. **Finish.** Mark the PR ready-for-review with: the AC→test map, per-reviewer outcomes, the owner live-verification checklist (copied from the issue's verification section, including any idempotency-unblock recipe), and a squash-merge note per `git-and-delivery.md`. Close nothing — the owner merges, deploys, proves live, and closes the issue with evidence.
 
 ## Standing rules
 
-- Minors become tracked issues, never dropped (stage 6). Discoveries become wired issues immediately.
+- Minors are fixed inline in the PR's own fix round, never filed, never dropped (stage 6); disputed ones go to one batch comment at merge. Discoveries become wired issues immediately.
 - Anything the issue marks `owner-gated`: stop and report, never decide.
 - Agent lifecycle, model tiers, stall handling: per epic-implement.
 - Anything that surprises you → fix the instruction or memory in the same session.
