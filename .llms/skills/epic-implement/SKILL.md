@@ -33,7 +33,8 @@ stateDiagram-v2
     Resume --> Orchestrate : state re-derived from GitHub
 
     Orchestrate --> CriteriaPreGate : slot free AND runnable,\nconflict-compatible issue
-    CriteriaPreGate --> Dispatch : ACs present or written
+    CriteriaPreGate --> ContractPreGate : ACs present or written
+    ContractPreGate --> Dispatch : contract as code,\npresent or written
     Dispatch --> Orchestrate : implementor running (per-PR machine)
     Orchestrate --> Orchestrate : PR merged / parked / agent stalled
 
@@ -132,6 +133,8 @@ When unsure, default to `sealed-required`. Re-run `seal-verify.sh` on **Resume**
 Exit: **Finish** (nothing runnable, nothing in flight) or **Stop** (epic unimplementable as specified — comment the evidence on the epic issue and end; redesign is planning work, not yours).
 
 **CriteriaPreGate.** Every issue needs numbered testable ACs (per the epic-plan contract) before dispatch. Missing → YOU write them from the body and post as an issue comment titled "Acceptance criteria (added at dispatch)", then give them the same adversarial pre-review epic-plan gives capture-time ACs. Cheapest point to fix a vague spec.
+
+**ContractPreGate.** Same cheapest-point logic one layer down: ACs say what correct looks like, the contract says what the code IS. Before dispatch every new or changed public interface must meet the epic-plan bar — types/signatures as code, schema as DDL, error taxonomy — never prose-only ("add an endpoint that returns the summary" is not a contract). Missing or prose-only → YOU write it from the epic body's design principles plus the code it must fit (grep the modules it touches; quote verbatim any existing interface it consumes), post as an issue comment titled "Contract (added at dispatch)", and give it the same adversarial pre-review as dispatch-time ACs. This is repair of a planning omission, NOT license to re-design: a contract that requires a design decision the epic doesn't answer — above all an interface a sibling issue consumes — is a planning defect; comment the gap on the issue and park it, never invent an API mid-flight. Remediation is a planning round: the owner amends the contract on the issue (epic-plan bar, owner-approved), after which the issue re-enters runnability on the next Orchestrate cycle or Resume.
 
 **Dispatch.** One implementor per issue. `scripts/worktree.sh create <issue> <branch> <files-owned...>` (branch `feat|fix|chore/<n>-<slug>` from the pushed epic branch; files from the plan's conflict notes), then `scripts/dispatch-prompt.sh <issue> "<gate command from the repo CLAUDE.md>"` emits the prompt — issue body + all comments, owned files, gate command, host facts, and the standing implementor rules (TDD red-first per **TestsRed**, live fixtures read-only, migrations per repo convention, AC→test map in the PR, conventional commits with Co-Authored-By attribution, long-lived availability). Sealed-required → run that prompt via `container exec`; worktree-ok → host Agent-tool subagent. Never hand-compose a dispatch prompt; gaps go in the template or host-facts.md so every later dispatch inherits the fix.
 
