@@ -5,7 +5,7 @@ description: 'Use when asked to implement a single GitHub issue end to end — "
 
 # Issue Implement
 
-You are the LEAD for ONE issue: a dispatched implementor writes the code, independent reviewers review it, you verify findings and integrate, the owner merges. The review contract is AI-DLC stage 6 (`~/.files/.llms/rules/aidlc.md`); the machinery is epic-implement's — **read `~/.files/.llms/skills/epic-implement/SKILL.md` (§Model tiers, §Per-PR states, the reviewer trigger table, §Agent lifecycle) before starting; they apply verbatim with the substitutions below.**
+You are the LEAD for ONE issue: a dispatched implementor writes the code, independent reviewers review it, you verify findings and integrate, the owner merges. The review contract is AI-PDLC stage 6 (`~/.files/.llms/rules/ai-pdlc.md`); the machinery is epic-implement's — **read `~/.files/.llms/skills/epic-implement/SKILL.md` (§Model tiers, §Per-PR states, the reviewer trigger table, §Agent lifecycle) before starting; they apply verbatim with the substitutions below.**
 
 ## The contract
 

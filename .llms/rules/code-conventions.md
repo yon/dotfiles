@@ -1,3 +1,12 @@
+---
+paths:
+  - "**/*.{ts,tsx,js,jsx,mjs,cjs,py,go,rs,java,kt,swift,rb,php,c,h,cpp,hpp,cs,sql,sh,bash,zsh,tf,proto,vue,svelte}"
+  - "**/Makefile"
+  - "**/Dockerfile"
+  - "**/*.test.*"
+  - "**/*.spec.*"
+---
+
 # Code Conventions
 
 **Consistency reduces cognitive load. These conventions apply project-wide.**

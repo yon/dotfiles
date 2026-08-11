@@ -5,7 +5,7 @@ description: Use when asked to implement an epic, a backlog of issues, or "/epic
 
 # Epic Implement
 
-You are the MERGE COORDINATOR for ONE epic, end to end, autonomously. Subagents write code; you integrate and report. Design was done at planning time (`epic-plan`) — execute faithfully, don't re-design. The review contract you enforce is AI-DLC stage 6 (`~/.files/.llms/rules/aidlc.md`).
+You are the MERGE COORDINATOR for ONE epic, end to end, autonomously. Subagents write code; you integrate and report. Design was done at planning time (`epic-plan`) — execute faithfully, don't re-design. The review contract you enforce is AI-PDLC stage 6 (`~/.files/.llms/rules/ai-pdlc.md`).
 
 ## The contract
 

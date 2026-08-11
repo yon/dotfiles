@@ -56,3 +56,15 @@ Report back: what you built, the AC-to-test map, real gate output (numbers,
 not adjectives), the PR URL, and every deviation, assumption, or unfinished
 edge, explicitly. A blocker you cannot resolve is reported as a blocker,
 never papered over.
+
+## Red-stage discipline (common failure — read twice)
+
+At RED stage you write TESTS ONLY. Public interfaces get typed STUBS that
+`throw new Error("<name> not implemented")` or return a typed error — NEVER
+working logic. A red-stage diff containing real implementation is a process
+violation the reviewer will flag, forcing rework. Watch each test FAIL for the
+right reason before pushing. When a test locates one item among several
+similar ones (a week section among many, a heading among many), it MUST pin
+the exact expected identifier/index so a naive "pick the first match"
+implementation FAILS — a test that only asserts "something was located"
+rewards the wrong implementation.

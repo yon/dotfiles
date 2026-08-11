@@ -91,6 +91,10 @@ ______________________________________________________________________
 
 ## Work Decomposition
 
+### Issue Classification
+
+**Classify every GitHub issue with the native issue TYPE field, never a type label.** Set it at creation (`gh issue create --type Bug|Feature|Task|Epic`) or after (`gh issue edit <n> --type <name>`); read what the org enabled with `gh api graphql -f query='{organization(login:"<org>"){issueTypes(first:20){nodes{name isEnabled}}}}'`. Labels are for orthogonal axes only (area, risk, `good first issue`); delete a type label once the type field is set. Full rationale and fallback rules (org types disabled, personal repos): `ai-pdlc.md` stage 1.
+
 ### Epic → Stories → Tasks
 
 Break large features into a hierarchy:
@@ -212,7 +216,7 @@ ______________________________________________________________________
 
 1. Rebase on latest `main` — resolve conflicts locally
 1. Run `make check` — all green
-1. Run the review gate — built-in `/code-review` for a working diff; the AI-DLC panel (`aidlc.md` stage 6) for PRs
+1. Run the review gate — built-in `/code-review` for a working diff; the AI-PDLC panel (`ai-pdlc.md` stage 6) for PRs
 1. Squash fixup commits — clean, atomic history
 1. Write a clear PR description
 

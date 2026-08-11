@@ -1,8 +1,17 @@
+---
+paths:
+  - "**/*.{ts,tsx,js,jsx,mjs,cjs,py,go,rs,java,kt,swift,rb,php,c,h,cpp,hpp,cs,sql,sh,bash,zsh,tf,proto,vue,svelte}"
+  - "**/Makefile"
+  - "**/Dockerfile"
+  - "**/*.test.*"
+  - "**/*.spec.*"
+---
+
 # Quality & Verification Protocol
 
 **Purpose:** the verification discipline for every task that creates or modifies code, and the test-hardening ladder for earning confidence beyond the baseline.
 
-**The gate is finding-driven, not score-driven.** Build/test/lint/typecheck failures block outright. Review findings block by severity: a surviving Critical or Major blocks merge; Minors are fixed inline per `aidlc.md` stage 6. There is no numeric quality score.
+**The gate is finding-driven, not score-driven.** Build/test/lint/typecheck failures block outright. Review findings block by severity: a surviving Critical or Major blocks merge; Minors are fixed inline per `ai-pdlc.md` stage 6. There is no numeric quality score.
 
 ______________________________________________________________________
 

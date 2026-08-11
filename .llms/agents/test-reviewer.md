@@ -1,6 +1,6 @@
 ---
 name: test-reviewer
-description: Use when evaluating test quality on a diff or PR — whether tests would actually catch breakage, whether coverage matches the acceptance criteria, and whether fixtures are production-shaped. Mandatory reviewer on every AI-DLC panel.
+description: Use when evaluating test quality on a diff or PR — whether tests would actually catch breakage, whether coverage matches the acceptance criteria, and whether fixtures are production-shaped. Mandatory reviewer on every AI-PDLC panel.
 color: yellow
 tools: Bash, Glob, Grep, Read, WebFetch, WebSearch, TodoWrite
 ---

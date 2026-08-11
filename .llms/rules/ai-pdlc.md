@@ -1,4 +1,4 @@
-# AI-DLC — AI Development Lifecycle
+# AI-PDLC — AI Development Lifecycle
 
 **The binding contract for AI-driven development; applies to all projects (per-project CLAUDE.md may tighten, never loosen). The `epic-plan` skill executes stages 1-3; the `epic-implement` skill executes stages 3-7 (leaving deploy + prove-live to the owner via checklist). At single-issue scale, `issue-plan` executes stage 1 and `issue-implement` executes stages 4-7 under the same contracts. This file states the invariants those skills implement — where a skill and this file disagree, fix whichever is wrong in the same session.**
 
@@ -20,6 +20,7 @@ CAPTURE → DESIGN → DECOMPOSE → BUILD (TDD) → VERIFY → REVIEW → INTEG
 - Every unit of work is a GitHub issue, executor-ready: evidence, dated anchors (executor re-greps), contract sketch, verification commands, explicit out-of-scope. No untracked work — discoveries become issues before or immediately after the work.
 - **Acceptance criteria are the correctness spec**: numbered `AC<n>`, given/when/then with concrete inputs and expected outputs, testable as written. Anything not phrasable that way is a design principle (epic level) or noise (cut).
 - Dependencies wired natively (blocked-by) AND restated in the body; epics group work via sub-issues.
+- **Classify with the native issue TYPE, not a type label.** Issue type is a first-class GitHub field: one per issue, org-defined, filterable (`type:Bug`), and visible in sub-issue lists and Projects, where a label is none of those. Read the available types with `gh api graphql -f query='{organization(login:"<org>"){issueTypes(first:20){nodes{name isEnabled}}}}'` and set it with `gh issue create --type <name>` or `gh issue edit <n> --type <name>` (needs gh >= 2.90). Map the usual kinds onto whatever the org enabled: bug → Bug, feature → Feature, chore/test/docs/refactor → Task, epic → Epic. **Labels stay for orthogonal axes only** (area, risk, `good first issue`); never carry the kind in both places, and delete a type label once the field is set. Where an org has issue types disabled, or the repo is not in an org, fall back to labels and say so in the epic body.
 - The owner reviews and approves every epic and sub-issue body before it is filed.
 
 ## 2. DESIGN

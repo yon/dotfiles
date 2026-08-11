@@ -5,12 +5,12 @@ description: Use when capturing a single unit of work as a GitHub issue for late
 
 # Issue Plan
 
-You are capturing ONE unit of work (bug, feature, or chore) as a GitHub issue that will be executed LATER by a SEPARATE agent with none of your current context. This is AI-DLC stage 1 at single-issue scale (`~/.files/.llms/rules/aidlc.md`); `issue-implement` executes what you file. **epic-plan's "Executor bar" and "Failure modes" sections apply verbatim — read `~/.files/.llms/skills/epic-plan/SKILL.md` before drafting.**
+You are capturing ONE unit of work (bug, feature, or chore) as a GitHub issue that will be executed LATER by a SEPARATE agent with none of your current context. This is AI-PDLC stage 1 at single-issue scale (`~/.files/.llms/rules/ai-pdlc.md`); `issue-implement` executes what you file. **epic-plan's "Executor bar" and "Failure modes" sections apply verbatim — read `~/.files/.llms/skills/epic-plan/SKILL.md` before drafting.**
 
 ## 1. Scope gate
 
 - Decomposes into 2+ dependent issues → use `epic-plan` instead.
-- Owner wants it done NOW, in-session → AI-DLC direct work; don't file issue theater.
+- Owner wants it done NOW, in-session → AI-PDLC direct work; don't file issue theater.
 - Otherwise continue here.
 
 ## 2. Investigate — execute, never transcribe
@@ -38,14 +38,14 @@ You are capturing ONE unit of work (bug, feature, or chore) as a GitHub issue th
 
 ## 5. Acceptance criteria
 
-Numbered `AC<n>`, given/when/then, concrete inputs and expected outputs (aidlc stage 1). Expected outputs are the EXECUTED values from §2, quoted exactly.
+Numbered `AC<n>`, given/when/then, concrete inputs and expected outputs (ai-pdlc stage 1). Expected outputs are the EXECUTED values from §2, quoted exactly.
 
 ## 6. Review and file
 
 - **Dedup first:** `gh issue list --search "<keywords>"` — update or comment on an existing issue rather than filing a twin.
 - Self-check against epic-plan's failure-mode table. Spawn one adversarial reviewer only when the evidence chain is long or a trust boundary is involved.
 - Owner gate: an explicit "file it" / "create an issue" is pre-authorization — file and return the URL. Otherwise preview the full body via AskUserQuestion before filing.
-- Apply repo labels (`gh label list`); wire blocked-by / sub-issue relations if it belongs under an epic.
+- Set the native issue **type** (`gh issue create --type Bug|Feature|Task`), per `ai-pdlc.md` stage 1 — not a type label. Apply repo labels only for orthogonal axes (`gh label list`). Wire blocked-by / sub-issue relations if it belongs under an epic.
 
 ## Done when
 

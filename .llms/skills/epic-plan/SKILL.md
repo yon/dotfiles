@@ -5,7 +5,7 @@ description: Use when capturing a feature, remediation, port/resurrection of old
 
 # Epic Plan
 
-You are capturing work as a GitHub epic whose sub-issues will be executed LATER, by SEPARATE agents (often weaker models), with none of your current context. Every claim you don't verify now becomes a bug in their run; every omission becomes their re-investigation. This is AI-DLC stages 1-3 (`~/.files/.llms/rules/aidlc.md`); `epic-implement` executes what you file.
+You are capturing work as a GitHub epic whose sub-issues will be executed LATER, by SEPARATE agents (often weaker models), with none of your current context. Every claim you don't verify now becomes a bug in their run; every omission becomes their re-investigation. This is AI-PDLC stages 1-3 (`~/.files/.llms/rules/ai-pdlc.md`); `epic-implement` executes what you file.
 
 **Executor bar (binding):** assume a skilled developer who knows nothing about this codebase, follows instructions literally, and does not infer. Exact commands, paths, regexes; quoted evidence. Never write "TBD", "handle edge cases appropriately", "similar to the above", "port the old logic" (without the command to view it), or a schema/API in prose only.
 
@@ -20,13 +20,13 @@ You are capturing work as a GitHub epic whose sub-issues will be executed LATER,
 
 - **Epic body**: narrative + evidence, the reference commands, and the binding design principles all children obey (safety invariants, allowlists, gates, model decisions) — stated once, referenced by children.
 - **Each sub-issue**: full contract — types/signatures as code (correct as written; if you can't make it correct, specify behavior + tests instead), schema as DDL, error taxonomy, the TDD matrix with fixtures quoted from the live evidence, acceptance criteria, live-proof steps for the lead, and an **Out of scope** naming the sibling that owns each exclusion.
-- **Acceptance criteria** per AI-DLC stage 1: numbered `AC<n>`, given/when/then, concrete inputs and expected outputs — the implementor writes tests from them verbatim and review verifies against the numbers mechanically. Command-verified ACs state the exact command and expected output.
+- **Acceptance criteria** per AI-PDLC stage 1: numbered `AC<n>`, given/when/then, concrete inputs and expected outputs — the implementor writes tests from them verbatim and review verifies against the numbers mechanically. Command-verified ACs state the exact command and expected output.
 - Cite the repo's CLAUDE.md conventions; never restate one from memory.
 
 ## 3. Decompose and wire
 
 - One issue = one branch = one PR; slice as independently-testable tracer bullets, sized so the PR lands under ~300 lines (epic #214 evidence: the median actual PR was 587 lines and 56% busted the 500 hard limit; oversized issues are the root cause, and every threshold-buster pays maximum review depth).
-- Wire natively AND restate in bodies: `gh api repos/{owner}/{repo}/issues/<n>/dependencies/blocked_by -F issue_id=<id>`; children via `.../issues/<epic>/sub_issues -F sub_issue_id=<id>` (numeric `id`, not number). Apply repo labels.
+- Wire natively AND restate in bodies: `gh api repos/{owner}/{repo}/issues/<n>/dependencies/blocked_by -F issue_id=<id>`; children via `.../issues/<epic>/sub_issues -F sub_issue_id=<id>` (numeric `id`, not number). Set the native issue **type** on the epic and every child (`gh issue create --type Epic|Feature|Bug|Task`), per `ai-pdlc.md` stage 1 — never a type label. Apply repo labels only for orthogonal axes (area, risk).
 - Note conflict surfaces (files two issues touch) with a one-toucher-at-a-time warning in each affected body.
 
 ## 4. Review gates — BEFORE anything is created
@@ -59,4 +59,4 @@ Check for an execution-plan doc by RUNNING `ls docs/plans/*execution-plan*.md 2>
 
 ## Done when
 
-Epic + sub-issues exist, natively wired and labeled, every body owner-approved in final form; every body passes the executor bar and the failure-mode table; evidence and commands embedded; program doc updated (or wave order in the epic); out-of-scope discoveries filed. A cold-start agent given one sub-issue's URL could execute it without asking you anything.
+Epic + sub-issues exist, natively wired, typed (issue type, not a type label), and labeled, every body owner-approved in final form; every body passes the executor bar and the failure-mode table; evidence and commands embedded; program doc updated (or wave order in the epic); out-of-scope discoveries filed. A cold-start agent given one sub-issue's URL could execute it without asking you anything.
