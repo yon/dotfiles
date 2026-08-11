@@ -78,18 +78,31 @@
 	# Use GitHub CLI's credential manager for secure authentication
 	# Setup with: gh auth setup-git
 	helper = cache --timeout=3600
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !gh auth git-credential
+[credential "https://github.com"]
+	helper = 
+	helper = !gh auth git-credential
 [diff]
 	algorithm = histogram
 	colorMoved = default
 	tool = vimdiff
 [fetch]
 	prune = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
 [gpg]
 	format = ssh
 [gpg "ssh"]
 	allowedSignersFile = ~/.ssh/allowed_signers
 [help]
 	autocorrect = 1
+[include]
+	path = ~/.gitconfig-local
 [init]
 	defaultBranch = main
 [log]
@@ -112,16 +125,11 @@
 	email = yon@milliped.com
 	name = Yonatan Feldman
 	signingkey = ~/.ssh/id_ecdsa_sk_rk.pub
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-[include]
-	path = ~/.gitconfig-local
-[credential "https://github.com"]
-	helper = 
-	helper = !gh auth git-credential
-[credential "https://gist.github.com"]
-	helper = 
-	helper = !gh auth git-credential
+
+# NC OS
+[credential "https://gitlab.nc-os.ncttools.io"]
+	helper =
+	helper = "!f() { p=\"/Users/yon/.nc-os/gitlab-token\"; test -r \"$p\" && printf 'username=oauth2\\npassword=%s\\n' \"$(cat \"$p\")\"; }; f"
+[http "https://gitlab.nc-os.ncttools.io/"]
+	sslCert = /Users/yon/.nc-os/environments/prod/cert.pem
+	sslKey = /Users/yon/.nc-os/environments/prod/cert-key.pem
