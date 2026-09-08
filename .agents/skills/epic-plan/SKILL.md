@@ -5,7 +5,7 @@ description: Use when capturing a feature, remediation, port/resurrection of old
 
 # Epic Plan
 
-You are capturing work as a GitHub epic whose sub-issues will be executed LATER, by SEPARATE agents (often weaker models), with none of your current context. Every claim you don't verify now becomes a bug in their run; every omission becomes their re-investigation. This is AI-PDLC stages 1-3 (`~/.files/.llms/rules/ai-pdlc.md`); `epic-implement` executes what you file.
+You are capturing work as a GitHub epic whose sub-issues will be executed LATER, by SEPARATE agents (often weaker models), with none of your current context. Every claim you don't verify now becomes a bug in their run; every omission becomes their re-investigation. This is AI-PDLC stages 1-3 (`~/.claude/rules/ai-pdlc.md`); [epic-implement](../epic-implement/SKILL.md) executes what you file.
 
 **Executor bar (binding):** assume a skilled developer who knows nothing about this codebase, follows instructions literally, and does not infer. Exact commands, paths, regexes; quoted evidence. Never write "TBD", "handle edge cases appropriately", "similar to the above", "port the old logic" (without the command to view it), or a schema/API in prose only.
 

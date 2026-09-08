@@ -1,0 +1,50 @@
+{
+  "skill_name": "writing-in-yon-voice",
+  "execution": "Run each prompt in a fresh context with SKILL.md and its writing guide, withholding assertions. Produce only the requested draft; do not send, publish, or modify external systems. Names and facts in these prompts are synthetic task inputs. Score the actual draft after completion.",
+  "evals": [
+    {
+      "id": 0,
+      "name": "position-and-uncertainty",
+      "prompt": "Draft a concise email to Alex in my voice. My position: I support the pilot if it stays within our current budget. Finance may approve the funding on Friday, but that is not confirmed. Do not suggest a meeting or offer more staff. Use my usual casual sign-off. Only these facts are known.",
+      "assertions": [
+        "Supports the pilot subject to the current-budget condition without changing the position.",
+        "Preserves funding approval as possible and unconfirmed, not promised or completed.",
+        "Adds no meeting, staffing, spending, deadline commitment, surname, title, or unsupported fact.",
+        "Uses a concise email with yon. sign-off and no em dash."
+      ]
+    },
+    {
+      "id": 1,
+      "name": "short-medium-specific-acknowledgment",
+      "prompt": "Write a one-sentence Slack reply to Sam in my voice: I reviewed the draft and agree with the proposed timeline. Do not add an ask, greeting, or sign-off.",
+      "assertions": [
+        "States the supplied review and agreement in one sentence.",
+        "Adds no new commitment, condition, or request.",
+        "Includes no greeting or email sign-off.",
+        "Uses plain direct wording without an em dash or explanatory commentary."
+      ]
+    },
+    {
+      "id": 2,
+      "name": "firm-board-position",
+      "prompt": "Draft a short email in my voice to Morgan, a board colleague. I recommend keeping the project within the approved scope. Any expansion needs a separate decision. Morgan knows the project budget and owns its status report; do not recap those. I am not asking for a meeting or proposing a negotiation. Use a formal sign-off. Do not invent Morgan's surname or title.",
+      "assertions": [
+        "Preserves the approved-scope recommendation and separate-decision condition for expansion.",
+        "Does not soften the decision into a negotiation, add an ultimatum, or invite a meeting.",
+        "Does not recap recipient-owned facts or invent names, numbers, or titles.",
+        "Uses a respectful concise register, a formal closing, and no em dash."
+      ]
+    },
+    {
+      "id": 3,
+      "name": "technical-draft-evidence",
+      "prompt": "Write a two-sentence PR description in my voice, no greeting or sign-off. Supplied facts: the parser now rejects duplicate keys instead of accepting the last value; the focused parser tests passed locally; the full suite has not run. Preserve that validation limit. Do not claim the PR was merged or deployed.",
+      "assertions": [
+        "Describes the concrete before/after parser behavior accurately.",
+        "Reports focused local test success and explicitly preserves the unrun full-suite limitation.",
+        "Adds no unsupported security, performance, global test, merge, or deployment claim.",
+        "Uses exactly two direct sentences without greeting, sign-off, em dash, or style commentary."
+      ]
+    }
+  ]
+}
