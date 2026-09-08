@@ -20,6 +20,8 @@
 - **Demand elegance, in proportion.** For non-trivial work, pause to ask if there's a cleaner path. For obvious fixes, just do it.
 - **Fix bugs autonomously.** Given a failing test, error, or log, diagnose and fix. Don't ask for hand-holding on what's already evident.
 
+**Module context.** Before exploring a module, read its context document if present. Use the `module-context` skill in `~/.agents/skills/module-context/` to create missing context when substantial exploration would be reusable, and update existing context when your changes make it inaccurate. Load only documents relevant to the task.
+
 ## Tool Preferences
 
 - **Audio/video transcription:** `whisper-cli` (whisper.cpp) is installed, with a verified
