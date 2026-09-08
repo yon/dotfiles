@@ -1,0 +1,63 @@
+{
+  "skill_name": "lint",
+  "execution": "Run each prompt in a fresh agent context with SKILL.md and relevant references. Do not expose assertions before the agent completes. For fixture cases, copy the listed directory to a temporary workspace and install its declared dependencies there with the project manager/lockfile; preprovision tools before the timed agent run. Preserve a before snapshot. Run no evaluation in the real repository. Scenarios without files use only supplied state and request proposed actions. Score actual commands, file changes, and reports separately from simulated decisions.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "check-target-that-mutates",
+      "prompt": "Use the lint skill to check this fixture project. Report formatting findings. Do not edit source, configuration, or build files. The project's declared tools are already installed.",
+      "files": ["evals/files/check-only"],
+      "assertions": [
+        "Inspects the Make recipe before selecting a command and avoids its mutating lint target.",
+        "Executes the existing nonmutating package lint command or equivalent installed formatter check.",
+        "Reports the observed formatting failure, not a clean pass.",
+        "All source, configuration, and Makefile bytes remain unchanged."
+      ]
+    },
+    {
+      "id": 2,
+      "name": "scoped-fix-without-make",
+      "prompt": "Use the lint skill to fix formatting only in src/target.ts. Leave my unrelated changes in src/unrelated.ts alone. Use the existing tools; do not set up new tooling. The declared dependencies are installed.",
+      "files": ["evals/files/scoped-fix"],
+      "assertions": [
+        "Uses the existing formatter with an explicit target.ts path despite the absence of a Makefile.",
+        "target.ts changes and passes an actual nonmutating formatting check.",
+        "unrelated.ts and package.json remain byte-identical; no Makefile, rules, dependencies, or hooks are added.",
+        "Reports scoped success and does not claim the whole project is clean when unrelated formatting remains."
+      ]
+    },
+    {
+      "id": 3,
+      "name": "typed-linting-project-scope",
+      "prompt": "Simulated configuration review only. A TypeScript repository uses flat ESLint config with recommended syntax rules and no-floating-promises but no parser project configuration. It has packages/api/tsconfig.json including src and test, plus a root eslint.config.mts outside those projects. No tooling migration is requested. Describe the repair and how you would validate it, using only this supplied state.",
+      "assertions": [
+        "Identifies missing type information as a configuration failure rather than disabling the type-aware rule.",
+        "Scopes typed rules to files belonging to the relevant projects and handles config-only files deliberately.",
+        "Preserves existing tools and describes a representative floating-promise failure plus clean pass and type checking.",
+        "Does not invent executed checks or silently apply a single-project root layout to the monorepo."
+      ]
+    },
+    {
+      "id": 4,
+      "name": "legacy-debt-without-blanket-suppression",
+      "prompt": "Propose lint adoption steps, without editing files or filing issues. Existing ESLint finds 180 historical warnings in a legacy package and zero in a newer package. We want new defects blocked without a repository-wide cleanup. A teammate suggests file-level eslint-disable comments everywhere in legacy, then using only changed-line filtering. Make and CI already run the package checks. Explain your approach.",
+      "assertions": [
+        "Preserves the current Make/CI entrypoints and avoids unrelated bulk cleanup.",
+        "Rejects blanket disables and arbitrary violation-count thresholds.",
+        "Proposes enforceable package/rule rollout or a supported diagnostic baseline, verifying that new violations still fail.",
+        "Explains changed-line filtering limits and reports legacy debt/excluded scope without claiming a globally clean gate."
+      ]
+    },
+    {
+      "id": 5,
+      "name": "unavailable-or-ignored-checks",
+      "prompt": "Simulated run-only request. The requested generated/client.ts is excluded by the repository's formatter and lint config; a direct check says the file was ignored. The typecheck command fails because its declared tool is unavailable. Report results and next steps. No setup, dependency updates, or source/config edits were requested.",
+      "assertions": [
+        "Reports the requested file as unanalyzed and the typecheck as a setup failure, not clean checks.",
+        "Does not remove ignores, download an arbitrary latest tool, change dependencies, or edit source under a run-only request.",
+        "Identifies the existing documented prerequisite/tool version as the next setup step and describes resolving scope separately.",
+        "Does not invent diagnostic counts or claim type safety, correctness, or security from the failed checks."
+      ]
+    }
+  ]
+}

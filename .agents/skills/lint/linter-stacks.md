@@ -1,264 +1,136 @@
-# Linter Stack Configurations
+# Linter stack examples
 
-Reference configurations for common language stacks. Use these as starting points when running `/lint setup`. Customize rules based on project needs, but start strict and relax only with justification.
+Use these for requested setup or to diagnose existing configuration. Preserve existing tools, package managers, runtime versions, configuration, and Make target names. Resolve compatible tool versions against the project's runtime, pin dependencies using its package manager, and commit the lockfile. Invoke installed tools through project scripts or its environment; do not use commands that download missing tools implicitly.
 
----
+Check commands report findings without rewriting source. Fix commands are separate and run only within the requested scope. The whole-project fix targets below are for an explicitly requested whole-project fix. For a file or module request, pass explicit paths to the underlying tool instead.
 
-## Python
+## TypeScript
 
-### Ruff (linter + formatter)
+This example uses ESLint flat configuration, a TypeScript configuration file, typescript-eslint, and Prettier. Retain another established stack when it already meets the project's needs. Install compatible development dependencies: `eslint`, `@eslint/js`, `typescript-eslint`, `typescript`, `@types/node`, and `prettier`. For ESLint running under Node, include `jiti` 2.2.0 or later to load the TypeScript config; running under Bun supports it natively. [ESLint configuration loading](https://eslint.org/docs/latest/use/configure/configuration-files#typescript-configuration-files).
 
-Ruff replaces flake8, isort, pyupgrade, and many other tools in a single fast binary.
-
-```toml
-# pyproject.toml
-[tool.ruff]
-target-version = "py312"
-line-length = 120
-
-[tool.ruff.lint]
-select = [
-    "E",    # pycodestyle errors
-    "F",    # pyflakes
-    "W",    # pycodestyle warnings
-    "I",    # isort (import ordering)
-    "N",    # pep8-naming
-    "UP",   # pyupgrade (modern Python syntax)
-    "S",    # bandit (security)
-    "B",    # flake8-bugbear (common bugs)
-    "A",    # flake8-builtins (shadowing builtins)
-    "C4",   # flake8-comprehensions
-    "DTZ",  # flake8-datetimez (timezone-aware datetimes)
-    "T10",  # flake8-debugger (no debugger statements)
-    "ISC",  # flake8-implicit-str-concat
-    "ICN",  # flake8-import-conventions
-    "PIE",  # flake8-pie (misc lints)
-    "PT",   # flake8-pytest-style
-    "RSE",  # flake8-raise
-    "RET",  # flake8-return
-    "SLF",  # flake8-self (private member access)
-    "SIM",  # flake8-simplify
-    "TID",  # flake8-tidy-imports
-    "TCH",  # flake8-type-checking
-    "ARG",  # flake8-unused-arguments
-    "PTH",  # flake8-use-pathlib
-    "ERA",  # eradicate (commented-out code)
-    "PL",   # pylint
-    "TRY",  # tryceratops (exception handling)
-    "FLY",  # flynt (f-string conversion)
-    "PERF", # perflint (performance)
-    "RUF",  # ruff-specific rules
-]
-
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
-```
-
-**Key rules explained:**
-- `S` (bandit): catches security issues like hardcoded passwords, SQL injection, use of `eval()`
-- `B` (bugbear): catches common bugs like mutable default arguments, bare `except:`
-- `UP` (pyupgrade): enforces modern Python syntax (f-strings, type unions, etc.)
-- `PL` (pylint): broader code quality checks (complexity, design, refactoring suggestions)
-
-### Mypy (type checker)
-
-```toml
-# pyproject.toml
-[tool.mypy]
-strict = true
-warn_return_any = true
-warn_unused_configs = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
-check_untyped_defs = true
-no_implicit_optional = true
-warn_redundant_casts = true
-warn_unused_ignores = true
-```
-
-**Customization:** If `strict = true` is too aggressive for an existing codebase, start with `disallow_untyped_defs = true` and add rules incrementally.
-
-### Makefile targets
-
-```makefile
-lint:
-	ruff check .
-	mypy .
-
-format:
-	ruff check --fix .
-	ruff format .
-
-typecheck:
-	mypy .
-```
-
----
-
-## TypeScript / JavaScript
-
-### ESLint (linter)
-
-For ESLint v9+ flat config:
-
-```javascript
-// eslint.config.js
-import eslint from '@eslint/js';
+```typescript
+// eslint.config.mts
+import js from '@eslint/js';
+import { defineConfig } from 'eslint/config';
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(
-  eslint.configs.recommended,
-  ...tseslint.configs.strict,
+export default defineConfig(
+  { ignores: ['**/dist/**', '**/coverage/**'] },
   {
-    rules: {
-      '@typescript-eslint/no-explicit-any': 'error',
-      '@typescript-eslint/strict-boolean-expressions': 'error',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-      '@typescript-eslint/no-floating-promises': 'error',
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
+    files: ['**/*.{ts,tsx,mts,cts}'],
+    extends: [js.configs.recommended, tseslint.configs.recommended],
+    linterOptions: { reportUnusedDisableDirectives: 'error' },
+  },
+  {
+    files: ['src/**/*.{ts,tsx,mts,cts}', 'tests/**/*.{ts,tsx,mts,cts}'],
+    extends: [tseslint.configs.recommendedTypeChecked],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: dirname(fileURLToPath(import.meta.url)),
+      },
     },
-  }
+  },
 );
 ```
 
-For ESLint v8 (legacy config):
+Adapt `src` and `tests` to actual source roots and include them in the appropriate `tsconfig.json` files. Each file in the typed block must belong to a project known to the project service. Keep configuration and other files outside those projects in the syntax-only block, or deliberately add them to a suitable project. Do not enable typed rules globally and then suppress parser failures. [Typed linting](https://typescript-eslint.io/getting-started/typed-linting/).
+
+`recommendedTypeChecked` includes rules such as `no-floating-promises` and avoids imposing every opinionated strict rule. When repairing an existing typed rule, configure its project scope without automatically adopting a new preset. Add stricter rules when their findings suit the project. For mixed JavaScript projects, add a separate JavaScript block with the correct runtime globals and rules; this sample's TypeScript blocks do not configure JavaScript. [Shared configurations](https://typescript-eslint.io/users/configs/).
+
+Merge these scripts into the existing `package.json`; this example uses npm, so substitute the repository's runner when different. Keep existing Prettier options and ignore generated or vendored outputs in `.prettierignore`. Formatting remains a separate check. [Prettier CLI](https://prettier.io/docs/cli).
 
 ```json
-// .eslintrc.json
 {
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/strict"
-  ],
-  "rules": {
-    "@typescript-eslint/no-explicit-any": "error",
-    "@typescript-eslint/strict-boolean-expressions": "error",
-    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
-    "@typescript-eslint/no-floating-promises": "error",
-    "no-console": ["warn", { "allow": ["warn", "error"] }]
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --noEmit",
+    "format:check": "prettier . --check",
+    "format": "prettier . --write"
   }
 }
 ```
 
-**Key rules explained:**
-- `no-explicit-any`: forces proper typing instead of escape hatches
-- `strict-boolean-expressions`: prevents truthy/falsy bugs (empty string, 0, null)
-- `no-floating-promises`: catches unhandled promise rejections
-- `no-unused-vars` with `_` pattern: allows intentionally unused parameters
-
-### Prettier (formatter)
-
-```json
-// .prettierrc
-{
-  "semi": true,
-  "singleQuote": true,
-  "trailingComma": "all",
-  "printWidth": 100,
-  "tabWidth": 2,
-  "arrowParens": "always",
-  "endOfLine": "lf"
-}
-```
-
-### Makefile targets
+Use the existing TypeScript project or build command for project references; do not replace it blindly with `tsc --noEmit`. ESLint loads the config without type checking it: include `eslint.config.mts` in an appropriate TypeScript check, with Node types, when setting up a new project.
 
 ```makefile
+.PHONY: lint lint-fix typecheck format-check format
 lint:
-	npx eslint .
-	npx tsc --noEmit
-
-format:
-	npx prettier --write .
-	npx eslint --fix .
-
+	npm run lint
+lint-fix:
+	npm run lint:fix
 typecheck:
-	npx tsc --noEmit
+	npm run typecheck
+format-check:
+	npm run format:check
+format:
+	npm run format
 ```
-
----
 
 ## Rust
 
-### Clippy (linter)
+Use the repository's pinned toolchain with Clippy and rustfmt installed. Lint levels belong in `Cargo.toml`; `clippy.toml` holds lint parameters. Cargo supports the lint tables below from Rust 1.74. Preserve the crate's edition and minimum supported Rust version. [Cargo lint tables](https://doc.rust-lang.org/cargo/reference/manifest.html#the-lints-section), [Clippy configuration](https://doc.rust-lang.org/nightly/clippy/configuration.html).
 
 ```toml
-# Cargo.toml or clippy.toml
+# Cargo.toml, alongside the existing package configuration
 [lints.clippy]
-pedantic = { level = "warn", priority = -1 }
-unwrap_used = "deny"
-expect_used = "deny"
-panic = "deny"
-todo = "warn"
+all = { level = "warn", priority = -1 }
 dbg_macro = "deny"
-print_stdout = "warn"
 ```
 
-**Key rules explained:**
-- `pedantic`: enables a broad set of "nice to have" lints that catch common mistakes
-- `unwrap_used` / `expect_used`: forces proper error handling instead of panics
-- `panic`: prevents explicit panics in library code
-- `dbg_macro` / `print_stdout`: catches debug output left in production code
-
-### Rustfmt (formatter)
-
-```toml
-# rustfmt.toml
-edition = "2021"
-max_width = 100
-tab_spaces = 4
-use_field_init_shorthand = true
-use_try_shorthand = true
-```
-
-### Makefile targets
+For a workspace, put shared settings under `[workspace.lints.clippy]` in its root manifest and opt each member in with `[lints]` and `workspace = true`. Add selective restrictions based on the code's purpose; do not globally ban `unwrap`, `expect`, or `panic` without considering tests and intentionally infallible paths. Pedantic rules are optional. [Workspace lint inheritance](https://doc.rust-lang.org/cargo/reference/workspaces.html#the-lints-table).
 
 ```makefile
+.PHONY: lint typecheck format-check format
 lint:
-	cargo clippy -- -D warnings
-
-format:
-	cargo fmt
-
+	cargo clippy --workspace --all-targets -- -D warnings
 typecheck:
-	cargo check
+	cargo check --workspace --all-targets
+format-check:
+	cargo fmt --all -- --check
+format:
+	cargo fmt --all
 ```
 
----
+Match the repository's supported feature and target matrix; `--all-features` can enable mutually exclusive features. `-D warnings` is suitable for a clean enforced scope; in a legacy project, select a clean crate or adopt specific rules before making every warning fatal. Keep rustfmt options aligned with the pinned toolchain. Run automated Clippy fixes explicitly and inspect their diff; do not turn `make lint` into a mutation command.
 
-## General Guidance
+## Existing Python projects
 
-### Starting a New Project
+Support existing Python code with its established environment and tools. This does not call for new Python helper scripts. If no stack exists, Ruff handles linting and formatting; mypy can provide gradual type checking. Configure the actual supported Python version through the project's metadata rather than copying a version from an example. [Ruff configuration](https://docs.astral.sh/ruff/configuration/).
 
-1. Pick the linter stack for your language from above
-2. Start with the full recommended config -- it is easier to relax rules than to add them later
-3. Run the linter on day one so violations never accumulate
-4. Add pre-commit hooks so violations are caught before commit
+```toml
+# pyproject.toml
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "B"]
 
-### Adopting Linters in an Existing Project
-
-1. Start with the recommended config
-2. Run the linter and count existing violations
-3. If violations are manageable (<50), fix them all in one commit
-4. If violations are large (>50), use baseline/ignore files:
-   - Ruff: `ruff check --add-noqa` to suppress existing violations
-   - ESLint: `/* eslint-disable */` at file level for legacy files
-5. Fix legacy violations incrementally, tracked by an issue
-
-### Pre-Commit Hooks
-
-Use pre-commit hooks to enforce linting before every commit:
-
-```yaml
-# .pre-commit-config.yaml (Python ecosystem)
-repos:
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.3.0
-    hooks:
-      - id: ruff
-        args: [--fix]
-      - id: ruff-format
+[tool.mypy]
+check_untyped_defs = true
+warn_unused_ignores = true
 ```
 
-For other ecosystems, use `husky` (JS/TS) or shell scripts in `.git/hooks/`.
+Start type checking a coherent package and expand it. For new typed packages, enable `strict` in a targeted override or project-wide when appropriate; do not enable blanket missing-import suppression to get a passing run. [Mypy adoption](https://mypy.readthedocs.io/en/stable/existing_code.html).
+
+These recipes assume the project's environment is active and Ruff and mypy are installed from its pinned dependencies. Use its existing environment runner if needed.
+
+```makefile
+.PHONY: lint lint-fix typecheck format-check format
+lint:
+	ruff check .
+lint-fix:
+	ruff check --fix .
+typecheck:
+	mypy .
+format-check:
+	ruff format --check .
+format:
+	ruff format .
+```
+
+## Adopting an existing codebase
+
+Measure findings by rule and affected module. Enforce high-value rules in a clean scope first, then expand coverage without increasing existing debt. If a tool supports a baseline, keep it reviewed and ensure new violations fail the gate. Otherwise use explicit rule or module scopes and track what is excluded. Do not add blanket file disables, bulk `noqa` comments, or arbitrary violation-count thresholds.
+
+Exceptions should identify the exact rule and smallest necessary scope, explain the reason, and be removed when stale. Keep unrelated formatting or bulk cleanup in its own reviewable change. Preserve existing hooks; add hooks only as part of requested setup, and keep CI checks runnable without them. Verify a clean fixture passes and a representative violation fails before declaring the gate effective.
