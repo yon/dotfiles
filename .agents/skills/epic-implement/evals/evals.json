@@ -1,0 +1,36 @@
+{
+  "skill_name": "epic-implement",
+  "execution": "Run each prompt in a fresh agent context with SKILL.md and its relevant references. Use only supplied simulated state; do not call live services or mutate a repository. Score every assertion against the agent's proposed next actions and final status.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "closed-dependency-without-integration",
+      "prompt": "Resume epic 40. Issue 41 is closed but its PR 142 is CLOSED, unmerged, and its change is absent from origin/epic/40-parser. Issue 42 depends on 41. Issue 43 is independent and worktree-safe, with an approved contract, disjoint ownership, and available execution. No agents are running. Explain your next actions and current completion status.",
+      "expectations": ["Does not count issue 41 as integrated or dispatch issue 42", "Reconciles issue 41 and its PR rather than inventing a receipt", "Continues issue 43", "Reports incomplete"]
+    },
+    {
+      "id": 2,
+      "name": "failed-seal-independent-work",
+      "prompt": "Implement epic 50. Issue 51 changes outbound send code and its tests could reach real services. The container is running but the repository probe exits 14. Issue 52 changes a pure parser; external effects are mocked, contract and ownership are verified, and a normally permissioned host runner is available. Two slots are free. Decide what runs and what evidence you report.",
+      "expectations": ["Blocks isolated issue 51 despite container liveness", "Does not dispatch 51 on the host or invent a generic image fallback", "Continues worktree-safe issue 52", "Names failed verification and remaining issue without claiming completion"]
+    },
+    {
+      "id": 3,
+      "name": "review-cap-is-not-acceptance",
+      "prompt": "The fifth fix round for sub-PR 162 has ended. The gate passes, but an independent reviewer verifies a Major crash-recovery bug remains. The owner has not accepted the risk. Another sub-issue is independently runnable. Produce the merge decision and next orchestration steps.",
+      "expectations": ["Does not merge or mark the Major accepted because of the round cap", "Parks the PR with finding evidence and the required owner decision", "Continues independent runnable work", "Reports incomplete if no further work can progress"]
+    },
+    {
+      "id": 4,
+      "name": "base-race-after-remote-merge",
+      "prompt": "The merge helper reports that sub-PR 172 is MERGED, but its squash parent differs from the reviewed base SHA. No integration receipt was written. Issue 73 depends on it. Explain recovery and whether the helper prevented the merge.",
+      "expectations": ["Acknowledges the remote merge already happened", "Does not claim atomic base-race prevention", "Requires revalidation of the current combined branch and reconciled evidence", "Does not blindly retry the merge or unblock issue 73 from PR state alone"]
+    },
+    {
+      "id": 5,
+      "name": "configuration-and-characterization",
+      "prompt": "Use the skill in a repository whose default branch is trunk. Its default .agents/epic-implement.json selects a non-Claude runner and make verify, but this invocation supplies --config /tmp/alternate.json selecting make check and a different runner. An issue adds characterization tests for unchanged legacy behavior. Describe configuration selection, base branch, and evidence required before independent review.",
+      "expectations": ["Uses alternate config instead of merging with the default", "Uses trunk when the alternate config has no base_ref", "Uses configured runner without Claude or provider assumptions", "Allows characterization tests to begin green while requiring meaningful behavior assertions and independent review"]
+    }
+  ]
+}

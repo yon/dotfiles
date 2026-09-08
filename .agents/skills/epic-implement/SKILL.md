@@ -1,185 +1,73 @@
 ---
 name: epic-implement
-description: Use when asked to implement an epic, a backlog of issues, or "/epic-implement N" — autonomous multi-agent execution of a GitHub epic's sub-issues, safe under a permission-bypassed session. Pass the epic number as the argument; if omitted, asks which open epic to run. A single issue goes to issue-implement.
+description: Implement a GitHub epic's sub-issues with coordinated agents, isolated worktrees, independent review, and verified integration into an epic PR. Use for an epic or backlog; use issue-implement for one issue.
 ---
 
-# Epic Implement
+# Implement an epic
 
-You are the MERGE COORDINATOR for ONE epic, end to end, autonomously. Subagents write code; you integrate and report. Design was done at planning time (`epic-plan`) — execute faithfully, don't re-design. The review contract you enforce is AI-PDLC stage 6 (`~/.files/.llms/rules/ai-pdlc.md`).
-
-## The contract
-
-1. **One epic, to completion** — every runnable sub-issue implemented, reviewed, merged into the epic branch, never main.
-2. **Sealed** — all work in worktrees on an epic integration branch. Never touch the main checkout, live data stores, output/log directories, or schedulers (the repo's CLAUDE.md names them). No deploy, no live runs, no real sends. This is what makes permission-bypass safe. (enforced by the devcontainer where the repo provides one)
-3. **The owner merges** — you open exactly one PR (`epic/<n>-<slug>` → main) and NEVER merge it. Branch protection cannot distinguish you from the owner on the same token; do not rationalize past this.
-4. **Coordinator mechanics run through this skill's `scripts/` only** — seal verification, worktree lifecycle, dispatch prompts, sub-PR merges. Each script mechanizes an invariant that was violated live when it was prose; bypassing one to "save a step" recreates the failure it exists to prevent.
+Deliver one reviewed integration PR containing one squash commit per sub-issue. The owner merges the epic PR and handles deployment or live verification. Use the supplied epic number; if missing, discover native Epic issues and the fallback `epic` label, then ask which epic to execute.
 
 ## Read first
 
-1. The target repo's CLAUDE.md — the gate command ("the gate"), install step, migration convention, live-data rules, owner-gated surfaces. The authority for conventions.
-2. The newest execution plan, if any: `ls docs/plans/*execution-plan*.md 2>/dev/null | sort | tail -1` — coordination only; issue bodies are the design truth. None → the epic body's wave order serves.
-3. `scripts/` beside this file: `seal-verify.sh`, `worktree.sh` (create/destroy/check + the ownership manifest), `merge-subpr.sh`, `dispatch-prompt.sh` (+ `dispatch-template.md`, `host-facts.md`). Read each header once; they are the only supported path for what they do.
+Read the repository's `AGENTS.md`, applicable harness entrypoints, latest execution plan, and epic/sub-issue bodies and comments. Repository conventions govern the gate, interfaces, migrations, ownership, and reserved operations. Issue contracts are design truth; the execution plan coordinates their implementation.
 
-## The state machines
+Use `<skill-dir>/scripts/run.sh` for the operations below. This thin wrapper runs TypeScript with Bun. It automatically reads `<repository>/.agents/epic-implement.json`; `--config <path>` before the operation overrides that file. Read [configuration.md](references/configuration.md) when setting up execution or changing parameters. The [Claude/Bedrock example](examples/README.md) preserves the previous role choices in an optional adapter. The core workflow has no required harness, provider, or model.
 
-Diagrams are the control flow; the state sections are each state's contract. A mismatch between them is a bug — fix whichever is wrong in the same session.
+## Agent lifecycle
 
-```mermaid
-stateDiagram-v2
-    [*] --> PickEpic
-    PickEpic --> Seal : epic chosen (arg, or ask — the only question)
-    PickEpic --> Resume : epic branch + draft epic PR already exist
-    Seal --> Orchestrate : scripts/seal-verify.sh exit 0 (when required)
-    Resume --> Orchestrate : state re-derived from GitHub
+Record each implementor and reviewer against its issue/PR. Route fixes and rebases to the same implementor, and finding verification to its finder, using the harness's available continuation mechanism. If continuation is unavailable, invoke a fresh process with the issue, PR, current revisions, and unresolved findings. Replace stalled or incoherent agents with a documented handoff. Release crews only when their owned work is integrated or parked and their state is recorded.
 
-    Orchestrate --> CriteriaPreGate : slot free AND runnable,\nconflict-compatible issue
-    CriteriaPreGate --> ContractPreGate : ACs present or written
-    ContractPreGate --> Dispatch : contract as code,\npresent or written
-    Dispatch --> Orchestrate : implementor running (per-PR machine)
-    Orchestrate --> Orchestrate : PR merged / parked / agent stalled
+## Model tiers
 
-    Orchestrate --> Finish : nothing runnable, nothing in flight
-    Orchestrate --> Stop : epic unimplementable as specified
-    Finish --> [*]
-    Stop --> [*]
-```
-
-```mermaid
-stateDiagram-v2
-    [*] --> TestsRed : dispatched (agent recorded vs PR)
-    TestsRed --> Implementing : failing AC-tagged tests pushed,\nred-stage review passed
-    Implementing --> RebaseVerify : PR open vs epic branch,\ngate green
-    RebaseVerify --> Conformance : rebased, conflicts combined, gate green
-    note right of RebaseVerify
-        Re-entered whenever the
-        epic branch advances
-    end note
-
-    Conformance --> PanelCompose : map complete, AC-tagged tests passed
-    Conformance --> Implementing : missing/unmapped AC (auto-Major)
-
-    PanelCompose --> Reviewing
-    Reviewing --> LeadVerify : findings already posted inline
-
-    LeadVerify --> Merge : no surviving Critical/Major
-    LeadVerify --> FixRound : surviving Critical/Major
-    LeadVerify --> CapDecision : round 5, finding survives
-
-    FixRound --> DeltaVerify : same implementor fixed\n(Minors folded in), gate green
-    FixRound --> RePanel : fix rewrote the approach
-    DeltaVerify --> LeadVerify : verified by ITS OWN finder
-    RePanel --> Reviewing : FRESH reviewers
-
-    CapDecision --> Merge : accept, reason posted
-    CapDecision --> Parked : block for owner; slot freed
-
-    Parked --> [*]
-    Merge --> [*]
-```
-
-## Agent lifecycle (applies across both machines)
-
-- **Record every agent's ID against its PR at spawn** — implementor and reviewers alike.
-- **Long-lived crews**: all later work on a PR routes to the SAME agents via SendMessage — the implementor fixes findings, rebases, and closes conformance gaps; each reviewer verifies fixes to its own findings. Fresh agents only when the original is dead or incoherent (note the substitution in the PR). Sealed-required crews have no SendMessage: "same implementor" means re-invoking `claude -p` inside the same container with the PR + finding as context, each round.
-- **GC only when the PR closes** (merged or abandoned); check the agent→PR map for other PRs the implementor owns first.
-
-## Model tiers (pass `model` explicitly on every dispatch)
-
-| Tier | Roles |
-|---|---|
-| haiku | Gate/verification runs, AC-conformance check, report assembly |
-| sonnet | Implementors; red-stage tests reviewer; specialist pool reviewers (except security); hardener |
-| opus | Adversarial-correctness and security reviewers; the Tier-STANDARD single reviewer |
-| fable | Escalation only: cap-surviving adjudication, genuinely ambiguous rebase conflicts, "did the fix rewrite the approach", owner-escalation writeups |
-
-Tier checks are not model calls: `git diff --name-only` + grep against the trigger table.
+Use configured role-to-model mappings when launching external runners. For native subagents, select the corresponding supported model/capability without inventing aliases. Mechanical verification needs reliable tool execution; implementors and specialists need appropriate coding/domain competence; correctness/security reviewers need strong adversarial reasoning; escalation needs judgment. Independent review means a separate reviewer context, even when the same model is used. Unsupported required model or execution capabilities block that dispatch, not unrelated runnable work.
 
 ## Epic states
 
-**PickEpic.** Argument given → use it. Else derive open epics + runnable counts (`gh issue list --label epic`, sub_issues API, dependencies API) and ask via AskUserQuestion — the ONLY question; all else is autonomous. Never hardcode issue numbers. Epic branch + draft PR already exist → **Resume**.
+**PickEpic / Resume.** Re-derive state from GitHub, remote branches, PR merge commits, and local manifests. A checked box or closed issue alone does not establish integration. Resume existing branches/PRs; do not duplicate work. Missing local receipts must be reconstructed from reviewed PR evidence and verified merge ancestry, never inferred from issue state. Recheck isolation before each resumed isolated dispatch.
 
-**Seal.**
+**Prepare.** Resolve the actual base from `base_ref` or the remote's advertised default branch. Create the epic worktree using `worktree create N epic/N-slug --integration`; it leaves the primary checkout alone. If the branch has no diff yet, add or update a useful execution-plan document in the repository's documentation location: issue/contract links, dependency order, ownership, and verification plan. Independently review and gate that scoped planning commit, then push it and create the draft epic PR against the resolved base. An empty commit cannot create a PR diff. Establish the parent PR before any child merge; if repository policy disallows the planning document, resolve that bootstrap constraint rather than bypassing the merge helper. Sub-PRs target the epic branch. Reuse an existing epic PR.
 
-```bash
-scripts/worktree.sh create <n> epic/<n>-<slug>       # creates the branch from origin/main
-cd <epic-worktree>
-git commit --allow-empty -m "chore(epic): seed epic #<n> branch"   # gh pr create refuses an empty diff
-git push -u origin epic/<n>-<slug>
-gh pr create --draft --base main --head epic/<n>-<slug>   # body: sub-issue checklist + empty owner live-verification checklist
-```
+**Seal.** Classify each issue before dispatch:
 
-Work only inside the epic worktree from here on.
+- `required`: real outbound operations, live data stores, credential access, scheduler/deployment configuration, or tests that could reach those boundaries. Run only through the configured isolated runner after `seal N` succeeds. When unsure, choose required.
+- `worktree`: pure code/tests with external effects mocked, inside the harness's normal permission boundary. Use a configured host runner or native subagent in its assigned worktree.
 
-**Physical seal — HARD GATE before ANY sealed-required Dispatch.** This flow runs under `--dangerously-skip-permissions`; physical isolation is the substitute for the per-call approval prompt, and a worktree alone is a *branch* boundary, not a *safety* boundary. `scripts/seal-verify.sh <n>` is the gate: it detects the host container CLI, launches container `epic-<n>` via the REPO'S OWN launcher where one exists (only the repo's launcher applies its mounts/firewall — a bare image is liveness, not isolation, and the script warns so), runs the repo's isolation probe where one exists, installs the Bedrock settings, and smoke-runs an in-container `claude`. **Exit 0 or no sealed-required dispatch — no exceptions, no prose substitutes.** Host truths (container CLI, Bedrock settings, gws auth, the no-stash rule) live in `host-facts.md` and reach every implementor via the dispatch template. Two invariants the script cannot enforce, so hold them yourself: never create or prune git worktrees INSIDE the container against the bind-mounted host `.git` (it corrupts host worktree registration — verified live); in-container implementors instead `git clone` fresh to a container-local path, branch from `origin/epic/<n>-<slug>`, and push normally. And read the in-container claude's log output after launch — silent immediate death means auth/config, not a crash to retry.
+A worktree separates branches, not permissions or network access. The repository owns the isolation launcher and probe. The probe must check the actual boundaries the task needs, including mounts, protected paths, credential reach, and egress. A running container or successful model call is insufficient. Missing or failed verification blocks isolated dispatch. Do not substitute a generic image or a host process. Container checkouts must be independent local clones, never worktrees using bind-mounted host Git metadata. The example adapter requires the launcher/operator to provision the matching branch and revision before each dispatch; it does not reset work or copy credentials.
 
-**Risk-tier waves.** Classify each sub-issue before Dispatch:
+**Orchestrate.** Default to two implementors, configurable only with verified disjoint ownership. Discover sub-issues and native dependencies through GitHub; reconcile them with the plan. An issue is runnable only when its prerequisites are integrated into the current epic branch, its contract is actionable, it is not owner-gated, and its exact file set does not overlap active work. Keep owner-gated issues parked. Use `readiness` and `worktree check` as mechanical checks; see [execution-state.md](references/execution-state.md) for snapshot/receipt contracts.
 
-| Tier | Criteria | Dispatch mechanism |
-|---|---|---|
-| **sealed-required** | Touches (or its tests could plausibly touch, even by mistake) real outbound sends, live/production data stores, real network egress, credentials, or scheduler/deploy config | Actual Claude process INSIDE the verified seal: `container exec epic-<n> claude --dangerously-skip-permissions -p '<prompt>'`; poll `gh pr view` instead of SendMessage |
-| **worktree-ok** | Pure logic/tests-only change, no I/O boundary touched, all externals mocked | Host Agent-tool subagent in a `scripts/worktree.sh create` worktree |
+When a sub-PR merges, fetch and fast-forward the epic worktree, invalidate dependent review snapshots, and return other open sub-PRs to RebaseVerify. When one parks, continue independent work. A stalled agent needs a status check and then a recorded replacement if necessary. Never use `git stash` on a shared checkout. Worktree ownership includes committed, staged, unstaged, and untracked changes, including closed but unmerged PRs until explicitly cleaned up.
 
-When unsure, default to `sealed-required`. Re-run `seal-verify.sh` on **Resume** — containers don't survive reboots.
+**CriteriaPreGate / ContractPreGate.** Require numbered testable acceptance criteria and concrete contracts for changed public interfaces: signatures/types, schemas, and error behavior as appropriate. Repair straightforward omissions from existing design and code, record them on the issue, and have a separate agent challenge their meaning. Park unresolved design decisions or conflicting sibling interfaces; do not invent architecture to keep a slot busy.
 
-**Resume.** All state lives in GitHub (epic branch, draft PR checklist, sub-PRs, issue states) — re-derive it, re-create the worktree if missing, respawn agents for open sub-PRs briefed from PR + issue, enter **Orchestrate**. Never re-create the branch/PR or redo merged work.
-
-**Orchestrate.** Event-driven. **Default concurrency: 2 implementors.** Raise to 3-4 only when `scripts/worktree.sh check` manifests prove the in-flight file sets disjoint — rebase churn is O(merges × in-flight), so idle slots are cheaper than forced re-verification. Runnable = all `blocked_by` closed AND not `owner-gated` AND the conflict matrix allows it alongside in-flight work (hot files: one toucher at a time). Owner-gated / live-data / owner-decision issues are skipped and reported, never executed. Events:
-
-- **Sub-PR merges** (via `scripts/merge-subpr.sh`) → slot frees; every other open sub-PR re-enters RebaseVerify (routed to its own implementor); re-derive runnability.
-- **Sub-PR parks** → slot frees; its dependents stop being runnable; continue around it.
-- **Agent stalls** (~30 min no progress) → probe via SendMessage; dead → respawn briefed from PR + issue, note substitution.
-- **After any wave lands** → `scripts/worktree.sh check`: any PR touching files outside its manifest is a contamination signal; route to its implementor before merging anything.
-
-Exit: **Finish** (nothing runnable, nothing in flight) or **Stop** (epic unimplementable as specified — comment the evidence on the epic issue and end; redesign is planning work, not yours).
-
-**CriteriaPreGate.** Every issue needs numbered testable ACs (per the epic-plan contract) before dispatch. Missing → YOU write them from the body and post as an issue comment titled "Acceptance criteria (added at dispatch)", then give them the same adversarial pre-review epic-plan gives capture-time ACs. Cheapest point to fix a vague spec.
-
-**ContractPreGate.** Same cheapest-point logic one layer down: ACs say what correct looks like, the contract says what the code IS. Before dispatch every new or changed public interface must meet the epic-plan bar — types/signatures as code, schema as DDL, error taxonomy — never prose-only ("add an endpoint that returns the summary" is not a contract). Missing or prose-only → YOU write it from the epic body's design principles plus the code it must fit (grep the modules it touches; quote verbatim any existing interface it consumes), post as an issue comment titled "Contract (added at dispatch)", and give it the same adversarial pre-review as dispatch-time ACs. This is repair of a planning omission, NOT license to re-design: a contract that requires a design decision the epic doesn't answer — above all an interface a sibling issue consumes — is a planning defect; comment the gap on the issue and park it, never invent an API mid-flight. Remediation is a planning round: the owner amends the contract on the issue (epic-plan bar, owner-approved), after which the issue re-enters runnability on the next Orchestrate cycle or Resume.
-
-**Dispatch.** One implementor per issue. `scripts/worktree.sh create <issue> <branch> <files-owned...>` (branch `feat|fix|chore/<n>-<slug>` from the pushed epic branch; files from the plan's conflict notes), then `scripts/dispatch-prompt.sh <issue> "<gate command from the repo CLAUDE.md>"` emits the prompt — issue body + all comments, owned files, gate command, host facts, and the standing implementor rules (TDD red-first per **TestsRed**, live fixtures read-only, migrations per repo convention, AC→test map in the PR, conventional commits with Co-Authored-By attribution, long-lived availability). Sealed-required → run that prompt via `container exec`; worktree-ok → host Agent-tool subagent. Never hand-compose a dispatch prompt; gaps go in the template or host-facts.md so every later dispatch inherits the fix.
-
-**Finish.** Every sub-issue merged, parked, or skipped; gate green on the final branch. Report **complete** or **complete-with-remainder** (each parked/skipped/blocked issue with reason + link). Post the **retro metrics** as an epic comment: first-panel zero-Critical/Major rate, fix commits per PR, live escapes found after merge, findings by surface tier — the numbers that tune the next run. Mark the epic PR ready-for-review: checklist with per-PR review outcomes, remainder, owner live-verification checklist (including the repo's prove-live surface checks where it has them), migration-rename notes — and state in the PR body: **merge with a MERGE COMMIT, not squash** (one-commit-per-issue history is the deliverable). Remove sub-issue worktrees via `scripts/worktree.sh destroy`; keep the epic worktree until the owner merges. Tell the owner what they must do: review commit-by-commit → merge (merge commit) → deploy → prove live.
+**Dispatch.** Create an issue worktree from the pushed epic branch with `worktree create ISSUE BRANCH --base REMOTE/EPIC_BRANCH FILE...`. Register its PR with `worktree register ISSUE PR`. Use `dispatch ISSUE` to produce the prompt from the live issue and manifest, then give that prompt to the appropriate execution mechanism. Run external agents with `agent --role implementor --epic N --workspace PATH --prompt-file PATH --isolation required|worktree`. Carry explicit acceptance evidence and agent/PR state across handoffs.
 
 ## Per-PR states
 
-**TestsRed.** The implementor writes FAILING tests first — every `AC<n>` tagged in a test description — and pushes the test-only diff before any implementation. The **red-stage tests reviewer** (sonnet, fresh context) reviews that diff alone: do the tests encode the ACs' intent (the defense against implementor and checker agreeing on a wrong spec)? Would each fail against a plausible wrong implementation — hunt tautologies and trivially-satisfiable assertions? Fixtures production-shaped? It certifies the AC→test map (the implementor proposes, the reviewer certifies — writer/checker separation at the spec layer). Gaps → implementor revises the tests, same reviewer re-checks. Certified → **Implementing**. There is NO post-implementation tests review pass when red-stage passed and later rounds didn't restructure the suite.
+**TestsRed.** For behavior changes, demonstrate that focused acceptance/regression tests fail for the intended reason before the fix. Have a separate red-stage reviewer check the assertions against plausible wrong implementations and certify the AC-to-evidence map. Characterization tests may begin green; documentation and configuration changes can use appropriate command checks. Never invent red tests or a coverage percentage to satisfy ceremony. Fixtures should preserve relevant production shapes without copying private live records by default.
 
-**Implementing.** Make the certified tests green. Unmappable AC → coordinator resolves (clarify/amend the AC on the issue) and sends back. Exits: PR open vs epic branch, gate green, certified map in the PR description.
+**Implementing.** Make the agreed tests pass. Keep changes within ownership, migrations within repository conventions, and commits within the user's authorized workflow. Prefer the repository's Make targets. Maintain the AC-to-test/command map and evidence in the PR; resume the existing PR against the epic branch. Commit and push within scope automatically when authorized. Keep coherent code and tests together, target roughly 300 handwritten lines, and reconsider splitting or explain scope above 500.
 
-**RebaseVerify.** Rebase onto the CURRENT epic branch; semantic conflicts resolved by COMBINING intents (both new sections, both imports, both migrations renamed — never pick a side); full gate on the rebased branch. Re-entered whenever the epic branch advances, routed to the PR's own implementor. Clean rebase preserves review state. A semantic conflict costs the gate plus ONE targeted reviewer pass scoped to the conflict region — never a fresh full panel.
+**RebaseVerify / Conformance.** Rebase onto the current epic branch, combine both intents in semantic conflicts, and run the configured gate. Verify every AC against actual passing tests or recorded commands. Missing evidence returns to implementation. A clean rebase still needs current gate and receipt revisions; semantic changes need targeted independent review, and an approach rewrite needs fresh review of the revised design.
 
-**Conformance.** Mechanical (haiku or the lead): every AC appears in the certified map; every mapped test exists and passed in the gate output; command-verified ACs re-executed with matching output. No judgment. A gap → back to the same implementor as a Major; the panel never spawns for an incomplete implementation.
+**PanelCompose / Reviewing.** Standard changes get one strong fresh-context reviewer covering correctness and conventions. State machines, concurrency/recovery, destructive writes, money/threshold logic, and untrusted input require adversarial correctness review. Add security, data-integrity, architecture, or performance specialists when the changed surface warrants them. Record the composition and rationale before dispatch.
 
-**PanelCompose.** Composition is by risk surface, not size:
+Review the affected behavior and failure paths, not just the acceptance checklist. Use scoped mutation testing for adversarial surfaces when supported, preferably `make test-mutation` with changed-module arguments. Classify surviving mutants as gaps, equivalent/unreachable, or tooling limits with evidence. Use property tests for suitable invariants; a hardener edits tests and reports production bugs separately. Assess affected-code coverage and untested branches rather than relying on an overall percentage. Record unavailable tools and residual coverage limits instead of claiming a pass.
 
-| Tier | Trips on | Review |
-|---|---|---|
-| **Tier-FULL** | destructive-data writes/supersession/merges, outbound sends, auth/credentials, container/infra, migrations touching existing rows — OR any adversarial trigger: state machines, concurrency/crash-recovery, money/budget/threshold arithmetic, untrusted-input parsing, you can't predict the diff's behavior (when unsure, trigger) | adversarial-correctness (opus, mandate: "the ACs are verified — find what they MISS") + a `make test-mutation ARGS=<changed modules>` run (or repo equivalent) by the adversarial reviewer, surviving mutants filed as findings |
-| **Tier-STANDARD** | everything else | ONE strong fresh-context reviewer (opus): correctness + conventions in a single mandate |
+Post actionable findings with location, trigger/preconditions, evidence, consequence, and severity. A safe local reproduction is preferred; a conclusive static source-to-effect trace is valid. Never trigger a real send, data mutation, or exploit to earn a finding. Keep findings and dispositions on the PR rather than only in agent chat.
 
-Specialist pool — grep triggers apply at EVERY tier, on top of the tier's base review: **security** — outbound sends, input parsing, auth/credentials, crypto, new dependencies, subprocess/shell, API endpoints, file upload/download; **architecture** — new modules, changed core interfaces, cross-cutting refactors; **performance** — queries over the repo's largest datasets, ingest-scale loops, LLM/external-API paths; **data-integrity** — migrations, live-data scripts, FK/schema changes; **hardener** — new invariant-rich pure modules (property-based tests only; mutation belongs to the adversarial reviewer); edits tests only, never the code under test. Repo CLAUDE.md rows augment this table, never replace it; a post-merge Critical/Major a skipped reviewer would have caught means a missing row — add it now. Post the composition + one-line rationale as a PR comment BEFORE reviews start.
+**LeadVerify / FixRound / DeltaVerify.** Verify Critical/Major findings before routing them; document rejected or downgraded findings with reasons. The implementor fixes confirmed findings and in-scope Minors; each finder checks its own fixes and new tests. Re-run the gate and add reviewers for newly introduced risk surfaces. Disputed or out-of-scope Minors need an explicit disposition, not silent deletion. Fresh reviewers re-evaluate an approach rewrite.
 
-**Reviewing.** Spawn reviewers in parallel with `gh` access. Each posts findings AS FOUND: inline file:line comments plus one summary comment. **Severity requires a verified trigger**: the finder demonstrates concrete input/state → broken output BEFORE posting a Critical/Major — narrative blast radius is not severity (re-verification showed ~10% of severity prose overstates). Without a repro it's a question. Nothing lives only in chat.
+**CapDecision.** After five unsuccessful fix rounds, park the PR with remaining evidence and required owner decision. A round cap never authorizes acceptance of unresolved Critical/Major findings. A separate owner decision can change scope or stop the work; it does not manufacture a passing merge receipt.
 
-**LeadVerify.** Verify each **Critical/Major** against the code before acting (reviewers can be wrong); changed severity or rejection → reply on that comment with the verdict. Minors skip LeadVerify: they route straight to the implementor's next fix round, fixed inline in this PR — never filed as issues (a filed Minor is write-only backlog; the burn-down never happened). Minors the implementor disputes → ONE batch comment at merge for the owner to skim. Minors with NO surviving Critical/Major still get one inline fix round (fix + gate, no re-review beyond the finder's spot-check) before **Merge** — merging over unaddressed Minors is dropping them. Surviving Critical/Major → **FixRound**; round 5 → **CapDecision**.
+**Merge.** Create the current revision-bound review receipt, run `worktree check`, then `merge SUB_PR EPIC_PR --review RECEIPT --issue ISSUE`. The helper checks review/gate evidence, refuses unresolved high-severity findings, merges through GitHub, and verifies ancestry before recording integration. It cannot atomically pin the base with GitHub's merge command; a base race detected after merge is integrated but unverified and requires fresh validation. Never claim it was prevented.
 
-**FixRound.** Findings to the PR's own implementor (link the comment, don't retype), pending Minors included. Fix + gate green → **DeltaVerify**; approach rewritten (state which in the PR) → **RePanel**.
+After verified integration, update epic checklists and close the sub-issue if consistent with repository policy. Delete a merged branch and destroy its clean owned worktree only after reconciliation. Failed/ambiguous operations require inspecting the actual remote state before retrying. Never locally recreate a squash merge or force-push an integration branch. If the epic PR closes unmerged, reconcile issue states and reopen issues closed only because of that abandoned integration.
 
-**DeltaVerify.** Each finding back to ITS OWN finder with ONLY the fix-commits diff: resolved, nothing adjacent broken, and any tests ADDED in the fix sound? The finder reviews new tests live in this same pass — a fresh tests reviewer fires only on approach rewrite. Finder-verifies-fix keeps writer/checker separation and inherits its tier; fresh opus verifier only if the finder is dead. Re-fire any tier/pool trigger the fix diff newly trips. → **LeadVerify**.
+**Finish.** Complete means every required issue is verified integrated and the final epic-branch gate passes. Otherwise report incomplete, with each parked, blocked, skipped, or in-flight issue and its next action. Keep an incomplete epic PR draft. When complete, make the epic PR ready for owner review; request a merge commit to preserve the per-issue squash commits. Include actual test/review outcomes, migration notes, and owner-only live checks. Report review/fix metrics only when recorded, not guessed. Clean up eligible sub-issue worktrees; retain the epic worktree for the owner.
 
-**RePanel.** FRESH reviewers (originals anchor on prior conclusions); compose per PanelCompose against the new diff, red-stage recheck included if the suite was restructured; fresh reviewers join the crew. → **Reviewing**.
+## Standing boundaries
 
-**CapDecision.** Never merge past a Critical/Major silently: **accept** with a documented reason posted as a reply → Merge; or **park** — label `owner-decision`, comment what survives and why, free the slot, epic continues. Parked items surface in Finish's remainder.
+Do not merge the epic PR, push to the default branch, force-push, or execute owner-reserved live operations. Existing authorization permits routine scoped commits, PRs, review comments, and issue updates. File unrelated discoveries automatically only under standing authorization, with deduplication and clear independence from this epic. Otherwise report them without expanding the task. Update instructions only for reusable demonstrated gaps, not every surprise.
 
-**Merge.** `scripts/merge-subpr.sh <sub-pr> <epic-pr>` — it refuses non-open PRs, squash-merges via GitHub (never locally; a closed-not-merged PR breaks the audit trail permanently), closes the sub-issue, updates the epic PR checklists, deletes the remote branch, and destroys the worktree through the manifest. Not cleanly mergeable → that's RebaseVerify work first. After: `git fetch` and fast-forward the epic worktree — never recreate the squash commit locally, never force-push. Closing invariant: every finding is a PR comment; every surviving Critical/Major ends as a merged fix (commit/PR ref) replied to the original comment; Minors end fixed in this PR or listed in the merge batch comment. Reopen all closed sub-issues if the epic PR is ever closed unmerged. Release the crew; signal Orchestrate.
-
-## Standing rules
-
-- NEVER merge the epic PR, push to main, or force-push. NEVER write outside worktrees, touch live data/outputs/schedulers, or send/draft real email — such steps go on the owner checklist.
-- NEVER dispatch a `sealed-required` issue to a host-side agent because the container was inconvenient. If you catch yourself having done this, stop dispatching sealed-required work and get the owner's decision before continuing.
-- `owner-gated` = skip and report; same for anything the repo reserves to the owner or anything irreversible.
-- Untracked work is forbidden: discoveries become wired issues immediately. (Review Minors are the one exception — they end inline in their own PR.)
-- LLM call sites tagged and budgeted per repo rules.
-- Anything that surprises you → fix the instruction, template, or host-facts.md in the same session, so every later dispatch inherits it.
-
-Start now: read the docs, derive state, pick the epic (ask only if no argument), seal or resume, run Orchestrate to completion.
+From the skill directory, run `bun install --frozen-lockfile`, `bun run typecheck`, and `bun test`. Runtime helpers use Bun's built-in APIs and require no installed packages; dependencies support type checking. Behavioral scenarios in [evals/evals.json](evals/evals.json) exercise orchestration decisions separately from script correctness.

@@ -24,6 +24,8 @@
 
 ## Tool Preferences
 
+- **Script languages:** Use TypeScript by default and Rust for performance-sensitive work. Use Bash or Make for thin wrappers. Do not use Go or Python for scripts.
+
 - **Audio/video transcription:** `whisper-cli` (whisper.cpp) is installed, with a verified
   large-v3-turbo model at `~/.local/share/whisper-models/ggml-large-v3-turbo.bin` — **shared, do not
   re-download or copy into a scratchpad.** See the README in that directory. Recordings must be

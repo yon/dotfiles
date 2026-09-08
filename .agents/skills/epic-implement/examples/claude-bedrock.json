@@ -1,0 +1,54 @@
+{
+  "remote": "origin",
+  "gate": ["make", "check"],
+  "max_implementors": 1,
+  "models": {
+    "verification": "haiku",
+    "implementor": "sonnet",
+    "red-reviewer": "sonnet",
+    "hardener": "sonnet",
+    "specialist": "sonnet",
+    "correctness-reviewer": "opus",
+    "security-reviewer": "opus",
+    "reviewer": "opus",
+    "escalation": "fable"
+  },
+  "execution": {
+    "launcher": "../scripts/devcontainer-up.sh",
+    "probe": "../scripts/seal-probe.sh",
+    "runner": [
+      "bun",
+      "{skill_dir}/examples/claude-bedrock.ts",
+      "--mode",
+      "host",
+      "--workspace",
+      "{workspace}",
+      "--settings",
+      "{home}/.claude/settings.bedrock.json",
+      "--model",
+      "{model}",
+      "--prompt-file",
+      "{prompt_file}"
+    ],
+    "isolated_runner": [
+      "bun",
+      "{skill_dir}/examples/claude-bedrock.ts",
+      "--mode",
+      "isolated",
+      "--workspace",
+      "{workspace}",
+      "--environment",
+      "{environment}",
+      "--container-cli",
+      "container",
+      "--container-workspace",
+      "/workspace",
+      "--settings",
+      "/opt/agent/settings.bedrock.json",
+      "--model",
+      "{model}",
+      "--prompt-file",
+      "{prompt_file}"
+    ]
+  }
+}
