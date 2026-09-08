@@ -11,7 +11,7 @@ paths:
 
 **These principles are not aspirational. They are enforced. Every code change is evaluated against them.**
 
-______________________________________________________________________
+---
 
 ## 1. DRY — Don't Repeat Yourself
 
@@ -27,7 +27,7 @@ Every piece of knowledge must have a single, unambiguous, authoritative represen
 - **Configuration:** Single source of truth. Config values defined in ONE place (env, config file), referenced everywhere else.
 - **Constants:** Named constants, not magic numbers. `MAX_RETRY_ATTEMPTS = 3`, not `3`.
 
-______________________________________________________________________
+---
 
 ## 2. KISS — Keep It Simple, Stupid
 
@@ -44,7 +44,7 @@ The simplest correct solution is the best solution. Complexity is a cost that mu
 - **Function length** — If a function exceeds ~30 lines, consider splitting. If it exceeds 50, definitely split. But don't split into tiny fragments that obscure flow.
 - **File length** — If a file exceeds ~300 lines, consider whether it has multiple responsibilities.
 
-______________________________________________________________________
+---
 
 ## 3. SOLID Principles
 
@@ -78,7 +78,7 @@ ______________________________________________________________________
 - **Pattern:** Constructor injection, function parameters, protocol/interface types
 - **Anti-pattern:** Importing a concrete database client inside business logic
 
-______________________________________________________________________
+---
 
 ## 4. Immutability by Default
 
@@ -94,7 +94,7 @@ Data should not change after creation unless there is a compelling performance r
 - **State management:** If state must change, use controlled patterns (state machines, reducers, event sourcing)
 - **When mutation is OK:** Hot paths where profiling proves allocation overhead matters. Document with a comment: `// PERF: mutating in-place to avoid allocation in tight loop`
 
-______________________________________________________________________
+---
 
 ## 5. Strong Typing
 
@@ -111,7 +111,7 @@ Use the type system to make illegal states unrepresentable. Types are documentat
 - **Strict mode:** Enable `strict: true` (TypeScript), `--strict` (mypy), `-Wall -Werror` (C/C++), `#![deny(warnings)]` (Rust), or equivalent.
 - **Generics:** Use generics to maintain type safety across abstractions. Don't cast to bypass type checks.
 
-______________________________________________________________________
+---
 
 ## 6. Dependency Injection
 
@@ -127,7 +127,7 @@ Modules receive their dependencies from the outside rather than creating or look
 - **Testability test:** Can you test this function by passing mock/stub dependencies? If not, refactor.
 - **Configuration:** Loaded once at the entrypoint, then passed down. Inner modules never read env vars directly.
 
-______________________________________________________________________
+---
 
 ## 7. Composition Over Inheritance
 
@@ -142,7 +142,7 @@ Build complex behavior by combining simple, focused components rather than throu
 - **Mixins/Traits:** Acceptable for cross-cutting concerns (serialization, comparison) but keep them small
 - **Pattern:** Strategy, Decorator, and Observer patterns over template method hierarchies
 
-______________________________________________________________________
+---
 
 ## 8. Fail Fast
 
@@ -173,7 +173,7 @@ GOOD: "Failed to process order #12345: payment gateway returned 503 for charge o
 
 Cross-reference: See `code-conventions.md` for context-rich output patterns and observability standards.
 
-______________________________________________________________________
+---
 
 ## 9. Separation of Concerns
 
@@ -188,7 +188,7 @@ Different concerns (I/O, business logic, presentation, persistence) should live 
 - **No SQL in service layer:** Data access is behind a repository/data layer.
 - **No HTTP concepts in domain layer:** The domain doesn't know about requests, responses, or status codes.
 
-______________________________________________________________________
+---
 
 ## 10. Explicit Over Implicit
 

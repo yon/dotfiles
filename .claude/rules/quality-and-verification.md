@@ -13,7 +13,7 @@ paths:
 
 **The gate is finding-driven, not score-driven.** Build/test/lint/typecheck failures block outright. Review findings block by severity: a surviving Critical or Major blocks merge; Minors are fixed inline per `ai-pdlc.md` stage 6. There is no numeric quality score.
 
-______________________________________________________________________
+---
 
 ## Test Hardening Ladder
 
@@ -25,12 +25,12 @@ ______________________________________________________________________
 
 Baseline is mandatory everywhere; each rung above is EARNED by risk, not applied by default. "Just because we can doesn't mean we should."
 
-| Rung | What | When it applies |
-|------|------|-----------------|
-| **Baseline (always)** | Criteria-tagged unit tests (TDD), coverage on new code, complexity/function-size ceilings, lint/typecheck | Every change, every project — this is the existing gate |
-| **Property-based testing** | Agent assesses suitability, defines domain + invariants, generates, fixes what it finds | Functions with clear invariants: parsers, encoders/decoders, normalizers, arithmetic (budgets, scores, thresholds), round-trip pairs (serialize/deserialize, build/resolve), order-independent merges. Not for glue code or I/O shells |
-| **Mutation testing** | Run the mutation tool (`make test-mutation` where the repo provides it — incremental, scoped to changed modules); every surviving mutant is either killed by a new/strengthened test or explicitly waived with a reason | Per-PR on Tier-FULL surfaces per `epic-implement` (run by the adversarial reviewer, changed modules only) plus periodic whole-module hardening passes. Route suspected test gaps to the tool BEFORE spending a reviewer on them. A surviving mutant means a test that never really tested |
-| **Spec-level overload** | Separate acceptance-spec layer (BDD-style scenarios) + automated E2E/QA procedures beyond the unit suite | Large or multi-team surfaces, user-facing flows with UI/protocol contracts. Skip for small tools and libraries where criteria-tagged unit tests already state intent twice |
+| Rung                       | What                                                                                                                                                                                                                    | When it applies                                                                                                                                                                                                                                                                           |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Baseline (always)**      | Criteria-tagged unit tests (TDD), coverage on new code, complexity/function-size ceilings, lint/typecheck                                                                                                               | Every change, every project — this is the existing gate                                                                                                                                                                                                                                   |
+| **Property-based testing** | Agent assesses suitability, defines domain + invariants, generates, fixes what it finds                                                                                                                                 | Functions with clear invariants: parsers, encoders/decoders, normalizers, arithmetic (budgets, scores, thresholds), round-trip pairs (serialize/deserialize, build/resolve), order-independent merges. Not for glue code or I/O shells                                                    |
+| **Mutation testing**       | Run the mutation tool (`make test-mutation` where the repo provides it — incremental, scoped to changed modules); every surviving mutant is either killed by a new/strengthened test or explicitly waived with a reason | Per-PR on Tier-FULL surfaces per `epic-implement` (run by the adversarial reviewer, changed modules only) plus periodic whole-module hardening passes. Route suspected test gaps to the tool BEFORE spending a reviewer on them. A surviving mutant means a test that never really tested |
+| **Spec-level overload**    | Separate acceptance-spec layer (BDD-style scenarios) + automated E2E/QA procedures beyond the unit suite                                                                                                                | Large or multi-team surfaces, user-facing flows with UI/protocol contracts. Skip for small tools and libraries where criteria-tagged unit tests already state intent twice                                                                                                                |
 
 ### Hardening pass (role, not a person)
 
@@ -42,7 +42,7 @@ A hardening pass over a module = close coverage gaps → identify PBT candidates
 - **Compute honesty**: mutation runs are CPU-bound; as suites grow, scope them (changed-module impact analysis) rather than silently skipping. Anything skipped or scoped down is reported, never silent — same no-silent-caps rule as everything else.
 - **Human judgment stays on intent and feel.** Gates verify what was specified; only the owner judges whether the specified thing is the right thing.
 
-______________________________________________________________________
+---
 
 ## Verification Checklist
 
@@ -86,7 +86,7 @@ ______________________________________________________________________
 - [ ] External service interactions use proper error handling
 - [ ] Database migrations run cleanly (up and down)
 
-______________________________________________________________________
+---
 
 ## The Quick Path
 
@@ -98,33 +98,33 @@ make check
 
 This runs build + test + lint + typecheck in sequence. If `make check` passes, verification is complete for commit-level quality.
 
-______________________________________________________________________
+---
 
 ## Common Pitfalls
 
-| Pitfall | What Goes Wrong | Prevention |
-|---------|----------------|------------|
-| "Tests pass locally" | Environment-specific assumptions | Use CI-equivalent commands |
-| New dependency not declared | Build works because of cached install | Run `make clean && make deps && make build` |
-| Tests pass but don't test anything | Empty test bodies, no assertions | Review agent checks for this |
-| Lint passes but format is wrong | Linter and formatter disagree | Run both: `make lint && make format` |
-| Build succeeds but runtime fails | Missing runtime config/env vars | Test with production-like config |
+| Pitfall                            | What Goes Wrong                       | Prevention                                  |
+| ---------------------------------- | ------------------------------------- | ------------------------------------------- |
+| "Tests pass locally"               | Environment-specific assumptions      | Use CI-equivalent commands                  |
+| New dependency not declared        | Build works because of cached install | Run `make clean && make deps && make build` |
+| Tests pass but don't test anything | Empty test bodies, no assertions      | Review agent checks for this                |
+| Lint passes but format is wrong    | Linter and formatter disagree         | Run both: `make lint && make format`        |
+| Build succeeds but runtime fails   | Missing runtime config/env vars       | Test with production-like config            |
 
-______________________________________________________________________
+---
 
 ## Verification by Task Type
 
-| Task Type | Minimum Verification |
-|-----------|---------------------|
-| New feature | `make check` + new tests green |
-| Bug fix | `make check` + regression test added |
-| Refactoring | `make check` + no behavior changes in tests |
-| Dependency update | `make clean && make deps && make check` |
-| Config change | `make build` + affected integration tests |
-| Documentation only | Markdown renders correctly, links valid |
-| CI/CD change | Pipeline runs successfully |
+| Task Type          | Minimum Verification                        |
+| ------------------ | ------------------------------------------- |
+| New feature        | `make check` + new tests green              |
+| Bug fix            | `make check` + regression test added        |
+| Refactoring        | `make check` + no behavior changes in tests |
+| Dependency update  | `make clean && make deps && make check`     |
+| Config change      | `make build` + affected integration tests   |
+| Documentation only | Markdown renders correctly, links valid     |
+| CI/CD change       | Pipeline runs successfully                  |
 
-______________________________________________________________________
+---
 
 ## When Verification Fails
 

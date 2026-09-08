@@ -11,7 +11,7 @@ paths:
 
 **Consistency reduces cognitive load. These conventions apply project-wide.**
 
-______________________________________________________________________
+---
 
 ## Linters as Canonical Standards
 
@@ -19,11 +19,11 @@ ______________________________________________________________________
 
 ### Common Linter Stacks
 
-| Language | Linter | Formatter | Type Checker |
-|----------|--------|-----------|-------------|
-| Python | ruff | ruff format | mypy / pyright |
-| TypeScript/JS | eslint | prettier | tsc --strict |
-| Rust | clippy | rustfmt | (built-in) |
+| Language      | Linter | Formatter   | Type Checker   |
+| ------------- | ------ | ----------- | -------------- |
+| Python        | ruff   | ruff format | mypy / pyright |
+| TypeScript/JS | eslint | prettier    | tsc --strict   |
+| Rust          | clippy | rustfmt     | (built-in)     |
 
 ### Rules
 
@@ -36,7 +36,7 @@ ______________________________________________________________________
 - **Linter overrides require a reason in the comment** — bare `# noqa` or `// eslint-disable` is not acceptable
 - **Run `make lint` before every commit** — see `quality-and-verification.md` for the full checklist
 
-______________________________________________________________________
+---
 
 ## Naming
 
@@ -51,15 +51,15 @@ ______________________________________________________________________
 
 ### Conventions by Element
 
-| Element | Convention | Example |
-|---------|-----------|---------|
-| Variables/functions | [snake_case / camelCase] | `user_count` / `userCount` |
-| Classes/types | [PascalCase] | `OrderService` |
-| Constants | [UPPER_SNAKE_CASE] | `MAX_RETRY_COUNT` |
-| File names | [snake_case / kebab-case] | `order_service.py` / `order-service.ts` |
-| Test files | [test\_ prefix / .test suffix] | `test_order.py` / `order.test.ts` |
+| Element             | Convention                     | Example                                 |
+| ------------------- | ------------------------------ | --------------------------------------- |
+| Variables/functions | [snake_case / camelCase]       | `user_count` / `userCount`              |
+| Classes/types       | [PascalCase]                   | `OrderService`                          |
+| Constants           | [UPPER_SNAKE_CASE]             | `MAX_RETRY_COUNT`                       |
+| File names          | [snake_case / kebab-case]      | `order_service.py` / `order-service.ts` |
+| Test files          | [test\_ prefix / .test suffix] | `test_order.py` / `order.test.ts`       |
 
-______________________________________________________________________
+---
 
 ## File Organization
 
@@ -82,7 +82,7 @@ ______________________________________________________________________
 - Keep nesting shallow (max 3-4 directory levels)
 - Index/barrel files for clean public APIs (if language supports it)
 
-______________________________________________________________________
+---
 
 ## Functions
 
@@ -101,7 +101,7 @@ ______________________________________________________________________
 - Use custom error types for domain errors — not generic strings
 - Log errors with context (what was being attempted, with which inputs)
 
-______________________________________________________________________
+---
 
 ## Comments
 
@@ -120,7 +120,7 @@ ______________________________________________________________________
 - Commented-out code — delete it. Git remembers.
 - TODO without a ticket — `// TODO fix this` is a lie. Use `// TODO(#123): fix race condition in session cleanup`
 
-______________________________________________________________________
+---
 
 ## Error Handling Patterns
 
@@ -148,18 +148,18 @@ fn get_user(id: UserId) -> Result<User, UserError>
 - **Using exceptions for control flow** — use `Optional`/`Result` for expected cases
 - **Swallowing errors silently** — log + re-raise, or return an error value
 
-______________________________________________________________________
+---
 
 ## Logging
 
 ### Log Levels
 
-| Level | When | Example |
-|-------|------|---------|
-| ERROR | Something failed that shouldn't | Database connection lost |
-| WARN | Something unexpected but handled | Retry succeeded after timeout |
-| INFO | Significant business events | User registered, order placed |
-| DEBUG | Development diagnostics | Function entry/exit, intermediate values |
+| Level | When                             | Example                                  |
+| ----- | -------------------------------- | ---------------------------------------- |
+| ERROR | Something failed that shouldn't  | Database connection lost                 |
+| WARN  | Something unexpected but handled | Retry succeeded after timeout            |
+| INFO  | Significant business events      | User registered, order placed            |
+| DEBUG | Development diagnostics          | Function entry/exit, intermediate values |
 
 ### Rules
 
@@ -168,7 +168,7 @@ ______________________________________________________________________
 - **Never log secrets** — passwords, tokens, PII
 - **Log at boundaries** — incoming requests, outgoing responses, external calls
 
-______________________________________________________________________
+---
 
 ## Observability & Tracing
 
@@ -183,16 +183,16 @@ ______________________________________________________________________
 
 ### Key Span Attributes
 
-| Attribute | Example | Required? |
-|-----------|---------|-----------|
-| `trace.id` | `abc-123-def` | Yes |
-| `span.name` | `process_payment` | Yes |
-| `user.id` | `usr_xyz` | If applicable |
-| `http.method` | `POST` | If HTTP |
-| `http.status_code` | `200` | If HTTP |
-| `db.statement` | `SELECT ...` | If database (sanitized) |
-| `error.message` | `timeout after 5s` | If error |
-| `error.type` | `TimeoutError` | If error |
+| Attribute          | Example            | Required?               |
+| ------------------ | ------------------ | ----------------------- |
+| `trace.id`         | `abc-123-def`      | Yes                     |
+| `span.name`        | `process_payment`  | Yes                     |
+| `user.id`          | `usr_xyz`          | If applicable           |
+| `http.method`      | `POST`             | If HTTP                 |
+| `http.status_code` | `200`              | If HTTP                 |
+| `db.statement`     | `SELECT ...`       | If database (sanitized) |
+| `error.message`    | `timeout after 5s` | If error                |
+| `error.type`       | `TimeoutError`     | If error                |
 
 ### Correlation IDs
 
@@ -220,7 +220,7 @@ span.add_event("payment_processed", {
 })
 ```
 
-______________________________________________________________________
+---
 
 ## Context-Rich Outputs
 
@@ -272,7 +272,7 @@ Every API response includes:
 }
 ```
 
-______________________________________________________________________
+---
 
 ## Dependency Management
 
@@ -282,13 +282,13 @@ ______________________________________________________________________
 - **Group and document** — separate dev/test/prod dependencies, document why each exists
 - **Update regularly** — scheduled dependency updates (weekly or monthly)
 
-______________________________________________________________________
+---
 
 ## Per-Module Documentation
 
 Some projects benefit from a short per-module summary file (`.context.md` or similar) that captures purpose, public interfaces, and key files. This is optional — only adopt it when modules are large enough that fresh-eyes exploration is consistently expensive. See the `/explore-module` skill for the template and maintenance workflow.
 
-______________________________________________________________________
+---
 
 ## Security Practices
 
@@ -305,14 +305,14 @@ ______________________________________________________________________
 
 Parse, don't validate, at every boundary (HTTP, CLI, files, messages) — see `engineering-principles.md` §8 Fail Fast. Threat-specific rules:
 
-| Threat | Prevention |
-|--------|-----------|
-| SQL Injection | Parameterized queries ONLY — never string concatenation |
-| XSS | Output encoding, CSP headers, sanitize user-generated HTML |
-| Command Injection | Never pass user input to shell commands; use library functions |
-| Path Traversal | Validate and resolve paths; never use user input directly in file paths |
-| SSRF | Allowlist target URLs/IPs; users never control outbound request targets |
-| Deserialization | Never deserialize untrusted data with `pickle`/`eval`/`unserialize` |
+| Threat            | Prevention                                                              |
+| ----------------- | ----------------------------------------------------------------------- |
+| SQL Injection     | Parameterized queries ONLY — never string concatenation                 |
+| XSS               | Output encoding, CSP headers, sanitize user-generated HTML              |
+| Command Injection | Never pass user input to shell commands; use library functions          |
+| Path Traversal    | Validate and resolve paths; never use user input directly in file paths |
+| SSRF              | Allowlist target URLs/IPs; users never control outbound request targets |
+| Deserialization   | Never deserialize untrusted data with `pickle`/`eval`/`unserialize`     |
 
 Where the legitimate value space is enumerable (senders, recipients, callback targets), pin an explicit allowlist instead of pattern-hardening arbitrary input.
 

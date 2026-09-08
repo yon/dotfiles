@@ -4,13 +4,13 @@ Date: 2026-09-08. Scope: portable lint workflow and revised stack examples.
 
 Fresh agents received the skill and task prompts without the assertions. Two agents executed real formatter commands in isolated fixture copies with Prettier 3.9.6 preinstalled. A third evaluated the three supplied-state scenarios without making repository changes. The coordinator scored the reports and verified fixture file bytes independently.
 
-| Scenario | Assertions passed | Evidence |
-| --- | --- | --- |
-| Check target that mutates | 4/4 | Inspected the Make recipe, ran the nonmutating package command, reported formatting failure; all original files remained byte-identical. |
-| Scoped fix without Make | 4/4 | Formatted only target.ts and verified it passes; unrelated.ts and package.json unchanged, no Makefile added, no global-clean claim. |
-| Typed linting project scope | 4/4 | Proposed project information for the existing rule, correct source/test scopes, syntax-only config handling, and explicit planned verification. |
-| Legacy debt | 4/4 | Preserved entrypoints, rejected blanket disables/count ceilings, proposed enforceable rollout and baseline checks, disclosed coverage limits. |
-| Unavailable/ignored checks | 4/4 | Reported unanalyzed source and setup failure without invented results, configuration changes, or unrequested installation. |
+| Scenario                    | Assertions passed | Evidence                                                                                                                                        |
+| --------------------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Check target that mutates   | 4/4               | Inspected the Make recipe, ran the nonmutating package command, reported formatting failure; all original files remained byte-identical.        |
+| Scoped fix without Make     | 4/4               | Formatted only target.ts and verified it passes; unrelated.ts and package.json unchanged, no Makefile added, no global-clean claim.             |
+| Typed linting project scope | 4/4               | Proposed project information for the existing rule, correct source/test scopes, syntax-only config handling, and explicit planned verification. |
+| Legacy debt                 | 4/4               | Preserved entrypoints, rejected blanket disables/count ceilings, proposed enforceable rollout and baseline checks, disclosed coverage limits.   |
+| Unavailable/ignored checks  | 4/4               | Reported unanalyzed source and setup failure without invented results, configuration changes, or unrequested installation.                      |
 
 Feedback clarified that the reference also supports configuration repair and that repairing a typed rule does not require adopting a new preset.
 

@@ -14,12 +14,12 @@ Use this reference for methodology questions, contested metrics, and grading. Th
 
 An objective describes a valuable end state. KRs define the evidence that would establish success. Initiatives describe the work proposed to produce it. Keep those distinctions visible without forcing every goal into the same wording.
 
-| Situation | Useful success criterion | Common mistake |
-| --- | --- | --- |
-| Improvement | A defined customer or operational result changes by a deadline | Counting features without checking their effect |
-| Learning | Evidence resolves a stated uncertainty and supports a decision | Counting interviews or requiring a favorable finding |
-| Necessary milestone | An accepted capability meets explicit usability, quality, and completion criteria | Calling a launch proof of later adoption |
-| Maintenance or resilience | A material service or risk commitment holds throughout a defined period | Listing every routine responsibility as a priority |
+| Situation                 | Useful success criterion                                                          | Common mistake                                       |
+| ------------------------- | --------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| Improvement               | A defined customer or operational result changes by a deadline                    | Counting features without checking their effect      |
+| Learning                  | Evidence resolves a stated uncertainty and supports a decision                    | Counting interviews or requiring a favorable finding |
+| Necessary milestone       | An accepted capability meets explicit usability, quality, and completion criteria | Calling a launch proof of later adoption             |
+| Maintenance or resilience | A material service or risk commitment holds throughout a defined period           | Listing every routine responsibility as a priority   |
 
 Use a milestone when it represents a valuable commitment or prerequisite. Explain its limits as evidence of the broader outcome. Use a maintenance goal when protecting the condition deserves explicit attention, such as during rapid growth or a risky transition. Routine health measures can remain outside the priority OKRs.
 

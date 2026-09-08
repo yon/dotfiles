@@ -2,7 +2,7 @@
 
 **Git is the project's memory. Every commit should tell a clear story about what changed and why.**
 
-______________________________________________________________________
+---
 
 ## Branch Strategy
 
@@ -24,7 +24,7 @@ docs/description              # Documentation only
 - Branches are short-lived (days, not weeks)
 - Delete branches after merge
 
-______________________________________________________________________
+---
 
 ## Commit Messages — Conventional Commits
 
@@ -40,17 +40,17 @@ ______________________________________________________________________
 
 ### Types
 
-| Type | When |
-|------|------|
-| `feat` | New feature or capability |
-| `fix` | Bug fix |
+| Type       | When                                       |
+| ---------- | ------------------------------------------ |
+| `feat`     | New feature or capability                  |
+| `fix`      | Bug fix                                    |
 | `refactor` | Code restructuring with no behavior change |
-| `test` | Adding or modifying tests |
-| `docs` | Documentation only |
-| `chore` | Build, CI, deps, tooling |
-| `perf` | Performance improvement |
-| `style` | Formatting, whitespace (no logic change) |
-| `ci` | CI/CD pipeline changes |
+| `test`     | Adding or modifying tests                  |
+| `docs`     | Documentation only                         |
+| `chore`    | Build, CI, deps, tooling                   |
+| `perf`     | Performance improvement                    |
+| `style`    | Formatting, whitespace (no logic change)   |
+| `ci`       | CI/CD pipeline changes                     |
 
 ### Examples
 
@@ -87,7 +87,7 @@ instead of concrete StripeClient.
 - One logical change per commit — don't mix features with refactoring
 - Commits should be atomic — every commit should build and pass tests
 
-______________________________________________________________________
+---
 
 ## Work Decomposition
 
@@ -99,11 +99,11 @@ ______________________________________________________________________
 
 Break large features into a hierarchy:
 
-| Level | Scope | Deliverable | Duration |
-|-------|-------|-------------|----------|
-| **Epic** | Full feature or capability | Multiple PRs over days/weeks | 1-4 weeks |
-| **Story** | One tracer bullet through all layers | One PR, independently deployable | 1-3 days |
-| **Task** | One implementation step within a story | One commit or small group of commits | Hours |
+| Level     | Scope                                  | Deliverable                          | Duration  |
+| --------- | -------------------------------------- | ------------------------------------ | --------- |
+| **Epic**  | Full feature or capability             | Multiple PRs over days/weeks         | 1-4 weeks |
+| **Story** | One tracer bullet through all layers   | One PR, independently deployable     | 1-3 days  |
+| **Task**  | One implementation step within a story | One commit or small group of commits | Hours     |
 
 ### Tracer Bullets Over Horizontal Layers
 
@@ -149,17 +149,17 @@ Example: Building a payment system
     → Dashboard and reporting
 ```
 
-______________________________________________________________________
+---
 
 ## PR Size Discipline
 
 ### Targets
 
-| Metric | Target | Hard Limit |
-|--------|--------|------------|
-| Files changed | < 10 | 15 |
-| Lines changed | < 300 | 500 |
-| Review time | < 30 min | 60 min |
+| Metric        | Target   | Hard Limit |
+| ------------- | -------- | ---------- |
+| Files changed | < 10     | 15         |
+| Lines changed | < 300    | 500        |
+| Review time   | < 30 min | 60 min     |
 
 ### If a PR Is Too Large
 
@@ -174,7 +174,7 @@ ______________________________________________________________________
 - **Independently deployable** — deploying this PR alone doesn't break anything
 - **Independently revertable** — can be reverted without affecting other work
 
-______________________________________________________________________
+---
 
 ## Stacking PRs
 
@@ -196,7 +196,7 @@ Considered stacked PRs for the autonomous epic-implement workflow (agents build 
 
 **Keep stacking's one real virtue — reviewable increments — via squash discipline instead**: each sub-issue squash-merges into the integration branch as exactly one conventional commit referencing its issue and sub-PR, so the final PR to main is reviewed commit-by-commit, one commit per issue. The squash-merge goes through GitHub (`gh pr merge --squash`) so every sub-PR ends in state Merged — never a local `git merge --squash` followed by closing the PR, which leaves it Closed with dangling "unmerged commits". Hub-and-spoke plus squash discipline = stacked-PR review ergonomics without restack cost.
 
-______________________________________________________________________
+---
 
 ## Pre-Commit Checklist
 
@@ -208,7 +208,7 @@ Before every commit:
 1. Commit message follows conventional format
 1. Tests for new/changed behavior are included
 
-______________________________________________________________________
+---
 
 ## Pull Request Protocol
 
@@ -250,7 +250,7 @@ ______________________________________________________________________
 - **Regular merge** for release branches (preserve branch history)
 - **Never force push** to `main`
 
-______________________________________________________________________
+---
 
 ## Hotfix Protocol
 

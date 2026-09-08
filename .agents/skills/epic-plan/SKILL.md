@@ -47,15 +47,15 @@ Check for an execution-plan doc by RUNNING `ls docs/plans/*execution-plan*.md 2>
 
 ## Failure modes (each observed in real audits — check your draft against all)
 
-| Failure | Counter |
-|---|---|
-| Invented fixture shapes | Quote real ids/subjects verbatim from live evidence |
-| Stale anchors trusted | Date + SHA stamp, re-grep caveat, prefer symbol names over line numbers |
-| Re-specifies existing code | Reconciliation names the existing helper: consume or delete |
-| Design lives in a side doc that rots | Issue body is the source of truth; docs carry only cross-issue coordination |
-| LLM call without tag/budget (where repo requires) | Contract names them, or states "zero LLM calls" |
-| Vague safety ("be careful") | Testable invariants: allowlists, env gates default-off, audit rows |
-| Depends on a sibling's undesigned internals | The dependent body quotes the exact interface it consumes |
+| Failure                                           | Counter                                                                     |
+| ------------------------------------------------- | --------------------------------------------------------------------------- |
+| Invented fixture shapes                           | Quote real ids/subjects verbatim from live evidence                         |
+| Stale anchors trusted                             | Date + SHA stamp, re-grep caveat, prefer symbol names over line numbers     |
+| Re-specifies existing code                        | Reconciliation names the existing helper: consume or delete                 |
+| Design lives in a side doc that rots              | Issue body is the source of truth; docs carry only cross-issue coordination |
+| LLM call without tag/budget (where repo requires) | Contract names them, or states "zero LLM calls"                             |
+| Vague safety ("be careful")                       | Testable invariants: allowlists, env gates default-off, audit rows          |
+| Depends on a sibling's undesigned internals       | The dependent body quotes the exact interface it consumes                   |
 
 ## Done when
 

@@ -40,3 +40,11 @@ setup:
 
 update:	setup
 	cd $(DOTFILE_DIR) && git pull && cd $(HOME);
+
+.PHONY: markdown-format markdown-format-check
+
+markdown-format:
+	bun .prettier/markdown.ts --write
+
+markdown-format-check:
+	bun .prettier/markdown.ts --check

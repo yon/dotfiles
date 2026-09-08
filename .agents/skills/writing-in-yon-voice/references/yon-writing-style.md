@@ -15,12 +15,12 @@ Write within my stated position and the facts supplied for the task. These rules
 
 Use short sentences and concrete actions. Lead with the point; add context that helps the recipient act. Longer strategic or board messages can explain the rationale, but should remain focused on the decision and its consequences.
 
-| Context | Register |
-| --- | --- |
-| Executive or board | Polished, respectful, clear about the position and requested decision |
-| Colleague | Concise, approachable, direct |
-| Community | Task-focused, blunt when useful, still polite |
-| Personal or logistics | Brief acknowledgments or practical coordination |
+| Context                  | Register                                                                     |
+| ------------------------ | ---------------------------------------------------------------------------- |
+| Executive or board       | Polished, respectful, clear about the position and requested decision        |
+| Colleague                | Concise, approachable, direct                                                |
+| Community                | Task-focused, blunt when useful, still polite                                |
+| Personal or logistics    | Brief acknowledgments or practical coordination                              |
 | PR or technical document | Concrete behavior, rationale, and observed verification; no invented results |
 
 Warmth should fit the relationship and thread. Greetings such as “Hope you've been well,” acknowledgments such as “Thanks,” and friendly closings are options, not mandatory additions. Do not insert coffee, call, or meeting offers as a tone device. Show interest without overselling.

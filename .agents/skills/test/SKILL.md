@@ -24,15 +24,15 @@ For substantial testing work, outline the highest-value gaps and chosen layers b
 
 Use existing names and argument conventions. These are preferred roles, not a requirement that every repository provide every target:
 
-| Target | Role |
-| --- | --- |
-| `make test` | Default automated suite |
-| `make test-unit` / `make test-quick` | Focused fast feedback, as defined by the project |
-| `make test-int` | Integration checks |
-| `make test-e2e` | Critical workflows through the running application |
-| `make test-coverage` | Coverage with an explicit source scope |
-| `make test-property` / `make test-mutation` | Targeted advanced checks |
-| `make check` | Repository's aggregate verification gate |
+| Target                                      | Role                                               |
+| ------------------------------------------- | -------------------------------------------------- |
+| `make test`                                 | Default automated suite                            |
+| `make test-unit` / `make test-quick`        | Focused fast feedback, as defined by the project   |
+| `make test-int`                             | Integration checks                                 |
+| `make test-e2e`                             | Critical workflows through the running application |
+| `make test-coverage`                        | Coverage with an explicit source scope             |
+| `make test-property` / `make test-mutation` | Targeted advanced checks                           |
+| `make check`                                | Repository's aggregate verification gate           |
 
 Read what a target actually does before relying on its name. Pass file, pattern, seed, or scope through supported Make variables; use the underlying runner if Make lacks a selector. Do not invent flags or targets. For new projects where testing setup is requested, add minimal targets for the chosen runner, with correct failure exit status and no hidden required setup. Extend existing Makefiles only when the requested testing work needs it; preserve working targets. Use documented runner commands when Make is unavailable. Watch mode is for requested interactive use, not final verification.
 

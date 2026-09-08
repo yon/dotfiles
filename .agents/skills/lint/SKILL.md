@@ -9,12 +9,12 @@ Use executable configuration to enforce mechanical standards. Repository instruc
 
 ## Choose the operation
 
-| Request | Behavior |
-| --- | --- |
-| Check / `lint` | Run existing checks without source or configuration edits. |
-| Check a file or directory | Use the tool's supported selector within the requested scope. |
-| Fix / `lint fix` | Apply scoped formatting and lint corrections, then verify them. |
-| Setup / `lint setup` | Establish or extend the lint stack appropriate to the project. |
+| Request                   | Behavior                                                        |
+| ------------------------- | --------------------------------------------------------------- |
+| Check / `lint`            | Run existing checks without source or configuration edits.      |
+| Check a file or directory | Use the tool's supported selector within the requested scope.   |
+| Fix / `lint fix`          | Apply scoped formatting and lint corrections, then verify them. |
+| Setup / `lint setup`      | Establish or extend the lint stack appropriate to the project.  |
 
 Read applicable instructions, manifests, lockfiles, linter/formatter configuration, Make recipes, package scripts, and relevant CI before choosing commands. Distinguish existing failures from problems introduced by this task. Read only the relevant language section of [linter-stacks.md](linter-stacks.md) when setting up or repairing configuration.
 

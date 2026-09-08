@@ -4,15 +4,15 @@ Choose techniques for the behavior and failure modes that matter. Start with the
 
 ## Select by risk
 
-| Surface | Useful evidence |
-| --- | --- |
-| Pure domain rules, parsing, normalization, serialization | Examples, boundaries, properties, fuzzing where appropriate |
-| Workflows, retries, caches, inventories, state transitions | Stateful models, replay/idempotency cases, controlled concurrency |
-| Database queries, transactions, migrations | Real isolated engine, constraints, rollback and upgrade paths |
-| Service or message boundaries | Provider-verified contracts and integration tests |
-| User-facing flows | Component behavior and selected end-to-end journeys; accessibility or visual checks when relevant |
-| Critical decisions with high line coverage | Scoped mutation analysis of assertions and branch protection |
-| Timeouts, partial failure, resource limits | Controlled fault injection and workload-specific checks |
+| Surface                                                    | Useful evidence                                                                                   |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Pure domain rules, parsing, normalization, serialization   | Examples, boundaries, properties, fuzzing where appropriate                                       |
+| Workflows, retries, caches, inventories, state transitions | Stateful models, replay/idempotency cases, controlled concurrency                                 |
+| Database queries, transactions, migrations                 | Real isolated engine, constraints, rollback and upgrade paths                                     |
+| Service or message boundaries                              | Provider-verified contracts and integration tests                                                 |
+| User-facing flows                                          | Component behavior and selected end-to-end journeys; accessibility or visual checks when relevant |
+| Critical decisions with high line coverage                 | Scoped mutation analysis of assertions and branch protection                                      |
+| Timeouts, partial failure, resource limits                 | Controlled fault injection and workload-specific checks                                           |
 
 ## Property-based testing and fuzzing
 

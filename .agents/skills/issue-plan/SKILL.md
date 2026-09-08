@@ -30,12 +30,12 @@ When debugging, reproduce the symptom where possible, compare relevant working a
 
 Scale detail to the work and the repository template. Lead with the concrete problem and desired result. Include only sections useful to the issue:
 
-| Type | Useful content |
-| --- | --- |
-| Bug | Reported or observed symptom; executed repro when available; intended behavior and its basis; verified cause or hypotheses; affected boundaries; regression criteria |
-| Feature | User outcome; relevant interfaces, data contracts, and compatibility constraints; existing code to reuse; acceptance criteria |
-| Chore | Current and desired state; affected configuration or workflow; verification; recovery considerations when relevant |
-| Investigation | Evidence so far; open question; competing explanations; concrete next checks; deliverable that resolves or narrows uncertainty |
+| Type          | Useful content                                                                                                                                                       |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Bug           | Reported or observed symptom; executed repro when available; intended behavior and its basis; verified cause or hypotheses; affected boundaries; regression criteria |
+| Feature       | User outcome; relevant interfaces, data contracts, and compatibility constraints; existing code to reuse; acceptance criteria                                        |
+| Chore         | Current and desired state; affected configuration or workflow; verification; recovery considerations when relevant                                                   |
+| Investigation | Evidence so far; open question; competing explanations; concrete next checks; deliverable that resolves or narrows uncertainty                                       |
 
 Include in-scope work, relevant exclusions, known dependencies, and verification. Use paths and symbols as durable anchors; add line numbers and the inspected revision when available, and tell the executor to recheck anchors against current code. Do not invent revision identifiers or stamp an unrelated branch as the reviewed baseline.
 
