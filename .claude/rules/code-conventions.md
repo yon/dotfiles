@@ -15,7 +15,8 @@ paths:
 
 ## Linters as Canonical Standards
 
-**Linter configurations are the single source of truth for coding standards.** When prose documentation and linter config disagree, update the linter config — it is the canonical source.
+**Linter configurations are the single source of truth for coding standards.** When prose
+documentation and linter config disagree, update the linter config — it is the canonical source.
 
 ### Common Linter Stacks
 
@@ -33,7 +34,8 @@ paths:
   ```
   # lint:ignore S101 — using assert for test preconditions, not production validation
   ```
-- **Linter overrides require a reason in the comment** — bare `# noqa` or `// eslint-disable` is not acceptable
+- **Linter overrides require a reason in the comment** — bare `# noqa` or `// eslint-disable` is not
+  acceptable
 - **Run `make lint` before every commit** — see `quality-and-verification.md` for the full checklist
 
 ---
@@ -96,7 +98,8 @@ paths:
 
 ### Error Handling
 
-- Return errors explicitly (`Result`, `Either`, error returns) — don't rely on exceptions for control flow
+- Return errors explicitly (`Result`, `Either`, error returns) — don't rely on exceptions for
+  control flow
 - Handle errors at the appropriate level — don't catch and re-throw without adding context
 - Use custom error types for domain errors — not generic strings
 - Log errors with context (what was being attempted, with which inputs)
@@ -118,7 +121,8 @@ paths:
 - Obvious code — `i++ // increment i` adds noise
 - Instead of refactoring — if code needs a comment to explain WHAT it does, rewrite the code
 - Commented-out code — delete it. Git remembers.
-- TODO without a ticket — `// TODO fix this` is a lie. Use `// TODO(#123): fix race condition in session cleanup`
+- TODO without a ticket — `// TODO fix this` is a lie. Use
+  `// TODO(#123): fix race condition in session cleanup`
 
 ---
 
@@ -172,7 +176,8 @@ fn get_user(id: UserId) -> Result<User, UserError>
 
 ## Observability & Tracing
 
-**Every operation should produce a trace, not just a log line.** Structured tracing provides the context needed to diagnose issues in production.
+**Every operation should produce a trace, not just a log line.** Structured tracing provides the
+context needed to diagnose issues in production.
 
 ### Structured Tracing (OpenTelemetry-style)
 
@@ -224,7 +229,9 @@ span.add_event("payment_processed", {
 
 ## Context-Rich Outputs
 
-Error message context is defined in `engineering-principles.md` Fail Fast section — every error must include the operation, inputs, expected outcome, and actual outcome. The patterns below extend that to non-error outputs.
+Error message context is defined in `engineering-principles.md` Fail Fast section — every error must
+include the operation, inputs, expected outcome, and actual outcome. The patterns below extend that
+to non-error outputs.
 
 ### Result Pattern with Metadata
 
@@ -254,7 +261,8 @@ Every API response includes:
 
 - **`request_id`** — correlation ID for tracing
 - **`timestamp`** — when the response was generated
-- **Error responses** additionally include: error code, human-readable message, and machine-readable details
+- **Error responses** additionally include: error code, human-readable message, and machine-readable
+  details
 
 ```json
 {
@@ -286,7 +294,10 @@ Every API response includes:
 
 ## Per-Module Documentation
 
-Some projects benefit from a short per-module summary file (`.context.md` or similar) that captures purpose, public interfaces, and key files. This is optional — only adopt it when modules are large enough that fresh-eyes exploration is consistently expensive. See the `/explore-module` skill for the template and maintenance workflow.
+Some projects benefit from a short per-module summary file (`.context.md` or similar) that captures
+purpose, public interfaces, and key files. This is optional — only adopt it when modules are large
+enough that fresh-eyes exploration is consistently expensive. See the `/explore-module` skill for
+the template and maintenance workflow.
 
 ---
 
@@ -296,14 +307,18 @@ Some projects benefit from a short per-module summary file (`.context.md` or sim
 
 ### Secrets
 
-- NEVER hardcode secrets/keys/tokens, commit `.env`/credentials/private keys, log secrets at any level, or pass them in URLs.
-- Use env vars or a secrets manager; ship `.env.example` with dummy values; add sensitive files to `.gitignore` BEFORE creating them.
+- NEVER hardcode secrets/keys/tokens, commit `.env`/credentials/private keys, log secrets at any
+  level, or pass them in URLs.
+- Use env vars or a secrets manager; ship `.env.example` with dummy values; add sensitive files to
+  `.gitignore` BEFORE creating them.
 - Exposed credentials get rotated even if the commit is reverted — git history is permanent.
-- Pre-commit check: no files matching `*.pem, *.key, *.env, credentials.*, secrets.*`; no live values behind `api_key=`, `password=`, `secret=`, `token=`.
+- Pre-commit check: no files matching `*.pem, *.key, *.env, credentials.*, secrets.*`; no live
+  values behind `api_key=`, `password=`, `secret=`, `token=`.
 
 ### Input Validation
 
-Parse, don't validate, at every boundary (HTTP, CLI, files, messages) — see `engineering-principles.md` §8 Fail Fast. Threat-specific rules:
+Parse, don't validate, at every boundary (HTTP, CLI, files, messages) — see
+`engineering-principles.md` §8 Fail Fast. Threat-specific rules:
 
 | Threat            | Prevention                                                              |
 | ----------------- | ----------------------------------------------------------------------- |
@@ -314,28 +329,36 @@ Parse, don't validate, at every boundary (HTTP, CLI, files, messages) — see `e
 | SSRF              | Allowlist target URLs/IPs; users never control outbound request targets |
 | Deserialization   | Never deserialize untrusted data with `pickle`/`eval`/`unserialize`     |
 
-Where the legitimate value space is enumerable (senders, recipients, callback targets), pin an explicit allowlist instead of pattern-hardening arbitrary input.
+Where the legitimate value space is enumerable (senders, recipients, callback targets), pin an
+explicit allowlist instead of pattern-hardening arbitrary input.
 
 ### Auth
 
-- Established libraries only — never roll your own crypto. Passwords hashed with bcrypt/argon2/scrypt (never MD5/SHA1/bare SHA256). Rate-limit auth endpoints. HTTPS everywhere.
-- Check permissions at the point of access; least privilege; default to deny; validate resource ownership; log authorization failures.
+- Established libraries only — never roll your own crypto. Passwords hashed with
+  bcrypt/argon2/scrypt (never MD5/SHA1/bare SHA256). Rate-limit auth endpoints. HTTPS everywhere.
+- Check permissions at the point of access; least privilege; default to deny; validate resource
+  ownership; log authorization failures.
 
 ### Dependencies
 
-- Before adding: check CVEs/advisories, maintenance status, license; minimize count — every dep is attack surface.
-- Ongoing: automated vulnerability alerts, pinned versions (no `latest`/`*` in production), regular scheduled updates.
+- Before adding: check CVEs/advisories, maintenance status, license; minimize count — every dep is
+  attack surface.
+- Ongoing: automated vulnerability alerts, pinned versions (no `latest`/`*` in production), regular
+  scheduled updates.
 
 ### Errors & Data
 
-- Never expose to users: stack traces, DB errors, internal paths, or specific auth-failure reasons (use "invalid credentials"). Log detail server-side with correlation IDs; fail closed.
+- Never expose to users: stack traces, DB errors, internal paths, or specific auth-failure reasons
+  (use "invalid credentials"). Log detail server-side with correlation IDs; fail closed.
 - Encrypt at rest and in transit; minimize collection; enforce retention; mask PII in logs.
 
 ### Infrastructure
 
 - Containers: minimal pinned base images, non-root user, no secrets in layers, scan images.
-- Config: debug off in production, no default credentials, security headers (CORS/CSP/HSTS/X-Frame-Options), sane timeouts and file permissions.
+- Config: debug off in production, no default credentials, security headers
+  (CORS/CSP/HSTS/X-Frame-Options), sane timeouts and file permissions.
 
 ### Security Review Triggers
 
-The single maintained trigger table (security row included) lives in the `epic-implement` skill — consult it, don't fork it.
+The single maintained trigger table (security row included) lives in the `epic-implement` skill —
+consult it, don't fork it.

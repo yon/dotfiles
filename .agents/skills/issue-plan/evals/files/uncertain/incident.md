@@ -1,1 +1,6 @@
-On 2026-09-01, an operator reported that notification job J42 delivered twice. Two synthetic log excerpts show delivery events for J42 at 10:00:00 and 10:00:04 UTC. The records do not contain attempt IDs or acknowledgement results. Possible causes mentioned by the operator include timeout retry or duplicate enqueue. Neither has been confirmed. Intended behavior from the service contract: one externally visible delivery per logical job, including retries. This fixture uses synthetic identifiers and includes no recipient data.
+On 2026-09-01, an operator reported that notification job J42 delivered twice. Two synthetic log
+excerpts show delivery events for J42 at 10:00:00 and 10:00:04 UTC. The records do not contain
+attempt IDs or acknowledgement results. Possible causes mentioned by the operator include timeout
+retry or duplicate enqueue. Neither has been confirmed. Intended behavior from the service contract:
+one externally visible delivery per logical job, including retries. This fixture uses synthetic
+identifiers and includes no recipient data.

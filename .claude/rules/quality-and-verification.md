@@ -9,21 +9,35 @@ paths:
 
 # Quality & Verification Protocol
 
-**Purpose:** the verification discipline for every task that creates or modifies code, and the test-hardening ladder for earning confidence beyond the baseline.
+**Purpose:** the verification discipline for every task that creates or modifies code, and the
+test-hardening ladder for earning confidence beyond the baseline.
 
-**The gate is finding-driven, not score-driven.** Build/test/lint/typecheck failures block outright. Review findings block by severity: a surviving Critical or Major blocks merge; Minors are fixed inline per `ai-pdlc.md` stage 6. There is no numeric quality score.
+**The gate is finding-driven, not score-driven.** Build/test/lint/typecheck failures block outright.
+Review findings block by severity: a surviving Critical or Major blocks merge; Minors are fixed
+inline per `ai-pdlc.md` stage 6. There is no numeric quality score.
 
 ---
 
 ## Test Hardening Ladder
 
-**Principle: physical constraints over prompt rules.** Agents can rationalize around a written rule; they cannot rationalize around a failing test, a surviving mutant, or a threshold a tool reports. Whenever a quality property matters, prefer encoding it as a deterministic, tool-checked gate (test, coverage floor, complexity ceiling, mutation kill) over restating it in an instruction. Agents also invert the old economics: practices that were too tedious to sustain by hand (property-based testing, mutation analysis, pushing coverage into the last file) are now cheap to run routinely — the constraint is compute and review attention, not effort. (Doctrine per Robert C. Martin's "Agentic Discipline" work, 2026.)
+**Principle: physical constraints over prompt rules.** Agents can rationalize around a written rule;
+they cannot rationalize around a failing test, a surviving mutant, or a threshold a tool reports.
+Whenever a quality property matters, prefer encoding it as a deterministic, tool-checked gate (test,
+coverage floor, complexity ceiling, mutation kill) over restating it in an instruction. Agents also
+invert the old economics: practices that were too tedious to sustain by hand (property-based
+testing, mutation analysis, pushing coverage into the last file) are now cheap to run routinely —
+the constraint is compute and review attention, not effort. (Doctrine per Robert C. Martin's
+"Agentic Discipline" work, 2026.)
 
-**Layered tests are double-entry bookkeeping.** Acceptance criteria, unit tests, and end-to-end/live verification state the same intent at different altitudes; drift between layers is where bugs hide. Layers are valuable precisely because they overlap — but overlap is a cost, so apply it in proportion (see tiers).
+**Layered tests are double-entry bookkeeping.** Acceptance criteria, unit tests, and end-to-end/live
+verification state the same intent at different altitudes; drift between layers is where bugs hide.
+Layers are valuable precisely because they overlap — but overlap is a cost, so apply it in
+proportion (see tiers).
 
 ### The ladder — apply pragmatically, not maximally
 
-Baseline is mandatory everywhere; each rung above is EARNED by risk, not applied by default. "Just because we can doesn't mean we should."
+Baseline is mandatory everywhere; each rung above is EARNED by risk, not applied by default. "Just
+because we can doesn't mean we should."
 
 | Rung                       | What                                                                                                                                                                                                                    | When it applies                                                                                                                                                                                                                                                                           |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -34,13 +48,21 @@ Baseline is mandatory everywhere; each rung above is EARNED by risk, not applied
 
 ### Hardening pass (role, not a person)
 
-A hardening pass over a module = close coverage gaps → identify PBT candidates and add them → run mutation → kill or waive survivors → re-run the full gate. Dispatch it as its own agent with this checklist; it edits tests only, never the code under test (if a mutant can only be killed by changing the code, that is a finding to report, not a refactor to make). Findings that reveal real bugs become tracked issues.
+A hardening pass over a module = close coverage gaps → identify PBT candidates and add them → run
+mutation → kill or waive survivors → re-run the full gate. Dispatch it as its own agent with this
+checklist; it edits tests only, never the code under test (if a mutant can only be killed by
+changing the code, that is a finding to report, not a refactor to make). Findings that reveal real
+bugs become tracked issues.
 
 ### Guardrails
 
-- **Test-to-code volume is not the metric.** Kill rate, coverage of new code, and invariant coverage are.
-- **Compute honesty**: mutation runs are CPU-bound; as suites grow, scope them (changed-module impact analysis) rather than silently skipping. Anything skipped or scoped down is reported, never silent — same no-silent-caps rule as everything else.
-- **Human judgment stays on intent and feel.** Gates verify what was specified; only the owner judges whether the specified thing is the right thing.
+- **Test-to-code volume is not the metric.** Kill rate, coverage of new code, and invariant coverage
+  are.
+- **Compute honesty**: mutation runs are CPU-bound; as suites grow, scope them (changed-module
+  impact analysis) rather than silently skipping. Anything skipped or scoped down is reported, never
+  silent — same no-silent-caps rule as everything else.
+- **Human judgment stays on intent and feel.** Gates verify what was specified; only the owner
+  judges whether the specified thing is the right thing.
 
 ---
 
@@ -96,7 +118,8 @@ For most tasks, run:
 make check
 ```
 
-This runs build + test + lint + typecheck in sequence. If `make check` passes, verification is complete for commit-level quality.
+This runs build + test + lint + typecheck in sequence. If `make check` passes, verification is
+complete for commit-level quality.
 
 ---
 

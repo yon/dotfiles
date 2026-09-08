@@ -93,7 +93,13 @@ instead of concrete StripeClient.
 
 ### Issue Classification
 
-**Classify every GitHub issue with the native issue TYPE field, never a type label.** Set it at creation (`gh issue create --type Bug|Feature|Task|Epic`) or after (`gh issue edit <n> --type <name>`); read what the org enabled with `gh api graphql -f query='{organization(login:"<org>"){issueTypes(first:20){nodes{name isEnabled}}}}'`. Labels are for orthogonal axes only (area, risk, `good first issue`); delete a type label once the type field is set. Full rationale and fallback rules (org types disabled, personal repos): `ai-pdlc.md` stage 1.
+**Classify every GitHub issue with the native issue TYPE field, never a type label.** Set it at
+creation (`gh issue create --type Bug|Feature|Task|Epic`) or after
+(`gh issue edit <n> --type <name>`); read what the org enabled with
+`gh api graphql -f query='{organization(login:"<org>"){issueTypes(first:20){nodes{name isEnabled}}}}'`.
+Labels are for orthogonal axes only (area, risk, `good first issue`); delete a type label once the
+type field is set. Full rationale and fallback rules (org types disabled, personal repos):
+`ai-pdlc.md` stage 1.
 
 ### Epic → Stories → Tasks
 
@@ -132,7 +138,8 @@ Tracer bullets ensure:
 
 ### Tracer Bullet First
 
-The first story is always the **tracer bullet** — the simplest possible end-to-end path through the feature. It proves the architecture works before adding complexity.
+The first story is always the **tracer bullet** — the simplest possible end-to-end path through the
+feature. It proves the architecture works before adding complexity.
 
 ```
 Example: Building a payment system
@@ -192,9 +199,23 @@ main ← PR 1 (tracer bullet) ← PR 2 (error handling) ← PR 3 (edge cases)
 
 ### When NOT to stack: agent-implemented epics (learned 2026-07-09)
 
-Considered stacked PRs for the autonomous epic-implement workflow (agents build a whole epic on an integration branch, owner merges one PR to main); rejected. Stacking assumes serial, human-reviewed layers each merging to main — an agent epic is parallel (up to ~4 disjoint sub-issues concurrently, an order a stack would falsely serialize), the intermediate PRs are ephemeral scaffolding nobody consumes, and every merge under a stack forces a restack cascade across all open PRs above it (each one a semantic-conflict opportunity; a 10-issue epic blows past the 3-4-deep cap immediately). Genuinely dependent chains get stacking's sequencing for free by dispatching each issue only after its blocker merges into the integration branch — a stack that collapses at every level, so no tower to maintain.
+Considered stacked PRs for the autonomous epic-implement workflow (agents build a whole epic on an
+integration branch, owner merges one PR to main); rejected. Stacking assumes serial, human-reviewed
+layers each merging to main — an agent epic is parallel (up to ~4 disjoint sub-issues concurrently,
+an order a stack would falsely serialize), the intermediate PRs are ephemeral scaffolding nobody
+consumes, and every merge under a stack forces a restack cascade across all open PRs above it (each
+one a semantic-conflict opportunity; a 10-issue epic blows past the 3-4-deep cap immediately).
+Genuinely dependent chains get stacking's sequencing for free by dispatching each issue only after
+its blocker merges into the integration branch — a stack that collapses at every level, so no tower
+to maintain.
 
-**Keep stacking's one real virtue — reviewable increments — via squash discipline instead**: each sub-issue squash-merges into the integration branch as exactly one conventional commit referencing its issue and sub-PR, so the final PR to main is reviewed commit-by-commit, one commit per issue. The squash-merge goes through GitHub (`gh pr merge --squash`) so every sub-PR ends in state Merged — never a local `git merge --squash` followed by closing the PR, which leaves it Closed with dangling "unmerged commits". Hub-and-spoke plus squash discipline = stacked-PR review ergonomics without restack cost.
+**Keep stacking's one real virtue — reviewable increments — via squash discipline instead**: each
+sub-issue squash-merges into the integration branch as exactly one conventional commit referencing
+its issue and sub-PR, so the final PR to main is reviewed commit-by-commit, one commit per issue.
+The squash-merge goes through GitHub (`gh pr merge --squash`) so every sub-PR ends in state Merged —
+never a local `git merge --squash` followed by closing the PR, which leaves it Closed with dangling
+"unmerged commits". Hub-and-spoke plus squash discipline = stacked-PR review ergonomics without
+restack cost.
 
 ---
 
@@ -216,7 +237,8 @@ Before every commit:
 
 1. Rebase on latest `main` — resolve conflicts locally
 1. Run `make check` — all green
-1. Run the review gate — built-in `/code-review` for a working diff; the AI-PDLC panel (`ai-pdlc.md` stage 6) for PRs
+1. Run the review gate — built-in `/code-review` for a working diff; the AI-PDLC panel (`ai-pdlc.md`
+   stage 6) for PRs
 1. Squash fixup commits — clean, atomic history
 1. Write a clear PR description
 
@@ -246,7 +268,10 @@ Before every commit:
 ### Merge Strategy
 
 - **Squash and merge** for single-issue feature branches (clean main history)
-- **Merge commit** for epic integration branches (agent-implemented epics): the branch already carries one squashed conventional commit per issue — a merge commit preserves that granularity on main (bisect/revert/blame per issue) while `git log --first-parent` still reads one entry per epic. Squashing here would collapse the reviewed increments into an unbisectable mega-commit.
+- **Merge commit** for epic integration branches (agent-implemented epics): the branch already
+  carries one squashed conventional commit per issue — a merge commit preserves that granularity on
+  main (bisect/revert/blame per issue) while `git log --first-parent` still reads one entry per
+  epic. Squashing here would collapse the reviewed increments into an unbisectable mega-commit.
 - **Regular merge** for release branches (preserve branch history)
 - **Never force push** to `main`
 
