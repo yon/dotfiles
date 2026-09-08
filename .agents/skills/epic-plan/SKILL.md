@@ -26,7 +26,7 @@ You are capturing work as a GitHub epic whose sub-issues will be executed LATER,
 ## 3. Decompose and wire
 
 - One issue = one branch = one PR; slice as independently-testable tracer bullets, sized so the PR lands under ~300 lines (epic #214 evidence: the median actual PR was 587 lines and 56% busted the 500 hard limit; oversized issues are the root cause, and every threshold-buster pays maximum review depth).
-- Wire natively AND restate in bodies: `gh api repos/{owner}/{repo}/issues/<n>/dependencies/blocked_by -F issue_id=<id>`; children via `.../issues/<epic>/sub_issues -F sub_issue_id=<id>` (numeric `id`, not number). Set the native issue **type** on the epic and every child (`gh issue create --type Epic|Feature|Bug|Task`), per `ai-pdlc.md` stage 1 — never a type label. Apply repo labels only for orthogonal axes (area, risk).
+- Wire natively AND restate in bodies: `gh api repos/{owner}/{repo}/issues/<n>/dependencies/blocked_by -F issue_id=<id>`; children via `.../issues/<epic>/sub_issues -F sub_issue_id=<id>` (numeric `id`, not number). Set an available native issue **type** on the epic and every child. Prefer native `Epic` for the parent; if unavailable, use the appropriate available native type (such as `Feature` or `Task`) plus the `epic` label. Children use the appropriate native `Feature`, `Bug`, or `Task` type. Follow repository naming conventions and verify available types before setting them. Apply other repo labels for orthogonal axes (area, risk).
 - Note conflict surfaces (files two issues touch) with a one-toucher-at-a-time warning in each affected body.
 
 ## 4. Review gates — BEFORE anything is created
@@ -59,4 +59,4 @@ Check for an execution-plan doc by RUNNING `ls docs/plans/*execution-plan*.md 2>
 
 ## Done when
 
-Epic + sub-issues exist, natively wired, typed (issue type, not a type label), and labeled, every body owner-approved in final form; every body passes the executor bar and the failure-mode table; evidence and commands embedded; program doc updated (or wave order in the epic); out-of-scope discoveries filed. A cold-start agent given one sub-issue's URL could execute it without asking you anything.
+Epic + sub-issues exist, natively wired, assigned native types (with the `epic` label on the parent when native `Epic` is unavailable), and labeled as appropriate, every body owner-approved in final form; every body passes the executor bar and the failure-mode table; evidence and commands embedded; program doc updated (or wave order in the epic); out-of-scope discoveries filed. A cold-start agent given one sub-issue's URL could execute it without asking you anything.
