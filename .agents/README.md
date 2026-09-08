@@ -14,7 +14,7 @@ Claude reads the same packages through `.claude/skills -> ../.agents/skills`.
 | Claude rules, including path scoping | `.claude/rules/` |
 | Claude subagent definitions | `.claude/agents/` |
 | Writing guide | `.agents/skills/writing-in-yon-voice/references/yon-writing-style.md` |
-| Agent template | `.agents/skills/create-claude-agent/assets/agent.md` |
+| Agent template | `.agents/skills/create-agent/assets/agent.md` |
 
 `AGENTS.md` is the canonical instruction file, exposed to Claude through its
 `CLAUDE.md` symlink. `rules/` and `agents/` remain real directories in `.claude`.

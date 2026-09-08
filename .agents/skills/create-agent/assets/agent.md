@@ -1,8 +1,6 @@
 ---
 name: agent-name
 description: One-line description for when to use this agent
-tools: (optional) List specific tools if restricted
-color: (optional) blue, green, yellow, cyan, red
 ---
 
 # Role
