@@ -1,26 +1,105 @@
 {
   "skill_name": "writing-okrs",
+  "execution": "Run each scenario in a fresh context with SKILL.md and relevant references. Give only its prompt, without expected_output or assertions, until the response is complete. These are draft/review simulations: no external tracker writes. Score each assertion against the full response, preserving arithmetic and unknowns. Re-run relevant scenarios after changing the skill.",
   "evals": [
     {
       "id": 0,
       "name": "critique-task-shaped-krs",
       "prompt": "Can you review these draft OKRs for my data platform team and tell me if they're any good? Objective: Modernize our data infrastructure. KR1: Build a new ingestion pipeline in Spark. KR2: Migrate all 40 legacy ETL jobs to the new pipeline. KR3: Launch a self-serve data catalog. KR4: Hire 2 senior data engineers.",
-      "expected_output": "Identifies that KR1/KR3/KR4 are activities/outputs not outcomes, KR4 is a resourcing task, suggests outcome-based reframes (metric deltas), notes the objective is vague/maintenance-flavored. Should work KR-by-KR with current vs proposed. Should flag that hitting all KRs may not achieve the intent (completeness).",
-      "files": []
+      "expected_output": "Diagnoses the whole objective and each KR, distinguishes activities from verifiable migration milestones and benefits, and proposes useful outcome evidence with unknown targets identified.",
+      "files": [],
+      "assertions": [
+        "Explains why building, launching, and hiring alone do not establish the infrastructure objective.",
+        "Assesses what migrating all 40 jobs accomplishes rather than rejecting the verb migrate categorically.",
+        "Checks whether the set can pass without delivering its intended benefit and proposes relevant measures.",
+        "Does not fabricate baselines or approved targets, and does not impose mandatory pauses after every KR."
+      ]
     },
     {
       "id": 1,
       "name": "control-boundary-reframe",
       "prompt": "My developer-experience team has this KR and my VP says it's not really in our control: 'Reduce average PR merge time across all engineering teams from 3 days to 1 day by Q4.' He's right that we don't control how fast other teams review PRs. But we built the CI/merge-queue tooling. How should I rephrase it?",
-      "expected_output": "Confirms the control-boundary problem, reframes to what the DX team owns (e.g. CI/pipeline latency they control, or adoption of the merge-queue tooling), explains the paved-road logic, possibly offers adoption-% as a year-one outcome. Should not just restate the same uncontrollable metric.",
-      "files": []
+      "expected_output": "Separates team-controlled pipeline contribution from influenced merge time and adoption, with honest shared accountability where appropriate.",
+      "files": [],
+      "assertions": [
+        "Distinguishes CI/queue contribution from review delay and end-to-end merge time.",
+        "Does not describe adoption as wholly owned by the platform team.",
+        "Offers a scoped operational measure or explicitly shared outcome without discarding the real delivery benefit.",
+        "Does not invent component baselines, achievable targets, or partner commitments."
+      ]
     },
     {
       "id": 2,
       "name": "draft-from-scratch-gameable",
       "prompt": "Help me set OKRs for my customer support team for next quarter. Our big goal is to make customers happier and get faster at resolving tickets. I want something concrete we can actually measure.",
-      "expected_output": "Drafts an objective + KRs from scratch, works toward measurable outcomes (CSAT, resolution time, etc.), and crucially pairs a speed metric with a quality guardrail to avoid gaming (e.g. faster resolution WITHOUT dropping CSAT or raising reopen rate). Should ask about baselines or note them as to-be-set. Interactive/propose style.",
-      "files": []
+      "expected_output": "Produces a useful support objective and candidate KRs with honest missing data, quality guardrails, and defined measures; does not stop at an interview.",
+      "files": [],
+      "assertions": [
+        "Drafts an objective and meaningful support outcomes rather than only requesting information.",
+        "Pairs faster resolution with relevant quality evidence such as repeat contacts/reopens or customer satisfaction.",
+        "Marks absent baselines and proposed targets as unknown/provisional rather than measured facts.",
+        "Addresses measurement window, eligible tickets or case mix, and how the measures could be gamed."
+      ]
+    },
+    {
+      "id": 3,
+      "name": "complete-batch-review",
+      "prompt": "Rewrite the entire following set in one response, covering every KR with current/proposed/why. Do not pause for approval between KRs. Q4 objective A: Make onboarding easier. A1: Ship new onboarding UI. A2: Run 12 onboarding workshops. Objective B: Improve reliability. B1: Launch dashboards. B2: Migrate 20 critical services from unsupported infrastructure. No outcome baselines have been measured yet. Give a usable draft and flag open decisions.",
+      "files": [],
+      "assertions": [
+        "Covers both objectives and all four KRs in one response rather than stopping after A1.",
+        "Provides current/proposed/why and distinguishes delivery activities from benefit or accepted risk-removal evidence.",
+        "Labels missing baselines/targets and any suggested values rather than fabricating measured numbers.",
+        "Preserves the intended onboarding and reliability outcomes, with a completeness check and open decisions."
+      ]
+    },
+    {
+      "id": 4,
+      "name": "pr-count-false-countermetric",
+      "prompt": "Our proposed KR is double merged PRs per engineer while keeping AI cost per PR flat or lower. Team size, total AI spend, and useful completed work stay unchanged. We can split 10 PRs into 20. Does the cost guardrail prevent gaming? Explain the arithmetic and propose better evidence without inventing a productivity target.",
+      "files": [],
+      "assertions": [
+        "Explains that doubling PR count doubles PRs per engineer with team size fixed.",
+        "Explains that cost per PR halves with total spend fixed, so both metrics improve under the same manipulation.",
+        "Rejects the claim that this pair prevents splitting/gaming while acknowledging work and value did not increase.",
+        "Proposes evidence of useful completed outcomes and relevant quality/cost protections without invented targets or blanket rejection of ratios."
+      ]
+    },
+    {
+      "id": 5,
+      "name": "legitimate-unit-cost-ratio",
+      "prompt": "Review this KR: reduce processing cost per successfully completed transaction from $0.80 to $0.60 by the end of Q4. The transaction class and success definition stay fixed. A colleague says every ratio is invalid for an OKR and wants raw transaction count instead. We care about efficiency without dropping hard transactions or reducing service quality. What should we keep and clarify?",
+      "files": [],
+      "assertions": [
+        "Recognizes a defined unit-cost ratio can be a legitimate measure and does not reject it categorically.",
+        "Preserves the supplied efficiency intent, baseline, target, and deadline rather than substituting volume as success.",
+        "Checks cost inclusions, numerator/denominator, population or case-mix changes, and absolute components.",
+        "Recommends success/quality or hard-case inclusion guardrails with measurable bounds to agree, not fabricated observed limits."
+      ]
+    },
+    {
+      "id": 6,
+      "name": "threshold-and-learning-without-fake-baselines",
+      "prompt": "Draft two Q4 KRs. First is a committed availability threshold of at least 99.95% every calendar month for our critical API, measured by the existing SLI; there is no requested improvement delta. Second is to decide by December 15 whether a new customer segment merits investment; we have no segment baseline, revenue estimate, or product-market-fit evidence. Do not invent them. The learning plan includes interviews and a prototype. Are these valid goal shapes, and how should we state success?",
+      "files": [],
+      "assertions": [
+        "Preserves availability as a threshold over each calendar month without forcing an artificial from-X-to-Y delta.",
+        "Recognizes a strategically important reliability commitment can warrant an OKR without requiring transformation.",
+        "Frames learning around a decision, defined evidence/acceptance standard, and deadline rather than only interview/prototype counts.",
+        "Keeps unknown baseline/revenue explicit and allows negative or inconclusive evidence to lead to an explicit decision instead of forcing positive validation."
+      ]
+    },
+    {
+      "id": 7,
+      "name": "contextual-grading-and-guardrail-breach",
+      "prompt": "Our organization grades committed thresholds as met/not met; we have no 0.7 convention. We met every committed KR last quarter. This quarter the committed availability threshold was 99.95% per month; one month was 99.90%, although delivery volume exceeded its target. Are last quarter results proof of sandbagging? Can this quarter be called successful because Google accepts 70% or because average performance across metrics is high?",
+      "files": [],
+      "assertions": [
+        "Does not call complete committed delivery proof of sandbagging.",
+        "Uses the supplied committed met/not-met convention and distinguishes Googles aspirational average from a universal pass mark.",
+        "Reports the failed monthly availability threshold without averaging it away using delivery volume or a near-100% ratio.",
+        "Separates actual outcome and scoring from retrospective judgment or target revision, without inventing causes for the miss."
+      ]
     }
   ]
 }
