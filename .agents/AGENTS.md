@@ -3,7 +3,7 @@
 ## Communication Style
 
 - **Plain prose.** Short sentences, one idea each, active voice. Prefer common words over jargon when both are equally precise; keep exact technical terms where precision requires them. This governs how you talk to me, not content you draft in my name (emails, docs, PRs keep their own voice rules).
-- **My voice.** Anything drafted in my name (email, docs, Slack, PRs) follows `instructions/yon-writing-style.md` (alongside this file). No em-dashes anywhere, in any output: use commas, colons, or periods. Never fabricate facts or invent names; if information is not known, say so.
+- **My voice.** Anything drafted in my name (email, docs, Slack, PRs) follows the `writing-in-yon-voice` skill in `~/.agents/skills/writing-in-yon-voice/`. No em-dashes anywhere, in any output: use commas, colons, or periods. Never fabricate facts or invent names; if information is not known, say so.
 
 ## Core Principles
 
@@ -16,13 +16,12 @@
 - **Plan before non-trivial work.** Anything touching multiple files or requiring more than a couple of steps gets a plan first (`superpowers:writing-plans` or its built-in equivalent).
 - **Stop and re-plan when something goes sideways.** Don't push through. Re-orient and propose a revised approach.
 - **Offload research and parallel work to subagents.** Keep the main context clean. One focused task per subagent.
-- **Verify before declaring done.** Run the build, run the tests, demonstrate correctness — see `rules/quality-and-verification.md`.
+- **Verify before declaring done.** Run the build, run the tests, demonstrate correctness — see `~/.claude/rules/quality-and-verification.md`.
 - **Demand elegance, in proportion.** For non-trivial work, pause to ask if there's a cleaner path. For obvious fixes, just do it.
 - **Fix bugs autonomously.** Given a failing test, error, or log, diagnose and fix. Don't ask for hand-holding on what's already evident.
 
 ## Tool Preferences
 
-- **Web fetching:** use the `/curl` skill (browser headers, redirect-following) instead of the native WebFetch tool when fetching pages that might block bots.
 - **Audio/video transcription:** `whisper-cli` (whisper.cpp) is installed, with a verified
   large-v3-turbo model at `~/.local/share/whisper-models/ggml-large-v3-turbo.bin` — **shared, do not
   re-download or copy into a scratchpad.** See the README in that directory. Recordings must be
@@ -31,22 +30,22 @@
   by hand — transcribe it.
 
 - **Google Workspace:** the `gws` CLI is authenticated and has Gmail, Drive, Docs, Sheets, Slides and Calendar scopes. **Never ask me to copy, paste, forward, or manually look up anything that lives in a Workspace app** — read and write it directly. That includes retrieving what was actually sent, looking up a contact's address before claiming to be blocked on it, and reading Drive/Docs content. Check whether `gws` can fetch it before asking me for it.
-  - **Always name the identity: this Mac has three Google accounts.** Every `gws` call sets `GOOGLE_WORKSPACE_CLI_CONFIG_DIR` to one of `~/.config/gws-config-<email>` (`yon@dowjones.com` = work, `yon@milliped.com` = personal, `admin@lawrencefarmssouth.com` = LFS). Each dir holds its own credentials and token cache, so it needs no other env var. Pick from what the task is about and say which one you used; ask when it's genuinely ambiguous.
+  - **Always name the identity: this Mac has four Google accounts.** Every `gws` call sets `GOOGLE_WORKSPACE_CLI_CONFIG_DIR` to one of `~/.config/gws-config-<email>` (`yon@dowjones.com` = work, `yon@milliped.com` = personal, `admin@lawrencefarmssouth.com` = LFS, `admin@chappaquaschoolfoundation.org` = CSF, Chappaqua School Foundation). Each dir holds its own credentials and token cache, so it needs no other env var. Pick from what the task is about and say which one you used; ask when it's genuinely ambiguous.
   - **Never rely on the bare default.** `~/.config/gws` is deliberately empty of credentials, and a bare call errors rather than guessing. Do NOT "fix" that by running `gws auth login` or by setting only `GOOGLE_WORKSPACE_CLI_CREDENTIALS_FILE`: a `client_secret.json` or cached token in the config dir OVERRIDES that variable, so the call can silently succeed as the wrong account (this broke djos on 2026-07-28). Config dir wins; treat it as the identity selector.
 
 ## Session Recovery
 
-Starting fresh or after heavy compaction: re-derive state from CLAUDE.md, the most recent plan file, `git log --oneline -10`, and `git diff` — never from a blank slate. State your understanding of the current task before proceeding.
+Starting fresh or after heavy compaction: re-derive state from AGENTS.md, the most recent plan file, `git log --oneline -10`, and `git diff` — never from a blank slate. State your understanding of the current task before proceeding.
 
 ## Reference Documents
 
-These live alongside this file in `rules/` (keep them lean). The first two load into every session; the last three are path-scoped (`paths:` frontmatter) and load only when source code is touched:
+These live in `~/.claude/rules/` (keep them lean). In Claude Code, the first two load into every session; the last three are path-scoped (`paths:` frontmatter) and load only when source code is touched:
 
-- `rules/ai-pdlc.md` — the development lifecycle governing ALL work: scope test (trivial/direct/epic), capture-as-issues, design-first, subagent dispatch and crew rules, TDD with real-world fixtures, review panels, deploy + prove-live, observability/cost gates, learn loop. Always loaded.
-- `rules/git-and-delivery.md` — branches, commits, PRs, issue types, work decomposition. Always loaded.
-- `rules/engineering-principles.md` — DRY/KISS/SOLID enforcement, immutability, typing, DI. Path-scoped.
-- `rules/code-conventions.md` — naming, file organization, comments, logging, observability, security practices. Path-scoped.
-- `rules/quality-and-verification.md` — verification checklist and the test-hardening ladder. Path-scoped.
+- `~/.claude/rules/ai-pdlc.md` — the development lifecycle governing ALL work: scope test (trivial/direct/epic), capture-as-issues, design-first, subagent dispatch and crew rules, TDD with real-world fixtures, review panels, deploy + prove-live, observability/cost gates, learn loop. Always loaded.
+- `~/.claude/rules/git-and-delivery.md` — branches, commits, PRs, issue types, work decomposition. Always loaded.
+- `~/.claude/rules/engineering-principles.md` — DRY/KISS/SOLID enforcement, immutability, typing, DI. Path-scoped.
+- `~/.claude/rules/code-conventions.md` — naming, file organization, comments, logging, observability, security practices. Path-scoped.
+- `~/.claude/rules/quality-and-verification.md` — verification checklist and the test-hardening ladder. Path-scoped.
 
 <nc-os-managed-instructions version="2026.07.06">
 <!-- DO NOT EDIT. Managed by NC OS; regenerated on each refresh. Edits inside this block are overwritten. -->

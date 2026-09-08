@@ -9,15 +9,16 @@ _djos() {
   local -a first_level
   first_level=(
     'health:Report DJOS health\: minutes since last successful ingest, queue depth, dead-letter count, and today'\''s LLM spend vs budget.'
-    'dashboard:Regenerate the self-contained djos dashboard \(data/dashboard.html\)\: read-only DB queries, Health section \(job staleness, dead-letter breakdown, queue depth\). No LLM calls.'
+    'dashboard:Regenerate the self-contained djos dashboard \(data/dashboard.html\)\: read-only DB queries, Health/Knowledge/Adoption/Cost sections. No LLM calls.'
     'context:Compact briefing for a person\: profile, recent confirmed facts, last interactions, open threads. Accepts a slug, email, or name.'
     'time-analysis:Analyze how meeting time is distributed across work areas and activity types over a window \(default 30 days\).'
     'draft-feedback:Capture draft-vs-sent feedback for DJOS-drafted replies and propose style-guide additions \(written to a .proposed.md for review, never auto-applied\).'
     'ingest:Pull latest code, sync db state, run all ingest pipelines via queue drain loop, export db.'
+    'doc-rollup:Email the document rollup\: every document ingested since the last rollup, each with its summary and links to the document and the originating email. Runs automatically at the end of every ingest; this command is for sending one on demand. Disable with DJOS_DOC_ROLLUP_EMAIL=0. --resend overrides the idempotency guard.'
     'dedup:Recurring dedup pass over the people table \(issue #30\)\: auto-merges the conservative bucket, writes data/dedup-report.md, and leaves the rest for `person merge` / `person distinct`.'
     'digest:Build and write the daily digest \(with health banner\) to the vault, then email it to yon@dowjones.com \(issue #34; disable with DJOS_DIGEST_EMAIL=0\). --resend overrides the once-per-day idempotency guard and sends again.'
     'enrich:Run the person-enrichment batch \(extract new facts for known people\).'
-    'prep:Render today'\''s meeting prep notes to the vault, then email them to yon@dowjones.com \(issue #35; disable with DJOS_PREP_EMAIL=0\). Skips the send when there are no meetings. --resend overrides the once-per-day idempotency guard and sends again.'
+    'prep:Render today'\''s meeting prep notes to the vault, then email them to yon@dowjones.com \(issue #35; disable with DJOS_PREP_EMAIL=0\). Skips the send when there are no meetings. --resend overrides the once-per-day idempotency guard and sends again. --preview writes a short local comparison and deadline review without network calls or database changes; --date, --timezone and --date-sources are preview-only.'
     'sleep:Run the nightly sleep cycle\: importance backfill, demote_stale, coalesce_buckets, and other quality-loop passes, budget-capped. --dry-run\: writes nothing and makes no LLM calls — coalesce_buckets reports its deterministic bucket plan, every other pass is skipped and reports skippedDryRun.'
     'vault-render:Mark all entities dirty and render the Obsidian vault \(VAULT_DIR, default vault/\).'
     'self-eval:Weekly ground-truth eval\: measure per-tier error rate and auto-tune the tier dial.'
@@ -27,8 +28,8 @@ _djos() {
     'person:list, merge, distinct, correct'
     'vip:list, promote, demote, comment, rank'
     'queue:dead, redrive'
-    'fact:pin, unpin'
-    'task:list, done, drop'
+    'fact:pin, search, unpin'
+    'task:list, done, drop, triage'
     'job:runs'
   )
 
@@ -94,6 +95,7 @@ _djos() {
           local -a fact_cmds
           fact_cmds=(
           'pin:Pin a fact so it always sorts first on every surface \(context, digest, vault\), regardless of score. Resolves --id as an unambiguous id prefix.'
+          'search:Keyword search across every extracted fact \(FTS5\). Read-only, zero LLM calls. Confirmed facts only unless --include-retired.'
           'unpin:Unpin a fact, returning it to normal score-ordered display. Resolves --id as an unambiguous id prefix.'
           )
           _describe 'fact command' fact_cmds
@@ -104,6 +106,7 @@ _djos() {
           'list:List open tasks with their ids, so closing one is a single command.'
           'done:Mark a task done, by id or exact title.'
           'drop:Drop a task \(closed, not done\), by id or exact title.'
+          'triage:Deterministic exact-duplicate pre-pass plus batched LLM class/kind/counterparty classification over open tasks. Default writes both; --dry-run plans everything with zero writes and zero LLM calls. --reclassify ignores the triage_class NULL gate. --report renders the class-grouped triage report to the vault after whatever this run did \(standalone or combined with classification\). --class \(optionally with --apply --action=drop|done\) switches to the class-level apply subflow instead\: without --apply it only prints the plan. The apply subflow is CLI-only \(not exposed over MCP\)\: it'\''s a bulk destructive close with no confirmation gate, which the contract restricts to CLI or a confirmed reply.'
           )
           _describe 'task command' task_cmds
           ;;
@@ -141,11 +144,6 @@ _djos() {
         'email send-test')
           _arguments \
               '--person=[Person slug \(e.g. smith-alice\)]:person:' \
-              '(- *)--help[show help]'
-          ;;
-        'ingest')
-          _arguments \
-              '--noVault[Skip vault rendering after ingest]' \
               '(- *)--help[show help]'
           ;;
         'person list')
@@ -207,6 +205,14 @@ _djos() {
               '--id=[fact id \(or unambiguous prefix\)]:id:' \
               '(- *)--help[show help]'
           ;;
+        'fact search')
+          _arguments \
+              '--entity=[restrict to one entity slug]:entity:' \
+              '--include-retired[include superseded/contradicted/expired/proposed facts]' \
+              '--limit=[max hits, 1-100 \(default 20\)]:limit:' \
+              '--query=[keywords; all terms must match]:query:' \
+              '(- *)--help[show help]'
+          ;;
         'fact unpin')
           _arguments \
               '--id=[fact id \(or unambiguous prefix\)]:id:' \
@@ -222,9 +228,30 @@ _djos() {
               '--id=[task id \(slug\) or exact title]:id:' \
               '(- *)--help[show help]'
           ;;
+        'task triage')
+          _arguments \
+              '--action=[class-level apply subflow only\: '\''drop'\'' or '\''done'\'']:action:' \
+              '--apply[class-level apply subflow only\: actually close the class \(requires --class\)]' \
+              '--class=[switch to the class-level apply subflow for this triage class; without --apply, prints the plan only]:class:' \
+              '--dry-run[plan only\: zero task writes, zero LLM calls]' \
+              '--limit=[max tasks to send through the LLM classifier this run \(default 500\)]:limit:' \
+              '--reclassify[ignore the triage_class NULL gate and reclassify already-classified tasks]' \
+              '--report[render the class-grouped triage report to vault/tasks/triage-<date>.md after this run]' \
+              '(- *)--help[show help]'
+          ;;
         'job runs')
           _arguments \
               '--limit=[number of runs to show, newest first \(default 10, max 200\)]:limit:' \
+              '(- *)--help[show help]'
+          ;;
+        'ingest')
+          _arguments \
+              '--noVault[Skip vault rendering after ingest]' \
+              '(- *)--help[show help]'
+          ;;
+        'doc-rollup')
+          _arguments \
+              '--resend[Send again even if a rollup was already sent for this key]' \
               '(- *)--help[show help]'
           ;;
         'digest')
@@ -234,7 +261,11 @@ _djos() {
           ;;
         'prep')
           _arguments \
+              '--date=[Preview date, YYYY-MM-DD]:date:' \
+              '--date-sources=[Optional local JSON archive of source evidence; never fetched by preview]:date-sources:' \
+              '--preview[Unsent read-only local comparison, no model calls]' \
               '--resend[Send again even if today'\''s prep was already sent]' \
+              '--timezone=[Preview IANA timezone \(default America/New_York\)]:timezone:' \
               '(- *)--help[show help]'
           ;;
         'sleep')

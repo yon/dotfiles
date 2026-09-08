@@ -1,1 +1,1 @@
-/Users/yon/.llms/global.md
+../.agents/AGENTS.md

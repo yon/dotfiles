@@ -37,3 +37,6 @@
 .claude/jobs/
 .claude/gh-pr-status-cache.json
 .claude/.last-cleanup
+.claude/.last-claudemd-audit
+.claude/chrome/
+.claude/nc-os/session-usage-*.json
