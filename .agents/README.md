@@ -23,7 +23,4 @@ Other harnesses need their own instruction entry point to load the shared file;
 For project instructions, use a project `AGENTS.md` and a sibling
 `CLAUDE.md -> AGENTS.md` when needed.
 
-Installed skills and plugins are ignored. Add an exception in `.gitignore` for
-each authored skill to track.
-
 Restart existing harness sessions after changing discovery directories.

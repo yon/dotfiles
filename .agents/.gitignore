@@ -1,9 +1,3 @@
-# Track authored skills; installed and generated artifacts stay local.
-/skills/*
-!/skills/lint/
-!/skills/writing-okrs/
-!/skills/writing-in-yon-voice/
-!/skills/create-claude-agent/
 /plugins/*
 !/plugins/.gitkeep
 /.nc-os-skill-staging/
