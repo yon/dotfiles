@@ -1,0 +1,62 @@
+{
+  "skill_name": "issue-plan",
+  "evals": [
+    {
+      "id": 1,
+      "name": "reproduced-bug-intended-contract",
+      "prompt": "File a bug for exports being rejected at the documented maximum. Investigate the supplied code and contract, then create the issue using the local simulated tracker. Do not fix the implementation.",
+      "expected_output": "One filed bug with executed boundary evidence, expected admission at 100 derived from CONTRACT.md, supported causal explanation, and regression criteria preserving adjacent valid and invalid cases. Implementation unchanged.",
+      "files": [
+        "evals/files/bug/README.md",
+        "evals/files/bug/CONTRACT.md",
+        "evals/files/bug/limits.py",
+        "evals/files/bug/tracker.json",
+        "evals/files/issue_tracker.py"
+      ],
+      "assertions": [
+        "Runs actual limits.admitted at the maximum and accurately reports rejection.",
+        "Expected acceptance at 100 comes from the documented contract, not the buggy output.",
+        "Lists existing issues before creating exactly one issue and reads the created issue back.",
+        "The recorded issue has actionable boundary regression criteria and a supported diagnosis.",
+        "Source is unchanged; output URL matches the simulated tracker state."
+      ]
+    },
+    {
+      "id": 2,
+      "name": "uncertain-diagnosis-investigation",
+      "prompt": "Create an investigation issue for the duplicate notification incident. Capture what we know and what needs checking. The unavailable source and staging service cannot be accessed; use the local simulated tracker.",
+      "expected_output": "One investigation issue that attributes reported evidence, separates competing hypotheses, specifies discriminating checks, and does not claim a reproduced or confirmed root cause. Filing proceeds despite unavailable diagnosis.",
+      "files": [
+        "evals/files/uncertain/README.md",
+        "evals/files/uncertain/incident.md",
+        "evals/files/uncertain/tracker.json",
+        "evals/files/issue_tracker.py"
+      ],
+      "assertions": [
+        "Creates exactly one issue and verifies its stored body.",
+        "Does not invent executed reproduction, source paths, deployment state, or confirmed cause.",
+        "Separates duplicate enqueue and retry hypotheses with useful next evidence to collect.",
+        "Acceptance criteria resolve or narrow uncertainty rather than promising a predetermined fix.",
+        "Does not block filing merely because root cause is unknown."
+      ]
+    },
+    {
+      "id": 3,
+      "name": "duplicate-without-unrequested-update",
+      "prompt": "File a bug for exports of exactly 100 rows being rejected. Search the local simulated tracker first. If this is already tracked, return the existing issue and leave it unchanged. Do not modify the implementation.",
+      "expected_output": "Finds and inspects issue 17, identifies the same boundary defect, returns its URL without creating, editing, or commenting on an issue or changing source.",
+      "files": [
+        "evals/files/duplicate/README.md",
+        "evals/files/duplicate/limits.py",
+        "evals/files/duplicate/tracker.json",
+        "evals/files/issue_tracker.py"
+      ],
+      "assertions": [
+        "Searches and reads the matching issue rather than relying only on its title.",
+        "Returns the URL of issue 17.",
+        "Tracker state is byte-identical and no create command is recorded.",
+        "Source remains unchanged."
+      ]
+    }
+  ]
+}

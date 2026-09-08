@@ -1,52 +1,63 @@
 ---
 name: issue-plan
-description: Use when capturing a single unit of work as a GitHub issue for later execution by a separate session — a bug found while debugging, a feature request, a chore, or a discovery out of scope for the current task. Triggers include "file an issue", "create an issue", "write this up as a bug". Multi-issue programs of work go to epic-plan.
+description: Investigate and draft or file a single GitHub issue for later implementation, including bugs, features, chores, and scoped investigations. Use when asked to capture work as an issue. Use epic-plan for work that needs multiple dependent issues; do not replace requested implementation with issue filing.
 ---
 
-# Issue Plan
+# Issue plan
 
-You are capturing ONE unit of work (bug, feature, or chore) as a GitHub issue that will be executed LATER by a SEPARATE agent with none of your current context. This is AI-PDLC stage 1 at single-issue scale (`~/.files/.llms/rules/ai-pdlc.md`); `issue-implement` executes what you file. **epic-plan's "Executor bar" and "Failure modes" sections apply verbatim — read `~/.files/.llms/skills/epic-plan/SKILL.md` before drafting.**
+Capture one coherent unit of work so a later implementer can understand the problem, intended outcome, evidence, and remaining decisions without the current conversation. Use the repository's issue conventions and available tools; no particular harness or plugin is required.
 
-## 1. Scope gate
+## Establish scope and authorization
 
-- Decomposes into 2+ dependent issues → use `epic-plan` instead.
-- Owner wants it done NOW, in-session → AI-PDLC direct work; don't file issue theater.
-- Otherwise continue here.
+- Identify the repository, requested outcome, and whether the user wants a draft or a filed issue. An explicit request to file or create an issue authorizes that action; do not ask again. A draft-only request does not authorize publication.
+- Size the issue to a useful reviewable change or bounded investigation. For multiple independently delivered changes with dependencies, use epic-plan when available or propose the decomposition directly. Do not create unrelated follow-up issues automatically.
+- Search existing open and closed issues for the same behavior and inspect likely matches before creating a new issue. A matching title alone does not establish duplication. If a duplicate exists, return its reference; update or comment only when the request or established workflow authorizes that action. State when search is unavailable or incomplete.
 
-## 2. Investigate — execute, never transcribe
+## Investigate and separate evidence from intent
 
-- Bugs: the root cause must be VERIFIED before capture (`superpowers:systematic-debugging` first). An unconfirmed hypothesis is a question, not an issue.
-- **Every expected value in the issue comes from executing the real code or querying the real data — never from reasoning about what the code would do.** Run the actual function/parser/query and paste its output. Citing "per `<function>`'s existing logic" without running it is the observed failure mode: in testing it produced an AC asserting `decision='auto_send'` where the real function returns `'draft'`, a wrong spec the executor would faithfully implement against.
-- The repro is EXECUTED, not narrated: the issue shows the command/state and its real output, side by side with the expected output after the fix.
-- Evidence rules otherwise per epic-plan §1: git archaeology with exact commands, live evidence read-only, reconcile existing code (consume/extend/delete).
+Read relevant code, tests, contracts, documentation, and history. Verify important paths and symbols. Investigate enough to make the issue useful, while avoiding an unbounded debugging project.
 
-## 3. The body, by type
+Keep these categories distinct:
 
-| Type | Must carry |
-|---|---|
-| bug | summary → evidence (quoted, dated) → root cause (file:line) → executed repro with pasted output → verified expected behavior → fix steps (non-binding, naming EVERY boundary the change crosses — schemas, transports, type defs) → out-of-scope → ACs → verification |
-| feature | contract as code (types/signatures per epic-plan §2), consume-or-delete reconciliation of existing helpers, ACs, out-of-scope naming who owns each exclusion |
-| chore | before/after state, exact commands, verification, rollback note if irreversible |
+- **Observed:** what a user report, log, query, test, or executed reproduction actually shows. Attribute the source, time or revision when known, command/input, result, and relevant environment. Reproduce locally when feasible and authorized; mark reports and unexecuted repro steps as such.
+- **Intended:** behavior established by requirements, a documented contract, an authoritative example, or an explicit user decision. Cite that basis. Existing buggy output cannot establish the expected result after a fix. Derive expected values from the intended contract and show the reasoning where useful.
+- **Diagnosis:** a confirmed causal explanation with evidence, or clearly labeled hypotheses with discriminating next checks. A credible reported symptom can justify an issue even when reproduction or root cause is still unresolved.
+- **Decisions:** consequential ambiguity about product behavior, public interfaces, compatibility, or ownership. Ask for missing information when necessary, or capture a bounded investigation with explicit unresolved decisions. Do not invent answers. Leave routine implementation choices to the executor within stated constraints.
 
-## 4. Durability and sizing
+When debugging, reproduce the symptom where possible, compare relevant working and failing cases, and test one causal hypothesis at a time. Distinguish unavailable evidence from negative results. Report a blocked reproduction honestly instead of fabricating output or refusing to record a useful investigation.
 
-- **Embed fixture material verbatim** (email bodies, payloads, DB rows) in the issue — never instruct the executor to re-fetch at implement time what you can paste now; sources get archived, deleted, or rotated.
-- **Verification steps must survive idempotency guards.** If a naive re-run will silently no-op (dedup keys, `existsBy*` short-circuits, done-status queue rows), say so explicitly and give the exact unblock recipe.
-- **Size to one PR** (one issue = one branch = one PR): data backfill or historical cleanup beyond the code fix is its own wired issue, never an extra AC on this one.
-- **No decision punts.** An AC containing "implementer's choice" is unfinished — decide it now, or mark the issue `owner-gated` on that point.
-- Stamp: date + main SHA, with "re-grep anchors before editing."
+## Write the issue
 
-## 5. Acceptance criteria
+Scale detail to the work and the repository template. Lead with the concrete problem and desired result. Include only sections useful to the issue:
 
-Numbered `AC<n>`, given/when/then, concrete inputs and expected outputs (ai-pdlc stage 1). Expected outputs are the EXECUTED values from §2, quoted exactly.
+| Type | Useful content |
+| --- | --- |
+| Bug | Reported or observed symptom; executed repro when available; intended behavior and its basis; verified cause or hypotheses; affected boundaries; regression criteria |
+| Feature | User outcome; relevant interfaces, data contracts, and compatibility constraints; existing code to reuse; acceptance criteria |
+| Chore | Current and desired state; affected configuration or workflow; verification; recovery considerations when relevant |
+| Investigation | Evidence so far; open question; competing explanations; concrete next checks; deliverable that resolves or narrows uncertainty |
 
-## 6. Review and file
+Include in-scope work, relevant exclusions, known dependencies, and verification. Use paths and symbols as durable anchors; add line numbers and the inspected revision when available, and tell the executor to recheck anchors against current code. Do not invent revision identifiers or stamp an unrelated branch as the reviewed baseline.
 
-- **Dedup first:** `gh issue list --search "<keywords>"` — update or comment on an existing issue rather than filing a twin.
-- Self-check against epic-plan's failure-mode table. Spawn one adversarial reviewer only when the evidence chain is long or a trust boundary is involved.
-- Owner gate: an explicit "file it" / "create an issue" is pre-authorization — file and return the URL. Otherwise preview the full body via AskUserQuestion before filing.
-- Set the native issue **type** (`gh issue create --type Bug|Feature|Task`), per `ai-pdlc.md` stage 1 — not a type label. Apply repo labels only for orthogonal axes (`gh label list`). Wire blocked-by / sub-issue relations if it belongs under an epic.
+Suggested fix steps should explain known constraints and boundaries, not prescribe an unverified design. Reconcile relevant existing helpers or partial implementations before proposing new ones. Name ownership of exclusions when known; label unknown ownership instead of inventing an assignee.
+
+## Acceptance criteria and durable fixtures
+
+- Use numbered criteria with observable results. Given/when/then is useful when it makes the scenario concrete. Cover relevant boundaries, errors, and compatibility as well as the main outcome.
+- A bug's regression criteria assert intended behavior, not the current defect. Investigation criteria require evidence and a decision or narrowed explanation, not a predetermined root cause or a promised fix.
+- Include minimal synthetic or sanitized fixtures sufficient to reproduce the issue. Preserve the structural details that cause the behavior; label substitutions. Do not paste credentials, private email bodies, or full database records merely for completeness.
+- When a necessary source cannot be embedded safely, give an appropriate durable reference, access requirements, and a minimal substitute where possible. Explain what the substitute cannot establish.
+- Make replay meaningful: note deduplication, idempotency, expired state, or one-time inputs that could make a rerun silently do nothing. Prefer fresh isolated fixture state and explicit setup/cleanup; do not prescribe clearing live guards or resetting production data without authorization.
+- Keep verification executable in the intended environment using documented commands, preferably existing Make targets. Distinguish commands already run from proposed checks for the future implementation.
+
+## Review, file, and verify
+
+Check that observed results match the evidence, expected results match the contract, uncertainty is visible, and the scope and criteria agree. For complex evidence chains, a separate skeptical review can help when supported and authorized; it is not a required named agent.
+
+Prepare a complete reviewable body before publishing. For draft-only work, return the draft. When filing is authorized, use the available GitHub interface and supported repository conventions. Check supported issue types, labels, and relationships instead of assuming a particular CLI flag, schema, or required field exists. Use structured body arguments or a body file to preserve Markdown and avoid shell interpolation.
+
+After a successful write, verify the resulting issue's body and relevant metadata and return its URL. On ambiguous failure, inspect remote state before retrying to avoid duplicate creation. If publication is blocked, preserve the completed draft and state the exact remaining action without claiming it was filed.
 
 ## Done when
 
-A cold-start agent given only the issue URL could implement it without asking you anything and without re-deriving any value you could have executed now.
+The issue or draft gives a later implementer enough verified context to begin the scoped work, distinguishes facts from hypotheses and decisions, and explains how success will be checked. Remaining discovery is explicit. Report whether the outcome was drafted, filed, or matched to an existing issue.

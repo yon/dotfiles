@@ -1,0 +1,12 @@
+{
+  "issues": [
+    {
+      "number": 17,
+      "title": "Exports with 100 rows are rejected",
+      "body": "The contract admits 1 through 100 rows. limits.admitted(100) returns False; expected True. Preserve rejection above 100. This issue tracks the boundary fix.",
+      "type": "Bug",
+      "state": "open",
+      "url": "https://issues.example.test/issues/17"
+    }
+  ]
+}
