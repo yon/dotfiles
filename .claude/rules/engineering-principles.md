@@ -41,12 +41,29 @@ system.
 
 The simplest correct solution is the best solution. Complexity is a cost that must be justified.
 
+Over-engineering is complexity that buys nothing today. It has two axes, and both are enforced
+below: the shape of the code, and the size of what was built. A change can be perfectly factored and
+still be over-engineered, because nothing asked for most of it.
+
 ### Enforcement
 
+- **Detect:** at the end of a design or a diff, list every feature, option, verb, layer, config key
+  and check that no requirement names. Each one needs a reason in the present tense, or it goes. Ask
+  what breaks without it; "nothing yet" means it is not built.
+- **Build the smallest thing that satisfies the request as stated.** Not the smallest thing you
+  would be proud of, and not the version that anticipates the next request. If you believe the
+  request is too small, say so in a sentence and build what was asked.
+- **Configurability is a feature with a cost.** A setting, a flag, or a strategy hook must have two
+  real callers wanting different values, today. One caller means a constant.
 - **No premature abstraction** — Don't create interfaces/protocols/traits for a single
   implementation. Wait until you have 2+ concrete implementations.
 - **No premature generalization** — Build for today's requirements. Tomorrow's requirements may
   never come.
+- **No speculative error handling:** handle failures you have seen, not failures a system could in
+  principle have. Knowing a dependency exists is not a licence to design for its failure modes. Ask:
+  has this failed, in a log, a test, or a run? If not, leave it, and handle it the day it happens
+  against a real message. The tell is a mechanism whose only justification is a sentence starting
+  "if X ever".
 - **No unnecessary indirection** — Every layer (service, repository, adapter, facade) must earn its
   existence. Ask: "What breaks if I remove this layer?"
 - **Readable over clever** — A straightforward `for` loop beats a chain of `map.filter.reduce` if
