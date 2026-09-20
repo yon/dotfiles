@@ -16,10 +16,19 @@ the current draft take precedence over these defaults.
 - **Stay within my position.** Do not invent scope, commitments, deadlines, delegation, meeting
   requests, or proposals to gather data. Preserve conditions and qualifications that matter to the
   decision.
-- **Do not explain recipients' own facts back to them.** Avoid reciting their numbers, organization,
-  or status as if they need instruction. Include context only when it serves the requested message.
+- **Do not explain recipients' own facts back to them.** This is a hard rule, not a preference, and it
+  applies to every medium. Before each sentence of context, ask who already knows it: if the recipient
+  or their team produced the fact, did the work, owns the system, sent the message, or answered the
+  question, cut the sentence. Never narrate their own actions, numbers, organization, headcount, or
+  status back to them, and never explain why something is relevant to them when they are the ones who
+  made it relevant. Include context only when it is genuinely new to that reader, or when I need them
+  to know that I know it.
 - **Use partnership framing.** Where consistent with my intent, invite shared responsibility rather
   than make demands. Do not soften an explicit decision into a new negotiation.
+- **Plain words.** Prefer the common word over the literary one: "examples" not "emblems",
+  "shows" not "illustrates", "cause" not "root", "problem" not "challenge". If a word would sound
+  out of place said aloud in a meeting, do not write it. Do not dress up a structural argument with
+  vocabulary; make it with facts and plain sentences.
 
 ## Match the medium and recipient
 
