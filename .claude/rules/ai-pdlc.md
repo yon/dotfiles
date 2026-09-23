@@ -96,9 +96,10 @@ CAPTURE → DESIGN → DECOMPOSE → BUILD (TDD) → VERIFY → REVIEW → INTEG
 
 - Tests first, and reviewed at the RED stage: the failing test-only diff is reviewed (tests encode
   the ACs? tautologies? production-shaped fixtures?) BEFORE implementation begins; the reviewer, not
-  the implementor, certifies the AC→test map. Every `AC<n>` becomes tests tagged with its number;
-  the PR description carries the certified map. An unmappable AC is a blocker raised before pushing,
-  never shipped around.
+  the implementor, certifies the AC→test map. Every `AC<n>` becomes tests named for the behavior
+  they pin, never for the AC or issue number (in names or comments); the PR description carries
+  the certified map from each AC to its test names. An unmappable AC is a blocker raised before
+  pushing, never shipped around.
 - Real-world fixtures quoted verbatim from the live system (read-only); schema through the real
   migration runner, never hand-written DDL.
 - Edge cases per type: boundaries, empty sets, idempotency (run twice), unicode, negative and
