@@ -101,6 +101,12 @@ compinit -D
 # Now load Google Cloud SDK completions (after compinit)
 if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc'; fi
 
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/yon/.docker/completions $fpath)
+autoload -Uz compinit
+(( ${+_comps[docker]} )) || compinit
+# End of Docker CLI completions
+
 [ -r ${HOME}/.aliases ] && . ${HOME}/.aliases;
 [ -r ${HOME}/.functions ] && . ${HOME}/.functions;
 
