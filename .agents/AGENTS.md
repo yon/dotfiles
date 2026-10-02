@@ -43,10 +43,10 @@ Starting fresh or after heavy compaction: re-derive state from AGENTS.md, the mo
 
 ## Reference Documents
 
-These live in `~/.claude/rules/` (keep them lean). In Claude Code, the first two load into every session; the last three are path-scoped (`paths:` frontmatter) and load only when source code is touched:
+The development lifecycle, issues, branches, commits and PRs live in the `ai-pdlc` plugin: its GOVERNANCE.md and skills, and the AGENTS.md each repo carries from its seed.
 
-- `~/.claude/rules/ai-pdlc.md` — the development lifecycle governing ALL work: scope test (trivial/direct/epic), capture-as-issues, design-first, subagent dispatch and crew rules, TDD with real-world fixtures, review panels, deploy + prove-live, observability/cost gates, learn loop. Always loaded.
-- `~/.claude/rules/git-and-delivery.md` — branches, commits, PRs, issue types, work decomposition. Always loaded.
+These live in `~/.claude/rules/` (keep them lean). In Claude Code they are path-scoped (`paths:` frontmatter) and load only when source code is touched:
+
 - `~/.claude/rules/engineering-principles.md` — DRY/KISS/SOLID enforcement, immutability, typing, DI. Path-scoped.
 - `~/.claude/rules/code-conventions.md` — naming, file organization, comments, logging, observability, security practices. Path-scoped.
 - `~/.claude/rules/quality-and-verification.md` — verification checklist and the test-hardening ladder. Path-scoped.
