@@ -1,0 +1,35 @@
+model = "gpt-6-astra"
+model_reasoning_effort = "high"
+model_provider = "nc-os"
+
+[otel]
+exporter = "none"
+metrics_exporter = "none"
+trace_exporter = "none"
+
+[projects."/Users/yon"]
+trust_level = "trusted"
+
+[projects."/Users/yon/src/github.com/yon/djos"]
+trust_level = "trusted"
+
+[projects."/Users/yon/.files"]
+trust_level = "trusted"
+
+[projects."/Users/yon/src/github.com/dj/ai-pdlc"]
+trust_level = "trusted"
+
+[tui.model_availability_nux]
+gpt-6-astra = 4
+
+[model_providers.nc-os]
+name = "NC OS"
+base_url = "http://127.0.0.1:54319/v1"
+wire_api = "responses"
+http_headers = { x-nc-os-client = "codex" }
+
+[model_providers.nc-os.auth]
+command = "/Users/yon/.local/bin/nc-os"
+args = ["inference-token"]
+timeout_ms = 10000
+refresh_interval_ms = 3600000
