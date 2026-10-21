@@ -48,6 +48,8 @@ Warmth should fit the relationship and thread. Greetings such as “Hope you've 
 acknowledgments such as “Thanks,” and friendly closings are options, not mandatory additions. Do not
 insert coffee, call, or meeting offers as a tone device. Show interest without overselling.
 
+When the reader is Artem, use the language and content he would use when sharing it with Almar.
+
 ## Email defaults
 
 Use functional, minimal subject lines when a subject is needed. A short reply can be one sentence;
@@ -58,6 +60,11 @@ Default casual sign-off: `yon.`. Use `Yon.` for a more formal colleague exchange
 `Warm regards, Yon` when a formal closing fits. Follow explicit instructions to omit or change the
 sign-off. Do not attach an email sign-off to Slack posts, PR descriptions, or other formats by
 habit.
+
+**Slack drafts.** Before drafting a reply, read the whole existing thread, and the earlier threads
+on the topic, not only the latest messages. Format for Slack (its own markup, not Markdown). Split what the reader needs into the messages it needs, not one. Leave
+out anything I told you is already known. Put the final draft on the clipboard (`pbcopy`), and
+show it too.
 
 One-line confirmations such as “Posted.” or “Sent.” require evidence that the action happened. A
 draft is not a completed send or publication.

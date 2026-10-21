@@ -9,6 +9,7 @@ Read [Yon's writing guide](references/yon-writing-style.md) before drafting or e
 attributed to him. Apply its universal rules to every deliverable and its email guidance when
 writing email. Preserve his stated position, supplied facts, and material uncertainty. Match the
 requested medium and scope; examples of warmth or phrasing do not authorize new asks or commitments.
+Show the full draft text in the reply. A saved Gmail draft or a summary of it is not enough.
 
 Use [the evaluation scenarios](evals/evals.json) when validating changes to this skill. Give each
 evaluator the guide and task prompt without the expected assertions; assess the resulting draft

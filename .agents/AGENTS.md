@@ -4,6 +4,9 @@
 
 - **Plain prose.** Short sentences, one idea each, active voice. Prefer common words over jargon when both are equally precise; keep exact technical terms where precision requires them. This governs how you talk to me, not content you draft in my name (emails, docs, PRs keep their own voice rules).
 - **My voice.** Anything drafted in my name (email, docs, Slack, PRs) follows the `writing-in-yon-voice` skill in `~/.agents/skills/writing-in-yon-voice/`. No em-dashes anywhere, in any output: use commas, colons, or periods. Never fabricate facts or invent names; if information is not known, say so.
+- **Questions I can answer cold.** I decide across many threads, so a question has to make sense without this session's memory. Each question: one plain sentence on what the thing is (ELI5 level); a concrete example of what happens today and what would happen after; why it matters, or that it barely does; then lettered options, your recommendation first with its reason. One or two sentences per part: enough context, not a wall. Several questions in one message are numbered 1, 2, 3, contiguous from 1, so I can reply "1a, 2b"; lists that need no reply stay bulleted.
+- **A recap re-asks in full or not at all.** A reminder or status message that mentions a pending question restates it with its context and options. A short label alone ("the `corrected_by` question?") is unanswerable.
+- **AskUserQuestion is for short choices** (scope, approach, a go-ahead): one question per call, recommended option first, and my typed reply overrides the options. Edits to docs or code go in the reply instead: one numbered item per edit, a line on where and why, then a ```diff block (`-` old, `+` new), with no Before/After labels.
 
 ## Core Principles
 
@@ -15,12 +18,13 @@
 
 - **Plan before non-trivial work.** Anything touching multiple files or requiring more than a couple of steps gets a plan first (`superpowers:writing-plans` or its built-in equivalent).
 - **Stop and re-plan when something goes sideways.** Don't push through. Re-orient and propose a revised approach.
-- **Offload research and parallel work to subagents.** Keep the main context clean. One focused task per subagent.
+- **Offload research and parallel work to subagents.** Keep the main context clean. One focused task per subagent. A brief names the ref to read (`origin/<branch>`) and says to fetch first, because a checkout can be behind.
+- **Re-read live state before reasoning from it.** A version, a deploy, a branch or a teammate's change can move between turns. Fetch it again (`git fetch`, `gh`, the service) before building on what an earlier turn found.
 - **Verify before declaring done.** Run the build, run the tests, demonstrate correctness — see `~/.claude/rules/quality-and-verification.md`.
 - **Demand elegance, in proportion.** For non-trivial work, pause to ask if there's a cleaner path. For obvious fixes, just do it.
 - **Fix bugs autonomously.** Given a failing test, error, or log, diagnose and fix. Don't ask for hand-holding on what's already evident.
 
-**Module context.** Before exploring a module, read its context document if present. Use the `module-context` skill in `~/.agents/skills/module-context/` to create missing context when substantial exploration would be reusable, and update existing context when your changes make it inaccurate. Load only documents relevant to the task.
+**Module context.** Before exploring a module, read its context document if present. Use the `ai-pdlc:module-context` skill to create missing context when substantial exploration would be reusable, and update existing context when your changes make it inaccurate. Load only documents relevant to the task.
 
 ## Tool Preferences
 
@@ -36,6 +40,8 @@
 - **Google Workspace:** the `gws` CLI is authenticated and has Gmail, Drive, Docs, Sheets, Slides and Calendar scopes. **Never ask me to copy, paste, forward, or manually look up anything that lives in a Workspace app** — read and write it directly. That includes retrieving what was actually sent, looking up a contact's address before claiming to be blocked on it, and reading Drive/Docs content. Check whether `gws` can fetch it before asking me for it.
   - **Always name the identity: this Mac has four Google accounts.** Every `gws` call sets `GOOGLE_WORKSPACE_CLI_CONFIG_DIR` to one of `~/.config/gws-config-<email>` (`yon@dowjones.com` = work, `yon@milliped.com` = personal, `admin@lawrencefarmssouth.com` = LFS, `admin@chappaquaschoolfoundation.org` = CSF, Chappaqua School Foundation). Each dir holds its own credentials and token cache, so it needs no other env var. Pick from what the task is about and say which one you used; ask when it's genuinely ambiguous.
   - **Never rely on the bare default.** `~/.config/gws` is deliberately empty of credentials, and a bare call errors rather than guessing. Do NOT "fix" that by running `gws auth login` or by setting only `GOOGLE_WORKSPACE_CLI_CREDENTIALS_FILE`: a `client_secret.json` or cached token in the config dir OVERRIDES that variable, so the call can silently succeed as the wrong account (this broke djos on 2026-07-28). Config dir wins; treat it as the identity selector.
+  - **Drafts only, never send, on every account and every channel.** Anything that lands in another person's inbox, calendar or notifications is drafted, never sent, unless I approve that exact item: email stays a Gmail draft; a calendar invite is a proposal (title, attendees, two or three times checked against everyone's free/busy) that I create or explicitly tell you to create; Slack, Google Chat and Jira comments are text for me to post or approve word for word. A go-ahead for a plan is not approval of the messages or invites inside it. Ask for each one as its own clearly flagged question, never a line in a status update. Project-defined automated paths (for example DJOS's Sofi approvals and self-mail) are the only exceptions.
+  - **Email is always HTML, on every account.** Every draft or send builds a `multipart/alternative` message: a `text/html` part plus a `text/plain` fallback generated from it. Links are real `<a href>` anchors with readable text (a ticket key, a document title), never bare URLs in the body. Use light inline styles only (a sans-serif font, bold for section leads, `<ul>`/`<ol>` for lists, a simple bordered table when one helps). Replies keep the thread: `threadId` plus `In-Reply-To` and `References` from the message being answered. After creating or updating a draft, read it back and confirm both parts are present and the links count matches.
 
 ## Session Recovery
 
