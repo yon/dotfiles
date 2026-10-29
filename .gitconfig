@@ -129,7 +129,8 @@
 # NC OS
 [credential "https://gitlab.nc-os.ncttools.io"]
 	helper =
-	helper = "!f() { p=\"/Users/yon/.nc-os/gitlab-token\"; test -r \"$p\" && printf 'username=oauth2\\npassword=%s\\n' \"$(cat \"$p\")\"; }; f"
+	helper = "!NC_OS_HOME='/Users/yon/.nc-os' '/Users/yon/.local/bin/nc-os' --env prod auth gitlab credential"
+	useHttpPath = true
 [http "https://gitlab.nc-os.ncttools.io/"]
 	sslCert = /Users/yon/.nc-os/environments/prod/cert.pem
 	sslKey = /Users/yon/.nc-os/environments/prod/cert-key.pem

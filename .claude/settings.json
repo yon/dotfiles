@@ -1,13 +1,118 @@
 {
-  "model": "opus",
+  "awsCredentialExport": "\"/Users/yon/.local/bin/nc-os\" credential-refresh --output sts",
+  "awsAuthRefresh": "\"/Users/yon/.local/bin/nc-os\" credential-refresh",
+  "env": {
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL_NAME": "Haiku 5.5 (1M context)",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "global.anthropic.claude-haiku-5-5[1m]",
+    "ANTHROPIC_DEFAULT_MODEL": "global.anthropic.claude-opus-5-5[1m]",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL_DESCRIPTION": "Sonnet 5.5 (1M context)",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL_NAME": "Sonnet 5.5 (1M context)",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "global.anthropic.claude-sonnet-5-5[1m]",
+    "AWS_PROFILE": "nc-os",
+    "AWS_REGION": "us-east-1",
+    "CLAUDE_CODE_AUTO_MODE_SERVER": "0",
+    "CLAUDE_CODE_CLIENT_CERT": "/Users/yon/.nc-os/environments/prod/cert.pem",
+    "CLAUDE_CODE_CLIENT_KEY": "/Users/yon/.nc-os/environments/prod/cert-key.pem",
+    "CLAUDE_CODE_ENABLE_AUTO_MODE": "1",
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
+    "CLAUDE_CODE_PLUGIN_KEEP_MARKETPLACE_ON_FAILURE": "1",
+    "CLAUDE_CODE_USE_BEDROCK": "1",
+    "NC_OS_CLI_PATH": "/Users/yon/.local/bin/nc-os",
+    "NC_OS_PLUGIN_ROOT": "/Users/yon/.nc-os/marketplace-cache/nc-os-core/plugin",
+    "OTEL_EXPORTER_OTLP_ENDPOINT": "https://api.nc-os.ncttools.io",
+    "OTEL_EXPORTER_OTLP_PROTOCOL": "http/protobuf",
+    "OTEL_LOG_ASSISTANT_RESPONSES": "0",
+    "OTEL_LOG_RAW_API_BODIES": "0",
+    "OTEL_LOG_TOOL_DETAILS": "1",
+    "OTEL_LOG_USER_PROMPTS": "0",
+    "OTEL_LOGS_EXPORTER": "otlp",
+    "OTEL_METRICS_EXPORTER": "otlp",
+    "OTEL_SERVICE_NAME": "claude-code"
+  },
+  "permissions": {
+    "deny": [
+      "Read(~/.aws/cli/cache/**)",
+      "Read(~/.aws/credentials)",
+      "Read(~/.aws/sso/**)",
+      "Read(~/.ssh/**)"
+    ],
+    "defaultMode": "auto",
+    "disableBypassPermissionsMode": "disable"
+  },
+  "model": "global.anthropic.claude-opus-5-5[1m]",
+  "availableModels": [
+    "global.anthropic.claude-opus-5-5[1m]",
+    "sonnet",
+    "haiku"
+  ],
+  "modelOverrides": {
+    "claude-haiku-4-5-20251001-v1": "global.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "claude-haiku-4-5-20251001": "global.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "claude-haiku-4-5": "global.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "claude-haiku-5-5": "global.anthropic.claude-haiku-5-5",
+    "claude-haiku-5-5[1m]": "global.anthropic.claude-haiku-5-5[1m]",
+    "claude-opus-4-5-20251101-v1": "global.anthropic.claude-opus-4-5-20251101-v1:0",
+    "claude-opus-4-5-20251101": "global.anthropic.claude-opus-4-5-20251101-v1:0",
+    "claude-opus-4-5-20251101[1m]": "global.anthropic.claude-opus-4-5-20251101-v1:0[1m]",
+    "claude-opus-4-5": "global.anthropic.claude-opus-4-5-20251101-v1:0",
+    "claude-opus-4-5[1m]": "global.anthropic.claude-opus-4-5-20251101-v1:0[1m]",
+    "claude-opus-4-6-v1": "global.anthropic.claude-opus-4-6-v1",
+    "claude-opus-4-6": "global.anthropic.claude-opus-4-6-v1",
+    "claude-opus-4-6[1m]": "global.anthropic.claude-opus-4-6-v1[1m]",
+    "claude-opus-4-7": "global.anthropic.claude-opus-4-7",
+    "claude-opus-4-7[1m]": "global.anthropic.claude-opus-4-7[1m]",
+    "claude-opus-4-8": "global.anthropic.claude-opus-4-8",
+    "claude-opus-4-8[1m]": "global.anthropic.claude-opus-4-8[1m]",
+    "claude-opus-5-5": "global.anthropic.claude-opus-5-5",
+    "claude-opus-5-5[1m]": "global.anthropic.claude-opus-5-5[1m]",
+    "claude-opus-5": "global.anthropic.claude-opus-5",
+    "claude-opus-5[1m]": "global.anthropic.claude-opus-5[1m]",
+    "claude-sonnet-4-5-20250929-v1": "global.anthropic.claude-sonnet-4-5-20250929-v1:0",
+    "claude-sonnet-4-5-20250929": "global.anthropic.claude-sonnet-4-5-20250929-v1:0",
+    "claude-sonnet-4-5-20250929[1m]": "global.anthropic.claude-sonnet-4-5-20250929-v1:0[1m]",
+    "claude-sonnet-4-5": "global.anthropic.claude-sonnet-4-5-20250929-v1:0",
+    "claude-sonnet-4-5[1m]": "global.anthropic.claude-sonnet-4-5-20250929-v1:0[1m]",
+    "claude-sonnet-4-6": "global.anthropic.claude-sonnet-4-6",
+    "claude-sonnet-4-6[1m]": "global.anthropic.claude-sonnet-4-6[1m]",
+    "claude-sonnet-5-5": "global.anthropic.claude-sonnet-5-5",
+    "claude-sonnet-5-5[1m]": "global.anthropic.claude-sonnet-5-5[1m]",
+    "claude-sonnet-5": "global.anthropic.claude-sonnet-5",
+    "claude-sonnet-5[1m]": "global.anthropic.claude-sonnet-5[1m]"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"/Users/yon/.nc-os/tools/bun/current/bun\" \"/Users/yon/.nc-os/marketplace-cache/nc-os-core/plugin/hooks/cap-check.ts\"",
+            "timeout": 5
+          }
+        ],
+        "_ncOsManaged": true
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"/Users/yon/.nc-os/tools/bun/current/bun\" \"/Users/yon/.nc-os/marketplace-cache/nc-os-core/plugin/hooks/productivity-assess.ts\"",
+            "timeout": 15
+          }
+        ],
+        "_ncOsManaged": true
+      }
+    ]
+  },
+  "allowManagedMcpServersOnly": false,
   "statusLine": {
     "type": "command",
-    "command": "input=$(cat); cwd=$(echo \"$input\" | jq -r '.workspace.current_dir'); dir_display=$(printf '\\033[2m%s\\033[0m' \"$cwd\"); git_info=\"\"; if git -C \"$cwd\" rev-parse --git-dir > /dev/null 2>&1; then repo=$(git -C \"$cwd\" rev-parse --show-toplevel 2>/dev/null | xargs basename); branch=$(git -C \"$cwd\" rev-parse --abbrev-ref HEAD 2>/dev/null); staged=\"\"; unstaged=\"\"; if ! git -C \"$cwd\" diff --quiet --cached 2>/dev/null; then staged=\"+\"; fi; if ! git -C \"$cwd\" diff --quiet 2>/dev/null; then unstaged=\"!\"; fi; git_info=$(printf ' \\033[2m%s (%s%s%s)\\033[0m' \"$repo\" \"$branch\" \"$unstaged\" \"$staged\"); fi; echo \"${dir_display}${git_info}\""
+    "command": "\"$HOME/.claude/statusline.sh\""
   },
   "enabledPlugins": {
     "commit-commands@claude-plugins-official": true,
     "superpowers@claude-plugins-official": false,
-    "ai-pdlc@ai-pdlc": true,
     "show-me@skills": true
   },
   "extraKnownMarketplaces": {
@@ -22,8 +127,15 @@
         "source": "github",
         "repo": "humanlayer/skills"
       }
+    },
+    "last30days-skill": {
+      "source": {
+        "source": "github",
+        "repo": "mvanhorn/last30days-skill"
+      }
     }
   },
+  "otelHeadersHelper": "\"/Users/yon/.local/bin/nc-os\" otel-headers",
   "effortLevel": "medium",
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,
@@ -56,5 +168,40 @@
     ]
   },
   "mcpServers": {},
-  "enableRemoteControlByDefault": true
+  "enableRemoteControlByDefault": true,
+  "_ncOsManagedFallback": {
+    "topLevel": [
+      "allowManagedMcpServersOnly"
+    ],
+    "env": [
+      "CLAUDE_CODE_USE_BEDROCK",
+      "CLAUDE_CODE_ENABLE_AUTO_MODE",
+      "CLAUDE_CODE_AUTO_MODE_SERVER",
+      "CLAUDE_CODE_ENABLE_TELEMETRY",
+      "CLAUDE_CODE_PLUGIN_KEEP_MARKETPLACE_ON_FAILURE",
+      "OTEL_METRICS_EXPORTER",
+      "OTEL_LOGS_EXPORTER",
+      "OTEL_EXPORTER_OTLP_PROTOCOL",
+      "OTEL_EXPORTER_OTLP_ENDPOINT",
+      "OTEL_SERVICE_NAME",
+      "OTEL_LOG_TOOL_DETAILS",
+      "OTEL_LOG_USER_PROMPTS",
+      "OTEL_LOG_ASSISTANT_RESPONSES",
+      "OTEL_LOG_RAW_API_BODIES"
+    ],
+    "permissions": {
+      "added": {
+        "deny": [
+          "Read(~/.aws/credentials)",
+          "Read(~/.aws/sso/**)",
+          "Read(~/.aws/cli/cache/**)",
+          "Read(~/.ssh/**)"
+        ]
+      },
+      "scalarsPrior": {
+        "disableBypassPermissionsMode": null,
+        "defaultMode": null
+      }
+    }
+  }
 }
