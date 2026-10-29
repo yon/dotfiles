@@ -107,6 +107,10 @@ autoload -Uz compinit
 (( ${+_comps[docker]} )) || compinit
 # End of Docker CLI completions
 
+# >>> nc-os completions >>>
+command -v nc-os >/dev/null 2>&1 && (( $+functions[compdef] )) && source <(nc-os completions zsh)
+# <<< nc-os completions <<<
+
 [ -r ${HOME}/.aliases ] && . ${HOME}/.aliases;
 [ -r ${HOME}/.functions ] && . ${HOME}/.functions;
 
