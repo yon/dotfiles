@@ -1,5 +1,7 @@
+.agents/skills/browser-automation
 .agents/skills/dj-*/
-.agents/skills/dj-*/
+.agents/skills/game-development
+.agents/skills/gh-stack/
 .agents/skills/nc-os-*/
 .agents/skills/nuk-*/
 .agents/skills/synced/
@@ -43,3 +45,9 @@
 .zsh_history
 .zsh/cache/
 *~
+.claude/.aws_auth_refresh-*.json
+.claude/*-backup.json
+.claude/nc-os-integrations.json
+.claude/settings.json.bak-*
+.claude/state/
+.claude/teams/
