@@ -5,6 +5,7 @@ PATH=""
 for p in \
     "${HOME}/bin" \
     "${HOME}/.local/bin" \
+    "${HOME}/.nc-os/tools/bin" \
     "/opt/homebrew/bin" \
     "/opt/homebrew/sbin" \
     "/opt/local/bin" \

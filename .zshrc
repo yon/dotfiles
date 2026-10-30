@@ -68,14 +68,14 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 
 fpath=(~/.zsh/completion $fpath)
 
+# docker (completions; fpath must be set before compinit)
+[ -d "${HOME}/.docker/completions" ] && fpath=(~/.docker/completions $fpath)
+
 # grok (PATH + completions; fpath must be set before compinit)
 if [ -d "${HOME}/.grok/bin" ]; then
     export PATH="${HOME}/.grok/bin:${PATH}"
     fpath=(~/.grok/completions/zsh $fpath)
 fi
-
-# bun completions
-[ -s "/Users/yon/.bun/_bun" ] && source "/Users/yon/.bun/_bun"
 
 if command -v direnv >/dev/null 2>&1; then
     eval "$(command direnv hook zsh)"
@@ -101,11 +101,8 @@ compinit -D
 # Now load Google Cloud SDK completions (after compinit)
 if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc'; fi
 
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/yon/.docker/completions $fpath)
-autoload -Uz compinit
-(( ${+_comps[docker]} )) || compinit
-# End of Docker CLI completions
+# bun completions (after compinit; _bun runs a plain compinit, which writes the dump, if none is loaded)
+[ -s "/Users/yon/.bun/_bun" ] && source "/Users/yon/.bun/_bun"
 
 # >>> nc-os completions >>>
 command -v nc-os >/dev/null 2>&1 && (( $+functions[compdef] )) && source <(nc-os completions zsh)
