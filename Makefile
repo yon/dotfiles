@@ -1,12 +1,21 @@
 DOTFILE_DIR := $(HOME)/.files
 EXCLUDES := . .. .git
 DOTFILES := $(filter-out $(EXCLUDES), $(shell ls -A -1 $(DOTFILE_DIR)))
+# Links inside directories that harnesses own, as <path under $HOME>=<path in this repo>.
+HARNESS_LINKS := \
+	.codex/AGENTS.md=.agents/AGENTS.md \
+	.codex/rules/default.rules=.agents/codex/rules/default.rules \
+	.config/opencode/AGENTS.md=.agents/AGENTS.md
 
-default:	setup update clean link set_permissions
+default:	setup update clean link harness_links set_permissions
 
 clean:
 	for file in $(DOTFILES); do \
-		/bin/rm -f -r $(HOME)/$${file}; \
+		if [ -L "$(HOME)/$${file}" ]; then \
+			/bin/rm -f "$(HOME)/$${file}"; \
+		elif [ -e "$(HOME)/$${file}" ]; then \
+			echo "skip: $(HOME)/$${file} is not a symlink; move it aside to manage it here"; \
+		fi; \
 	done
 	for link in $(HOME)/.[!.]* $(HOME)/*; do \
 		if [ -L "$${link}" ] && [ ! -e "$${link}" ]; then \
@@ -18,7 +27,19 @@ clean:
 
 link:
 	for file in $(DOTFILES); do \
-		/bin/ln -n -s $(DOTFILE_DIR)/$${file} $(HOME)/$${file}; \
+		if [ ! -e "$(HOME)/$${file}" ] && [ ! -L "$(HOME)/$${file}" ]; then \
+			/bin/ln -n -s $(DOTFILE_DIR)/$${file} $(HOME)/$${file}; \
+		fi; \
+	done
+
+harness_links:
+	for pair in $(HARNESS_LINKS); do \
+		target="$(HOME)/$${pair%%=*}"; source="$(DOTFILE_DIR)/$${pair#*=}"; \
+		if [ -e "$${target}" ] && [ ! -L "$${target}" ]; then \
+			echo "skip: $${target} is a real file; move it aside to link it"; \
+		else \
+			/bin/mkdir -p "$$(dirname "$${target}")" && /bin/ln -n -s -f "$${source}" "$${target}"; \
+		fi; \
 	done
 
 set_permissions:

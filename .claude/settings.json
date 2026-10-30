@@ -27,7 +27,9 @@
     "OTEL_LOG_USER_PROMPTS": "0",
     "OTEL_LOGS_EXPORTER": "otlp",
     "OTEL_METRICS_EXPORTER": "otlp",
-    "OTEL_SERVICE_NAME": "claude-code"
+    "OTEL_SERVICE_NAME": "claude-code",
+    "ANTHROPIC_DEFAULT_FABLE_MODEL": "global.anthropic.claude-fable-5-1[1m]",
+    "ANTHROPIC_DEFAULT_FABLE_MODEL_NAME": "Fable"
   },
   "permissions": {
     "deny": [
@@ -43,7 +45,8 @@
   "availableModels": [
     "global.anthropic.claude-opus-5-5[1m]",
     "sonnet",
-    "haiku"
+    "haiku",
+    "global.anthropic.claude-fable-5-1"
   ],
   "modelOverrides": {
     "claude-haiku-4-5-20251001-v1": "global.anthropic.claude-haiku-4-5-20251001-v1:0",
@@ -77,7 +80,9 @@
     "claude-sonnet-5-5": "global.anthropic.claude-sonnet-5-5",
     "claude-sonnet-5-5[1m]": "global.anthropic.claude-sonnet-5-5[1m]",
     "claude-sonnet-5": "global.anthropic.claude-sonnet-5",
-    "claude-sonnet-5[1m]": "global.anthropic.claude-sonnet-5[1m]"
+    "claude-sonnet-5[1m]": "global.anthropic.claude-sonnet-5[1m]",
+    "claude-fable-5-1": "global.anthropic.claude-fable-5-1",
+    "claude-fable-5-1[1m]": "global.anthropic.claude-fable-5-1[1m]"
   },
   "hooks": {
     "SessionStart": [
